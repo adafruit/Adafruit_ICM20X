@@ -187,9 +187,9 @@ boolean Adafruit_ICM20649::_init(void) {
   gyro->sensor_id = _sensorid_gyro;
   gyro->type = SENSOR_TYPE_GYROSCOPE;
   gyro->timestamp = t;
-  gyro->gyro.x = gyroX / 1000;
-  gyro->gyro.y = gyroY / 1000;
-  gyro->gyro.z = gyroZ / 1000;
+  gyro->gyro.x = gyroX;
+  gyro->gyro.y = gyroY;
+  gyro->gyro.z = gyroZ;
 
   memset(temp, 0, sizeof(sensors_event_t));
   temp->version = sizeof(sensors_event_t);
@@ -207,16 +207,12 @@ boolean Adafruit_ICM20649::_init(void) {
  */
 /**************************************************************************/
 void Adafruit_ICM20649::_read(void) {
-  // get raw readings
+
   _setBank(0);
 
   Adafruit_BusIO_Register data_reg = 
-    // Adafruit_BusIO_Register(i2c_dev, ICM20649_ACCEL_XOUT_H, 14, MSBFIRST); // doesn't seem to work for multiple multiple byte regs
     Adafruit_BusIO_Register(i2c_dev, ICM20649_ACCEL_XOUT_H, 14);
-      // Adafruit_BusIO_Register(i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20649_OUT_TEMP_L, 14);
 
-
-///////////// VERKINK ///////////
   uint8_t buffer[14];
   data_reg.read(buffer, 14);
 
@@ -230,39 +226,30 @@ void Adafruit_ICM20649::_read(void) {
 
   temperature = buffer[12] << 8 | buffer[13];
 
-///////////// VERKINK ///////////
-    // ('RANGE_500_DPS', 0, 500, 65.5),
-    // ('RANGE_1000_DPS', 1, 1000, 32.8),
-    // ('RANGE_2000_DPS', 2, 2000, 16.4),
-    // ('RANGE_4000_DPS', 3, 4000, 8.2)
-  // icm20649_gyro_range_t gyro_range = getGyroRange();
-  float gyro_scale = 65.5; // 500 DPS
-  // if (gyro_range == ICM20649_GYRO_RANGE_2000_DPS)
-  //   gyro_scale = 70.0;
-  // if (gyro_range == ICM20649_GYRO_RANGE_1000_DPS)
-  //   gyro_scale = 35.0;
-  // if (gyro_range == ICM20649_GYRO_RANGE_500_DPS)
-  //   gyro_scale = 17.50;
-  // if (gyro_range == ICM20649_GYRO_RANGE_250_DPS)
-  //   gyro_scale =  8.75;
+  icm20649_gyro_range_t gyro_range = getGyroRange();
+
+  float gyro_scale = 1.0;
+  
+  if (gyro_range == ICM20649_GYRO_RANGE_500_DPS)
+    gyro_scale = 65.5;
+  if (gyro_range == ICM20649_GYRO_RANGE_1000_DPS)
+    gyro_scale = 32.8;
+  if (gyro_range == ICM20649_GYRO_RANGE_2000_DPS)
+    gyro_scale = 16.4;
+  if (gyro_range == ICM20649_GYRO_RANGE_4000_DPS)
+    gyro_scale =  8.2;
 
   gyroX = rawGyroX / gyro_scale;
   gyroY = rawGyroY / gyro_scale;
   gyroZ = rawGyroZ / gyro_scale;
   
   icm20649_accel_range_t accel_range = getAccelRange();
-  float accel_scale = 1.0; // 8G
-
-  //   ('RANGE_4G', 0, 4, 8192),
-  // ('RANGE_8G', 1, 8, 4096.0),
-  // ('RANGE_16G', 2, 16, 2048),
-  // ('RANGE_30G', 3, 30, 1024),
+  float accel_scale = 1.0;
 
   if (accel_range == ICM20649_ACCEL_RANGE_4_G)
     accel_scale = 8192.0;
   if (accel_range == ICM20649_ACCEL_RANGE_8_G)
     accel_scale = 4096.0;
-
   if (accel_range == ICM20649_ACCEL_RANGE_16_G)
     accel_scale = 2048.0;
   if (accel_range == ICM20649_ACCEL_RANGE_30_G)
@@ -271,6 +258,7 @@ void Adafruit_ICM20649::_read(void) {
   accX = rawAccX / accel_scale;
   accY = rawAccY / accel_scale;
   accZ = rawAccZ / accel_scale;
+  _setBank(0);
 
 }
 
@@ -294,35 +282,37 @@ void Adafruit_ICM20649::_setBank(uint8_t bank_number){
 
 /**************************************************************************/
 /*!
-    @brief Gets EXAMPLE VALUE.
-    @returns The EXAMPLE VALUE.
+    @brief Get the accelerometer's measurement range.
+    @returns The accelerometer's measurement range (`icm20649_accel_range_t`).
 */
 icm20649_accel_range_t Adafruit_ICM20649::getAccelRange(void){
-      _setBank(2);
+  _setBank(2);
 
   Adafruit_BusIO_Register accel_config_1 = 
     Adafruit_BusIO_Register(i2c_dev, ICM20649_ACCEL_CONFIG_1);
 
   Adafruit_BusIO_RegisterBits accel_range = 
     Adafruit_BusIO_RegisterBits(&accel_config_1, 2, 1);
-
-    return (icm20649_accel_range_t)accel_range.read();
-      _setBank(0);
+  
+  icm20649_accel_range_t range_val = (icm20649_accel_range_t)accel_range.read();
+  
+  _setBank(0);
+  
+  return range_val;
 
 }
 
-/*********** typdef enum setter with bitfield  *********************/
-
 /**************************************************************************/
 /*!
-    @brief Sets EXAMPLE VALUE.
+
+    @brief Sets the accelerometer's measurement range.
     @param  new_accel_range
-            The EXAMPLE used to EXAMPLE. Must be a
-            `ICM20649_example_t`.
+            Measurement range to be set. Must be an
+            `icm20649_accel_range_t`.
 */
 void Adafruit_ICM20649::setAccelRange(icm20649_accel_range_t new_accel_range){
   _setBank(2);
- 
+
   Adafruit_BusIO_Register accel_config_1 = 
     Adafruit_BusIO_Register(i2c_dev, ICM20649_ACCEL_CONFIG_1);
 
@@ -334,19 +324,48 @@ void Adafruit_ICM20649::setAccelRange(icm20649_accel_range_t new_accel_range){
 
 }
 
-/*
+/**************************************************************************/
+/*!
+    @brief Get the gyro's measurement range.
+    @returns The gyro's measurement range (`icm20649_gyro_range_t`).
+*/
+icm20649_gyro_range_t Adafruit_ICM20649::getGyroRange(void){
+  _setBank(2);
 
-
-  // _gyro_range = RWBits(2, _ICM20649_GYRO_CONFIG_1, 1)
   Adafruit_BusIO_Register gyro_config_1 = 
     Adafruit_BusIO_Register(i2c_dev, ICM20649_GYRO_CONFIG_1);
 
   Adafruit_BusIO_RegisterBits gyro_range = 
     Adafruit_BusIO_RegisterBits(&gyro_config_1, 2, 1);
 
-  gyro_range.write("XXX");
-  gyro_range.read();
-  */
+  icm20649_gyro_range_t range_val = (icm20649_gyro_range_t)gyro_range.read();
+
+  _setBank(0);
+  return range_val;
+
+}
+
+/**************************************************************************/
+/*!
+
+    @brief Sets the gyro's measurement range.
+    @param  new_gyro_range
+            Measurement range to be set. Must be an
+            `icm20649_gyro_range_t`.
+*/
+void Adafruit_ICM20649::setGyroRange(icm20649_gyro_range_t new_gyro_range){
+  _setBank(2);
+
+  Adafruit_BusIO_Register gyro_config_1 = 
+    Adafruit_BusIO_Register(i2c_dev, ICM20649_GYRO_CONFIG_1);
+
+  Adafruit_BusIO_RegisterBits gyro_range = 
+    Adafruit_BusIO_RegisterBits(&gyro_config_1, 2, 1);
+
+  gyro_range.write(new_gyro_range);
+  _setBank(0);
+
+}
 
 
 /*

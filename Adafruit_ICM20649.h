@@ -78,8 +78,12 @@ public:
 
   icm20649_accel_range_t getAccelRange(void);
   void setAccelRange(icm20649_accel_range_t new_accel_range);
+
+  icm20649_gyro_range_t getGyroRange(void);
+  void setGyroRange(icm20649_gyro_range_t new_gyro_range);
+  
   void reset(void);
- bool getEvent(sensors_event_t *accel, sensors_event_t *gyro, sensors_event_t *temp);
+  bool getEvent(sensors_event_t *accel, sensors_event_t *gyro, sensors_event_t *temp);
 
 private:
   void _read(void);
