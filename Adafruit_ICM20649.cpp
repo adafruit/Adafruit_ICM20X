@@ -367,6 +367,77 @@ void Adafruit_ICM20649::setGyroRange(icm20649_gyro_range_t new_gyro_range){
 
 }
 
+/**************************************************************************/
+/*!
+    @brief Get the gyro's data rate divisor.
+    @returns The gyro's data rate divisor (`uint8_t`).
+*/
+uint8_t Adafruit_ICM20649::getGyroRateDivisor(void){
+  _setBank(2);
+
+  Adafruit_BusIO_Register gyro_rate_divisor = 
+    Adafruit_BusIO_Register(i2c_dev, ICM20649_GYRO_SMPLRT_DIV, 1);
+
+  uint8_t divisor_val = gyro_rate_divisor.read();
+
+  _setBank(0);
+  return divisor_val;
+
+}
+
+/**************************************************************************/
+/*!
+
+    @brief Sets the gyro's data rate divisor.
+    @param  new_gyro_divisor
+            The gyro's data rate divisor (`uint8_t`).
+*/
+void Adafruit_ICM20649::setGyroRateDivisor(uint8_t new_gyro_divisor){
+  _setBank(2);
+
+  Adafruit_BusIO_Register gyro_rate_divisor = 
+    Adafruit_BusIO_Register(i2c_dev, ICM20649_GYRO_SMPLRT_DIV, 1);
+
+  gyro_rate_divisor.write(new_gyro_divisor);
+  _setBank(0);
+}
+
+  // // _accel_rate_divisor = UnaryStruct(_ICM20649_ACCEL_SMPLRT_DIV_1, ">H")
+  // Adafruit_BusIO_Register accel_rate_divisor = 
+  //   Adafruit_BusIO_Register(i2c_dev, ICM20649_ACCEL_SMPLRT_DIV_1, 2);
+
+// /*
+//     @property
+//     def accelerometer_data_rate(self):
+//         """The rate at which the accelerometer takes measurements"""
+//         self._bank = 2
+//         raw_rate_divisor = self._accel_rate_divisor
+//         self._bank = 0
+//         #rate_hz = 1125/(1+raw_rate_divisor)
+//         return raw_rate_divisor
+
+//     @accelerometer_data_rate.setter
+//     def accelerometer_data_rate(self, value):
+//         self._bank = 2
+//         self._accel_rate_divisor = value
+//         self._bank = 0
+
+//     @property
+//     def gyro_data_rate(self):
+//         """The rate at which the gyro takes measurements"""
+//         self._bank = 2
+//         raw_rate_divisor = self._gyro_rate_divisor
+//         self._bank = 0
+//         # rate_hz = 1100/(1+raw_rate_divisor)
+//         return raw_rate_divisor
+
+//     @gyro_data_rate.setter
+//     def gyro_data_rate(self, value):
+//         self._bank = 2
+//         self._gyro_rate_divisor = value
+//         self._bank = 0
+
+// */
 
 /*
   // _accel_dlpf_enable = RWBits(1, _ICM20649_ACCEL_CONFIG_1, 0)

@@ -2,10 +2,9 @@
 
 #include <Wire.h>
 #include <Adafruit_ICM20649.h>
-#include <Adafruit_BusIO.h>
 #include <Adafruit_Sensor.h>
 
-Adafruit_ICM20649 msa; // TODO FIX NAME
+Adafruit_ICM20649 icm; // TODO FIX NAME
 
 void setup(void) {
   Serial.begin(115200);
@@ -14,31 +13,75 @@ void setup(void) {
   Serial.println("Adafruit ICM20649 test!");
   
   // Try to initialize!
-  if (! msa.begin()) {
+  if (! icm.begin()) {
     Serial.println("Failed to find ICM20649 chip");
     while (1) { delay(10); }
   }
   Serial.println("ICM20649 Found!");
+  //icm.setAccelRange(ICM20649_ACCEL_RANGE_4_G);
+  Serial.print("Accelerometer range set to: ");
+  switch (icm.getAccelRange()) {
+    case ICM20649_ACCEL_RANGE_4_G: Serial.println("+-4G"); break;
+    case ICM20649_ACCEL_RANGE_8_G: Serial.println("+-8G"); break;
+    case ICM20649_ACCEL_RANGE_16_G: Serial.println("+-16G"); break;
+    case ICM20649_ACCEL_RANGE_30_G: Serial.println("+-30G"); break;
+  }
 
-  //msa.setDataRate(MSA301_DATARATE_31_25_HZ);
-  //Serial.print("Data rate set to: ");
-  //switch (msa.getDataRate()) {
-  //  case MSA301_DATARATE_1_HZ: Serial.println("1 Hz"); break;
-  //  case MSA301_DATARATE_1_95_HZ: Serial.println("1.95 Hz"); break;
-  //  case MSA301_DATARATE_3_9_HZ: Serial.println("3.9 Hz"); break;
-  //  case MSA301_DATARATE_7_81_HZ: Serial.println("7.81 Hz"); break;
-  //  case MSA301_DATARATE_15_63_HZ: Serial.println("15.63 Hz"); break;
-  //  case MSA301_DATARATE_31_25_HZ: Serial.println("31.25 Hz"); break;
-  //  case MSA301_DATARATE_62_5_HZ: Serial.println("62.5 Hz"); break;
-  //  case MSA301_DATARATE_125_HZ: Serial.println("125 Hz"); break;
-  //  case MSA301_DATARATE_250_HZ: Serial.println("250 Hz"); break;
-  //  case MSA301_DATARATE_500_HZ: Serial.println("500 Hz"); break;
-  //  case MSA301_DATARATE_1000_HZ: Serial.println("1000 Hz"); break;
-  //}
+  //icm.setGyroRange(ICM20649_GYRO_RANGE_500_DPS);
+  Serial.print("Gyro range set to: ");
+  switch (icm.getGyroRange()) {
+    case ICM20649_GYRO_RANGE_500_DPS: Serial.println("500 degrees/s"); break;
+    case ICM20649_GYRO_RANGE_1000_DPS: Serial.println("1000 degrees/s"); break;
+    case ICM20649_GYRO_RANGE_2000_DPS: Serial.println("2000 degrees/s"); break;
+    case ICM20649_GYRO_RANGE_4000_DPS: Serial.println("4000 degrees/s"); break;
+  }
+
+  icm.setGyroRateDivisor(0);
+  uint8_t gyro_divisor = icm.getGyroRateDivisor();
+  uint16_t gyro_rate = 1100/(1.0+gyro_divisor);
+
+  Serial.print("Gyro data rate divisor set to: ");Serial.println(gyro_divisor);
+  Serial.print("Gyro data rate (Hz) is approximately: ");Serial.println(gyro_rate);
 }
 
 void loop() {
-  msa.read();      // get X Y and Z data at once
- 
-  delay(100); 
+
+//  /* Get a new normalized sensor event */ 
+    sensors_event_t accel;
+    sensors_event_t gyro;
+    sensors_event_t temp;
+    icm.getEvent(&accel, &gyro, &temp);
+    
+//    Serial.print("\t\tTemperature "); Serial.print(temp.temperature);
+//    Serial.println(" deg C");
+//
+//    /* Display the results (acceleration is measured in m/s^2) */
+//    Serial.print("\t\tAccel X: "); Serial.print(accel.acceleration.x);
+//    Serial.print(" \tY: "); Serial.print(accel.acceleration.y);
+//    Serial.print(" \tZ: "); Serial.print(accel.acceleration.z);
+//    Serial.println(" m/s^2 ");
+//    
+//    /* Display the results (acceleration is measured in m/s^2) */
+//    Serial.print("\t\tGyro X: "); Serial.print(gyro.gyro.x);
+//    Serial.print(" \tY: "); Serial.print(gyro.gyro.y);
+//    Serial.print(" \tZ: "); Serial.print(gyro.gyro.z);
+//    Serial.println(" degrees/s ");
+//    Serial.println();
+//   
+//    delay(100);
+
+//  Serial.print(temp.temperature);
+//  
+//      Serial.print(","); 
+  Serial.print(accel.acceleration.x);
+  Serial.print(","); Serial.print(accel.acceleration.y);
+  Serial.print(","); Serial.print(accel.acceleration.z);
+
+  Serial.print(",");
+  Serial.print(gyro.gyro.x);
+  Serial.print(","); Serial.print(gyro.gyro.y);
+  Serial.print(","); Serial.print(gyro.gyro.z);
+  Serial.println();
+  
+  delayMicroseconds(200);
 }

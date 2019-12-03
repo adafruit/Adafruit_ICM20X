@@ -81,6 +81,9 @@ public:
 
   icm20649_gyro_range_t getGyroRange(void);
   void setGyroRange(icm20649_gyro_range_t new_gyro_range);
+
+  uint8_t getGyroRateDivisor(void);
+  void setGyroRateDivisor(uint8_t new_gyro_divisor);
   
   void reset(void);
   bool getEvent(sensors_event_t *accel, sensors_event_t *gyro, sensors_event_t *temp);
