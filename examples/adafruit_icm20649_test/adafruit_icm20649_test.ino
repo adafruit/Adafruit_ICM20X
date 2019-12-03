@@ -36,7 +36,14 @@ void setup(void) {
     case ICM20649_GYRO_RANGE_4000_DPS: Serial.println("4000 degrees/s"); break;
   }
 
-  icm.setGyroRateDivisor(0);
+  // icm.setAccelRateDivisor(4095);
+  uint16_t accel_divisor = icm.getAccelRateDivisor();
+  uint16_t accel_rate = 1100/(1.0+accel_divisor);
+
+  Serial.print("Accelerometer data rate divisor set to: "); Serial.println(accel_divisor);
+  Serial.print("Accelerometer data rate (Hz) is approximately: "); Serial.println(accel_rate);
+
+  // icm.setGyroRateDivisor(255);
   uint8_t gyro_divisor = icm.getGyroRateDivisor();
   uint16_t gyro_rate = 1100/(1.0+gyro_divisor);
 

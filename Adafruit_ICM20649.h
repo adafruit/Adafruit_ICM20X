@@ -84,7 +84,10 @@ public:
 
   uint8_t getGyroRateDivisor(void);
   void setGyroRateDivisor(uint8_t new_gyro_divisor);
-  
+
+  uint16_t getAccelRateDivisor(void);
+  void setAccelRateDivisor(uint16_t new_accel_divisor);
+
   void reset(void);
   bool getEvent(sensors_event_t *accel, sensors_event_t *gyro, sensors_event_t *temp);
 

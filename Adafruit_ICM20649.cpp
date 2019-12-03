@@ -369,6 +369,42 @@ void Adafruit_ICM20649::setGyroRange(icm20649_gyro_range_t new_gyro_range){
 
 /**************************************************************************/
 /*!
+    @brief Get the accelerometer's data rate divisor.
+    @returns The accelerometer's data rate divisor (`uint8_t`).
+*/
+uint16_t Adafruit_ICM20649::getAccelRateDivisor(void){
+  _setBank(2);
+
+  Adafruit_BusIO_Register accel_rate_divisor =
+    Adafruit_BusIO_Register(i2c_dev, ICM20649_ACCEL_SMPLRT_DIV_1, 2);
+
+  uint16_t divisor_val = accel_rate_divisor.read();
+
+  _setBank(0);
+  return divisor_val;
+
+}
+
+/**************************************************************************/
+/*!
+
+    @brief Sets the accelerometer's data rate divisor.
+    @param  new_accel_divisor
+            The accelerometer's data rate divisor (`uint16_t`). This 12-bit value must be <= 4095
+*/
+void Adafruit_ICM20649::setAccelRateDivisor(uint16_t new_accel_divisor){
+  _setBank(2);
+
+  Adafruit_BusIO_Register accel_rate_divisor =
+    Adafruit_BusIO_Register(i2c_dev, ICM20649_ACCEL_SMPLRT_DIV_1, 2);
+
+  accel_rate_divisor.write(new_accel_divisor);
+  _setBank(0);
+}
+
+//////////////////////////////////////////////$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+/**************************************************************************/
+/*!
     @brief Get the gyro's data rate divisor.
     @returns The gyro's data rate divisor (`uint8_t`).
 */
