@@ -5,7 +5,7 @@
  *Gyro library
  *
  * 	This is a library for the Adafruit ICM20649 breakout:
- * 	https://www.adafruit.com/products/XXX
+ * 	https://www.adafruit.com/products/4464
  *
  * 	Adafruit invests time and resources providing this open source code,
  *  please support Adafruit and open-source hardware by purchasing products from

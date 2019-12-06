@@ -1,31 +1,36 @@
 
 
-Adafruit ICM20649 [![Build Status](https://travis-ci.com/adafruit/Adafruit_ICM20649.svg?branch=master)](https://travis-ci.com/adafruit/Adafruit_ICM20649)
+Adafruit ICM20649 ![Build Status](https://travis-ci.com/adafruit/Adafruit_ICM20649.svg?branch=master)
 ================
 
-<a href="https://www.adafruit.com/products/XXX"><img src="assets/board.jpg?raw=true" width="500px"></a>
-This is the Adafruit ICM20649 6-DoF Wide-Range Accelerometer and Gyro Library for Arduino
+This is the Adafruit ICM20649 Wide-Range 6-DoF Accelerometer and Gyroscope Library for Arduino
 
-Tested and works great with the Adafruit LPS35HW Breakout Board 
-* <a href="https://www.adafruit.com/products/XXX"><img src="assets/board.jpg?raw=true" width="500px"></a>
+Tested and works great with the Adafruit ICM20649 Breakout Board 
+[<img src="assets/board.png?raw=true" width="500px">](https://www.adafruit.com/products/4464)
+
+
 This chip uses I2C to communicate, 2 pins are required to interface
 
 Adafruit invests time and resources providing this open source code, please support Adafruit and open-source hardware by purchasing products from Adafruit!
-################################################
-* `Adafruit_BusIO <https://github.com/adafruit/Adafruit_BusIO>`_
-* `Adafruit_Sensor <https://github.com/adafruit/Adafruit_Sensor>`_
 
-Contributing
-============
+# Dependencies
+* [Adafruit_BusIO](https://github.com/adafruit/Adafruit_BusIO)
+* [Adafruit_Sensor](https://github.com/adafruit/Adafruit_Sensor)
 
-Contributions are welcome! Please read our `Code of Conduct
-<https://github.com/adafruit/Adafruit_ICM20649/blob/master/CODE_OF_CONDUCT.md>`_
+# Contributing
+
+Contributions are welcome! Please read our [Code of Conduct](https://github.com/adafruit/Adafruit_ICM20649/blob/master/CODE_OF_CONDUCT.md>)
 before contributing to help this project stay welcoming.
 
-# Doxygen example and basics/link to guide
+## Documentation and doxygen
+Documentation is produced by doxygen. Contributions should include documentation for any new code added.
+
+Some examples of how to use doxygen can be found in these guide pages:
+
 https://learn.adafruit.com/the-well-automated-arduino-library/doxygen
+
 https://learn.adafruit.com/the-well-automated-arduino-library/doxygen-tips
-##########################
+
 Written by Bryan Siepert for Adafruit Industries.  
 BSD license, check license.txt for more information
 All text above must be included in any redistribution
