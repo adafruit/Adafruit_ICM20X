@@ -11,6 +11,7 @@ jobs:
     - uses: actions/checkout@v1
     - name: pre-install
       run: |
+        sudo apt-get install -y python-setuptools
         source <(curl -SLs https://raw.githubusercontent.com/adafruit/travis-ci-arduino/master/install.sh)
     - name: install libraries
       run: |

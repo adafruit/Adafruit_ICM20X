@@ -64,7 +64,7 @@ typedef enum gyro_range {
 
 /*!
  *    @brief  Class that stores state and functions for interacting with
- *            the ICM20649 I2C Digital Potentiometer
+ *            the ST ICM20649 6-DoF Accelerometer and Gyro
  */
 class Adafruit_ICM20649 {
 public:
