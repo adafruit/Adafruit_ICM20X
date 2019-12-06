@@ -9,9 +9,16 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
+    - name: Set up Python
+      uses: actions/setup-python@v1
+      with:
+        python-version: '3.x'
+    - name: Install python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install setuptools
     - name: pre-install
       run: |
-        sudo apt-get install -y python-setuptools
         source <(curl -SLs https://raw.githubusercontent.com/adafruit/travis-ci-arduino/master/install.sh)
     - name: install libraries
       run: |
