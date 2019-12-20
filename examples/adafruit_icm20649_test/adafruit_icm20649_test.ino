@@ -13,7 +13,6 @@ uint16_t measurement_delay_us = 65535; // Delay between measurements for testing
 #define ICM_MISO 12
 #define ICM_MOSI 11
 
-
 void setup(void) {
   Serial.begin(115200);
   while (!Serial)
@@ -22,9 +21,9 @@ void setup(void) {
   Serial.println("Adafruit ICM20649 test!");
 
   // Try to initialize!
- if (!icm.begin_I2C()) {
-// if (!icm.begin_SPI(ICM_CS)) {
-// if (!icm.begin_SPI(ICM_CS, ICM_SCK, ICM_MISO, ICM_MOSI)) {
+  if (!icm.begin_I2C()) {
+    // if (!icm.begin_SPI(ICM_CS)) {
+    // if (!icm.begin_SPI(ICM_CS, ICM_SCK, ICM_MISO, ICM_MOSI)) {
 
     Serial.println("Failed to find ICM20649 chip");
     while (1) {

@@ -28,11 +28,14 @@
 #define ICM20649_CHIP_ID 0xE1 ///< ICM20649 default device id from WHOAMI
 
 // Bank 0
-#define ICM20649_WHOAMI 0x00       ///< Chip ID register
-#define ICM20649_REG_BANK_SEL 0x7F ///< register bank selection register
-#define ICM20649_PWR_MGMT_1 0x06   ///< primary power management register
-#define ICM20649_ACCEL_XOUT_H 0x2D ///< first byte of accel data
-#define ICM20649_GYRO_XOUT_H 0x33  ///< first byte of accel data
+#define ICM20649_WHOAMI 0x00           ///< Chip ID register
+#define ICM20649_REG_INT_PIN_CFG 0xF   ///< Interrupt config register
+#define ICM20649_REG_INT_ENABLE 0x10   ///< Interrupt enable register 0
+#define ICM20649_REG_INT_ENABLE_1 0x11 ///< Interrupt enable register 1
+#define ICM20649_REG_BANK_SEL 0x7F     ///< register bank selection register
+#define ICM20649_PWR_MGMT_1 0x06       ///< primary power management register
+#define ICM20649_ACCEL_XOUT_H 0x2D     ///< first byte of accel data
+#define ICM20649_GYRO_XOUT_H 0x33      ///< first byte of accel data
 
 // Bank 2
 #define ICM20649_GYRO_SMPLRT_DIV 0x00    ///< Gyroscope data rate divisor
@@ -73,7 +76,8 @@ public:
   bool begin_I2C(uint8_t i2c_addr = ICM20649_I2CADDR_DEFAULT,
                  TwoWire *wire = &Wire, int32_t sensor_id = 0);
 
-  bool begin_SPI(uint8_t cs_pin, SPIClass *theSPI = &SPI, int32_t sensor_id = 0);
+  bool begin_SPI(uint8_t cs_pin, SPIClass *theSPI = &SPI,
+                 int32_t sensor_id = 0);
   bool begin_SPI(int8_t cs_pin, int8_t sck_pin, int8_t miso_pin,
                  int8_t mosi_pin, int32_t sensor_id = 0);
   icm20649_accel_range_t getAccelRange(void);
@@ -92,8 +96,9 @@ public:
   bool getEvent(sensors_event_t *accel, sensors_event_t *gyro,
                 sensors_event_t *temp);
 
-  bool setInterrupt1PinPolarity(bool active_high);
-  bool setI2CBypass(bool bypass_i2c);
+  void setInt1ActiveLow(bool active_low);
+  void setInt2ActiveLow(bool active_low);
+  void setI2CBypass(bool bypass_i2c);
 
 private:
   void _read(void);
