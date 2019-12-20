@@ -56,11 +56,12 @@ Adafruit_ICM20649::Adafruit_ICM20649(void) {}
  * gyro get +1 and the temperature sensor +2.
  *    @return True if initialization was successful, otherwise false.
  */
-boolean Adafruit_ICM20649::begin(uint8_t i2c_address, TwoWire *wire,
+boolean Adafruit_ICM20649::begin_I2C(uint8_t i2c_address, TwoWire *wire,
                                  int32_t sensor_id) {
   i2c_dev = new Adafruit_I2CDevice(i2c_address, wire);
 
   if (!i2c_dev->begin()) {
+    Serial.println("I2C begin Failed");
     return false;
   }
 
@@ -69,6 +70,59 @@ boolean Adafruit_ICM20649::begin(uint8_t i2c_address, TwoWire *wire,
   _sensorid_temp = sensor_id + 2;
   return _init();
 }
+
+
+/*!
+ *    @brief  Sets up the hardware and initializes hardware SPI
+ *    @param  cs_pin The arduino pin # connected to chip select
+ *    @param  theSPI The SPI object to be used for SPI connections.
+ *    @return True if initialization was successful, otherwise false.
+ */
+bool Adafruit_ICM20649::begin_SPI(uint8_t cs_pin, SPIClass *theSPI, int32_t sensor_id) {
+  i2c_dev = NULL;
+
+  spi_dev = new Adafruit_SPIDevice(cs_pin,
+                                   1000000,               // frequency
+                                   SPI_BITORDER_MSBFIRST, // bit order
+                                   SPI_MODE0,             // data mode
+                                   theSPI);
+
+  if (!spi_dev->begin()) {
+    return false;
+  }
+  _sensorid_accel = sensor_id;
+  _sensorid_gyro = sensor_id + 1;
+  _sensorid_temp = sensor_id + 2;
+  return _init();
+  // return true;
+}
+
+/*!
+ *    @brief  Sets up the hardware and initializes software SPI
+ *    @param  cs_pin The arduino pin # connected to chip select
+ *    @param  sck_pin The arduino pin # connected to SPI clock
+ *    @param  miso_pin The arduino pin # connected to SPI MISO
+ *    @param  mosi_pin The arduino pin # connected to SPI MOSI
+ *    @return True if initialization was successful, otherwise false.
+ */
+bool Adafruit_ICM20649::begin_SPI(int8_t cs_pin, int8_t sck_pin,
+                                  int8_t miso_pin, int8_t mosi_pin, int32_t sensor_id) {
+  i2c_dev = NULL;
+
+  spi_dev = new Adafruit_SPIDevice(cs_pin, sck_pin, miso_pin, mosi_pin,
+                                   1000000,               // frequency
+                                   SPI_BITORDER_MSBFIRST, // bit order
+                                   SPI_MODE0);            // data mode
+  if (!spi_dev->begin()) {
+    return false;
+  }
+  _sensorid_accel = sensor_id;
+  _sensorid_gyro = sensor_id + 1;
+  _sensorid_temp = sensor_id + 2;
+  return _init();
+  // return true;
+}
+
 /**
  * @brief Reset the internal registers and restores the default settings
  *
@@ -77,12 +131,14 @@ void Adafruit_ICM20649::reset(void) {
   _setBank(0);
 
   Adafruit_BusIO_Register pwr_mgmt1 =
-      Adafruit_BusIO_Register(i2c_dev, ICM20649_PWR_MGMT_1, 1);
+      Adafruit_BusIO_Register(i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20649_PWR_MGMT_1, 1);
 
   Adafruit_BusIO_RegisterBits reset_bit =
       Adafruit_BusIO_RegisterBits(&pwr_mgmt1, 1, 7);
 
   reset_bit.write(1);
+  delay(20);
+
   while (reset_bit.read()) {
     delay(10);
   };
@@ -90,10 +146,10 @@ void Adafruit_ICM20649::reset(void) {
 boolean Adafruit_ICM20649::_init(void) {
 
   Adafruit_BusIO_Register chip_id =
-      Adafruit_BusIO_Register(i2c_dev, ICM20649_WHOAMI, 2);
+      Adafruit_BusIO_Register(i2c_dev, spi_dev,  ADDRBIT8_HIGH_TOREAD,  ICM20649_WHOAMI, 2);
 
   Adafruit_BusIO_Register reg_bank_sel =
-      Adafruit_BusIO_Register(i2c_dev, ICM20649_REG_BANK_SEL);
+      Adafruit_BusIO_Register(i2c_dev, spi_dev,  ADDRBIT8_HIGH_TOREAD,  ICM20649_REG_BANK_SEL);
 
   Adafruit_BusIO_RegisterBits bank =
       Adafruit_BusIO_RegisterBits(&reg_bank_sel, 2, 4);
@@ -109,7 +165,7 @@ boolean Adafruit_ICM20649::_init(void) {
 
   // _sleep = RWBit(_ICM20649_PWR_MGMT_1, 6)
   Adafruit_BusIO_Register pwr_mgmt_1 =
-      Adafruit_BusIO_Register(i2c_dev, ICM20649_PWR_MGMT_1);
+      Adafruit_BusIO_Register(i2c_dev, spi_dev,  ADDRBIT8_HIGH_TOREAD,  ICM20649_PWR_MGMT_1);
 
   Adafruit_BusIO_RegisterBits sleep =
       Adafruit_BusIO_RegisterBits(&pwr_mgmt_1, 1, 6);
@@ -123,7 +179,7 @@ boolean Adafruit_ICM20649::_init(void) {
   // set ACCEL
   _setBank(2);
   Adafruit_BusIO_Register accel_config_1 =
-      Adafruit_BusIO_Register(i2c_dev, ICM20649_ACCEL_CONFIG_1);
+      Adafruit_BusIO_Register(i2c_dev, spi_dev,  ADDRBIT8_HIGH_TOREAD,  ICM20649_ACCEL_CONFIG_1);
 
   Adafruit_BusIO_RegisterBits accel_range =
       Adafruit_BusIO_RegisterBits(&accel_config_1, 2, 1);
@@ -211,7 +267,7 @@ void Adafruit_ICM20649::_read(void) {
   _setBank(0);
 
   Adafruit_BusIO_Register data_reg =
-      Adafruit_BusIO_Register(i2c_dev, ICM20649_ACCEL_XOUT_H, 14);
+      Adafruit_BusIO_Register(i2c_dev, spi_dev,  ADDRBIT8_HIGH_TOREAD,  ICM20649_ACCEL_XOUT_H, 14);
 
   uint8_t buffer[14];
   data_reg.read(buffer, 14);
@@ -270,7 +326,7 @@ void Adafruit_ICM20649::_read(void) {
 void Adafruit_ICM20649::_setBank(uint8_t bank_number) {
 
   Adafruit_BusIO_Register reg_bank_sel =
-      Adafruit_BusIO_Register(i2c_dev, ICM20649_REG_BANK_SEL);
+      Adafruit_BusIO_Register(i2c_dev, spi_dev,  ADDRBIT8_HIGH_TOREAD,  ICM20649_REG_BANK_SEL);
 
   Adafruit_BusIO_RegisterBits bank =
       Adafruit_BusIO_RegisterBits(&reg_bank_sel, 2, 4);
@@ -287,7 +343,7 @@ icm20649_accel_range_t Adafruit_ICM20649::getAccelRange(void) {
   _setBank(2);
 
   Adafruit_BusIO_Register accel_config_1 =
-      Adafruit_BusIO_Register(i2c_dev, ICM20649_ACCEL_CONFIG_1);
+      Adafruit_BusIO_Register(i2c_dev, spi_dev,  ADDRBIT8_HIGH_TOREAD,  ICM20649_ACCEL_CONFIG_1);
 
   Adafruit_BusIO_RegisterBits accel_range =
       Adafruit_BusIO_RegisterBits(&accel_config_1, 2, 1);
@@ -311,7 +367,7 @@ void Adafruit_ICM20649::setAccelRange(icm20649_accel_range_t new_accel_range) {
   _setBank(2);
 
   Adafruit_BusIO_Register accel_config_1 =
-      Adafruit_BusIO_Register(i2c_dev, ICM20649_ACCEL_CONFIG_1);
+      Adafruit_BusIO_Register(i2c_dev, spi_dev,  ADDRBIT8_HIGH_TOREAD,  ICM20649_ACCEL_CONFIG_1);
 
   Adafruit_BusIO_RegisterBits accel_range =
       Adafruit_BusIO_RegisterBits(&accel_config_1, 2, 1);
@@ -329,7 +385,7 @@ icm20649_gyro_range_t Adafruit_ICM20649::getGyroRange(void) {
   _setBank(2);
 
   Adafruit_BusIO_Register gyro_config_1 =
-      Adafruit_BusIO_Register(i2c_dev, ICM20649_GYRO_CONFIG_1);
+      Adafruit_BusIO_Register(i2c_dev, spi_dev,  ADDRBIT8_HIGH_TOREAD,  ICM20649_GYRO_CONFIG_1);
 
   Adafruit_BusIO_RegisterBits gyro_range =
       Adafruit_BusIO_RegisterBits(&gyro_config_1, 2, 1);
@@ -352,7 +408,7 @@ void Adafruit_ICM20649::setGyroRange(icm20649_gyro_range_t new_gyro_range) {
   _setBank(2);
 
   Adafruit_BusIO_Register gyro_config_1 =
-      Adafruit_BusIO_Register(i2c_dev, ICM20649_GYRO_CONFIG_1);
+      Adafruit_BusIO_Register(i2c_dev, spi_dev,  ADDRBIT8_HIGH_TOREAD,  ICM20649_GYRO_CONFIG_1);
 
   Adafruit_BusIO_RegisterBits gyro_range =
       Adafruit_BusIO_RegisterBits(&gyro_config_1, 2, 1);
@@ -370,7 +426,7 @@ uint16_t Adafruit_ICM20649::getAccelRateDivisor(void) {
   _setBank(2);
 
   Adafruit_BusIO_Register accel_rate_divisor =
-      Adafruit_BusIO_Register(i2c_dev, ICM20649_ACCEL_SMPLRT_DIV_1, 2);
+      Adafruit_BusIO_Register(i2c_dev, spi_dev,  ADDRBIT8_HIGH_TOREAD,  ICM20649_ACCEL_SMPLRT_DIV_1, 2);
 
   uint16_t divisor_val = accel_rate_divisor.read();
 
@@ -390,7 +446,7 @@ void Adafruit_ICM20649::setAccelRateDivisor(uint16_t new_accel_divisor) {
   _setBank(2);
 
   Adafruit_BusIO_Register accel_rate_divisor =
-      Adafruit_BusIO_Register(i2c_dev, ICM20649_ACCEL_SMPLRT_DIV_1, 2);
+      Adafruit_BusIO_Register(i2c_dev, spi_dev,  ADDRBIT8_HIGH_TOREAD,  ICM20649_ACCEL_SMPLRT_DIV_1, 2);
 
   accel_rate_divisor.write(new_accel_divisor);
   _setBank(0);
@@ -405,7 +461,7 @@ uint8_t Adafruit_ICM20649::getGyroRateDivisor(void) {
   _setBank(2);
 
   Adafruit_BusIO_Register gyro_rate_divisor =
-      Adafruit_BusIO_Register(i2c_dev, ICM20649_GYRO_SMPLRT_DIV, 1);
+      Adafruit_BusIO_Register(i2c_dev, spi_dev,  ADDRBIT8_HIGH_TOREAD,  ICM20649_GYRO_SMPLRT_DIV, 1);
 
   uint8_t divisor_val = gyro_rate_divisor.read();
 
@@ -424,7 +480,7 @@ void Adafruit_ICM20649::setGyroRateDivisor(uint8_t new_gyro_divisor) {
   _setBank(2);
 
   Adafruit_BusIO_Register gyro_rate_divisor =
-      Adafruit_BusIO_Register(i2c_dev, ICM20649_GYRO_SMPLRT_DIV, 1);
+      Adafruit_BusIO_Register(i2c_dev, spi_dev,  ADDRBIT8_HIGH_TOREAD,  ICM20649_GYRO_SMPLRT_DIV, 1);
 
   gyro_rate_divisor.write(new_gyro_divisor);
   _setBank(0);
@@ -433,7 +489,7 @@ void Adafruit_ICM20649::setGyroRateDivisor(uint8_t new_gyro_divisor) {
 /*
   // _accel_dlpf_enable = RWBits(1, _ICM20649_ACCEL_CONFIG_1, 0)
   Adafruit_BusIO_Register accel_config_1 =
-    Adafruit_BusIO_Register(i2c_dev, ICM20649_ACCEL_CONFIG_1);
+    Adafruit_BusIO_Register(i2c_dev, spi_dev,  ADDRBIT8_HIGH_TOREAD,  ICM20649_ACCEL_CONFIG_1);
 
   Adafruit_BusIO_RegisterBits accel_dlpf_enable =
     Adafruit_BusIO_RegisterBits(&accel_config_1, 1, 0);
@@ -444,7 +500,7 @@ void Adafruit_ICM20649::setGyroRateDivisor(uint8_t new_gyro_divisor) {
 
   // _accel_dlpf_config = RWBits(3, _ICM20649_ACCEL_CONFIG_1, 3)
   Adafruit_BusIO_Register accel_config_1 =
-    Adafruit_BusIO_Register(i2c_dev, ICM20649_ACCEL_CONFIG_1);
+    Adafruit_BusIO_Register(i2c_dev, spi_dev,  ADDRBIT8_HIGH_TOREAD,  ICM20649_ACCEL_CONFIG_1);
 
   Adafruit_BusIO_RegisterBits accel_dlpf_config =
     Adafruit_BusIO_RegisterBits(&accel_config_1, 3, 3);
@@ -452,3 +508,12 @@ void Adafruit_ICM20649::setGyroRateDivisor(uint8_t new_gyro_divisor) {
   accel_dlpf_config.write("XXX");
   accel_dlpf_config.read();
 */
+
+
+
+  bool Adafruit_ICM20649::setInterrupt1PinPolarity(bool active_high){
+    Serial.print("Called INT1 Polarity ");
+  }
+  bool Adafruit_ICM20649::setI2CBypass(bool bypass_i2c){
+    Serial.print("Bypassing I2C");
+  }
