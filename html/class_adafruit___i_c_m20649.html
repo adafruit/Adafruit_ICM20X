@@ -77,9 +77,15 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___i_c_m20649.html#a06fd2feafa02047f38f029bb454b04ce">Adafruit_ICM20649</a> ()</td></tr>
 <tr class="memdesc:a06fd2feafa02047f38f029bb454b04ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instantiates a new ICM20649 class. <br /></td></tr>
 <tr class="separator:a06fd2feafa02047f38f029bb454b04ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a71febe4bd1b4b887077a30486dba3633"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___i_c_m20649.html#a71febe4bd1b4b887077a30486dba3633">begin</a> (uint8_t i2c_address=<a class="el" href="_adafruit___i_c_m20649_8h.html#a21f91f8a0612e6c08a5bbd10cc8f15e2">ICM20649_I2CADDR_DEFAULT</a>, TwoWire *wire=&amp;Wire, int32_t sensorID=0)</td></tr>
-<tr class="memdesc:a71febe4bd1b4b887077a30486dba3633"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets up the hardware and initializes I2C.  <a href="#a71febe4bd1b4b887077a30486dba3633">More...</a><br /></td></tr>
-<tr class="separator:a71febe4bd1b4b887077a30486dba3633"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d214c575f20bbceda728f906515d738"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___i_c_m20649.html#a4d214c575f20bbceda728f906515d738">begin_I2C</a> (uint8_t i2c_addr=<a class="el" href="_adafruit___i_c_m20649_8h.html#a21f91f8a0612e6c08a5bbd10cc8f15e2">ICM20649_I2CADDR_DEFAULT</a>, TwoWire *wire=&amp;Wire, int32_t sensor_id=0)</td></tr>
+<tr class="memdesc:a4d214c575f20bbceda728f906515d738"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets up the hardware and initializes I2C.  <a href="#a4d214c575f20bbceda728f906515d738">More...</a><br /></td></tr>
+<tr class="separator:a4d214c575f20bbceda728f906515d738"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf0b0e170a82977c5eced4eb53766ff0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___i_c_m20649.html#aaf0b0e170a82977c5eced4eb53766ff0">begin_SPI</a> (uint8_t cs_pin, SPIClass *theSPI=&amp;SPI, int32_t sensor_id=0)</td></tr>
+<tr class="memdesc:aaf0b0e170a82977c5eced4eb53766ff0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets up the hardware and initializes hardware SPI.  <a href="#aaf0b0e170a82977c5eced4eb53766ff0">More...</a><br /></td></tr>
+<tr class="separator:aaf0b0e170a82977c5eced4eb53766ff0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaefbe3346ebec32fc88496015c29221c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___i_c_m20649.html#aaefbe3346ebec32fc88496015c29221c">begin_SPI</a> (int8_t cs_pin, int8_t sck_pin, int8_t miso_pin, int8_t mosi_pin, int32_t sensor_id=0)</td></tr>
+<tr class="memdesc:aaefbe3346ebec32fc88496015c29221c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets up the hardware and initializes software SPI.  <a href="#aaefbe3346ebec32fc88496015c29221c">More...</a><br /></td></tr>
+<tr class="separator:aaefbe3346ebec32fc88496015c29221c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2fa661d55c6711f8055956c9561b7268"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_adafruit___i_c_m20649_8h.html#a4a77c10cb73cbead073ed871bc083176">icm20649_accel_range_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___i_c_m20649.html#a2fa661d55c6711f8055956c9561b7268">getAccelRange</a> (void)</td></tr>
 <tr class="memdesc:a2fa661d55c6711f8055956c9561b7268"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the accelerometer's measurement range.  <a href="#a2fa661d55c6711f8055956c9561b7268">More...</a><br /></td></tr>
 <tr class="separator:a2fa661d55c6711f8055956c9561b7268"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -111,18 +117,27 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a6d46f418c041c1d7cdb3b1a2b58e7161"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___i_c_m20649.html#a6d46f418c041c1d7cdb3b1a2b58e7161">getEvent</a> (sensors_event_t *accel, sensors_event_t *gyro, sensors_event_t *temp)</td></tr>
 <tr class="memdesc:a6d46f418c041c1d7cdb3b1a2b58e7161"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the most recent sensor event, Adafruit Unified Sensor format.  <a href="#a6d46f418c041c1d7cdb3b1a2b58e7161">More...</a><br /></td></tr>
 <tr class="separator:a6d46f418c041c1d7cdb3b1a2b58e7161"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18f9fb1f1032bdc6901b3abcf76c0e63"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___i_c_m20649.html#a18f9fb1f1032bdc6901b3abcf76c0e63">setInt1ActiveLow</a> (bool active_low)</td></tr>
+<tr class="memdesc:a18f9fb1f1032bdc6901b3abcf76c0e63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the polarity of the int1 pin.  <a href="#a18f9fb1f1032bdc6901b3abcf76c0e63">More...</a><br /></td></tr>
+<tr class="separator:a18f9fb1f1032bdc6901b3abcf76c0e63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7fa9b9020322b84f3ea1fd75853a6ba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___i_c_m20649.html#aa7fa9b9020322b84f3ea1fd75853a6ba">setInt2ActiveLow</a> (bool active_low)</td></tr>
+<tr class="memdesc:aa7fa9b9020322b84f3ea1fd75853a6ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the polarity of the INT2 pin.  <a href="#aa7fa9b9020322b84f3ea1fd75853a6ba">More...</a><br /></td></tr>
+<tr class="separator:aa7fa9b9020322b84f3ea1fd75853a6ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aafb17e4ce8d0973493112303a95c946c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___i_c_m20649.html#aafb17e4ce8d0973493112303a95c946c">setI2CBypass</a> (bool bypass_i2c)</td></tr>
+<tr class="memdesc:aafb17e4ce8d0973493112303a95c946c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the bypass status of the I2C master bus support.  <a href="#aafb17e4ce8d0973493112303a95c946c">More...</a><br /></td></tr>
+<tr class="separator:aafb17e4ce8d0973493112303a95c946c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class that stores state and functions for interacting with the ST ICM20649 6-DoF Accelerometer and Gyro. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a71febe4bd1b4b887077a30486dba3633"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a71febe4bd1b4b887077a30486dba3633">&#9670;&nbsp;</a></span>begin()</h2>
+<a id="a4d214c575f20bbceda728f906515d738"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d214c575f20bbceda728f906515d738">&#9670;&nbsp;</a></span>begin_I2C()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">boolean Adafruit_ICM20649::begin </td>
+          <td class="memname">boolean Adafruit_ICM20649::begin_I2C </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
           <td class="paramname"><em>i2c_address</em> = <code><a class="el" href="_adafruit___i_c_m20649_8h.html#a21f91f8a0612e6c08a5bbd10cc8f15e2">ICM20649_I2CADDR_DEFAULT</a></code>, </td>
@@ -152,6 +167,110 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   <table class="params">
     <tr><td class="paramname">i2c_address</td><td>The I2C address to be used. </td></tr>
     <tr><td class="paramname">wire</td><td>The Wire object to be used for I2C connections. </td></tr>
+    <tr><td class="paramname">sensor_id</td><td>An optional parameter to set the sensor ids to differentiate similar sensors The passed value is assigned to the accelerometer and the gyro get +1 and the temperature sensor +2. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if initialization was successful, otherwise false. </dd></dl>
+
+</div>
+</div>
+<a id="aaf0b0e170a82977c5eced4eb53766ff0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf0b0e170a82977c5eced4eb53766ff0">&#9670;&nbsp;</a></span>begin_SPI() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Adafruit_ICM20649::begin_SPI </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>cs_pin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SPIClass *&#160;</td>
+          <td class="paramname"><em>theSPI</em> = <code>&amp;SPI</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int32_t&#160;</td>
+          <td class="paramname"><em>sensor_id</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets up the hardware and initializes hardware SPI. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cs_pin</td><td>The arduino pin # connected to chip select </td></tr>
+    <tr><td class="paramname">theSPI</td><td>The SPI object to be used for SPI connections. </td></tr>
+    <tr><td class="paramname">sensor_id</td><td>An optional parameter to set the sensor ids to differentiate similar sensors The passed value is assigned to the accelerometer and the gyro get +1 and the temperature sensor +2. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if initialization was successful, otherwise false. </dd></dl>
+
+</div>
+</div>
+<a id="aaefbe3346ebec32fc88496015c29221c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaefbe3346ebec32fc88496015c29221c">&#9670;&nbsp;</a></span>begin_SPI() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Adafruit_ICM20649::begin_SPI </td>
+          <td>(</td>
+          <td class="paramtype">int8_t&#160;</td>
+          <td class="paramname"><em>cs_pin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int8_t&#160;</td>
+          <td class="paramname"><em>sck_pin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int8_t&#160;</td>
+          <td class="paramname"><em>miso_pin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int8_t&#160;</td>
+          <td class="paramname"><em>mosi_pin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int32_t&#160;</td>
+          <td class="paramname"><em>sensor_id</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets up the hardware and initializes software SPI. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cs_pin</td><td>The arduino pin # connected to chip select </td></tr>
+    <tr><td class="paramname">sck_pin</td><td>The arduino pin # connected to SPI clock </td></tr>
+    <tr><td class="paramname">miso_pin</td><td>The arduino pin # connected to SPI MISO </td></tr>
+    <tr><td class="paramname">mosi_pin</td><td>The arduino pin # connected to SPI MOSI </td></tr>
     <tr><td class="paramname">sensor_id</td><td>An optional parameter to set the sensor ids to differentiate similar sensors The passed value is assigned to the accelerometer and the gyro get +1 and the temperature sensor +2. </td></tr>
   </table>
   </dd>
@@ -390,6 +509,84 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True on successful read </dd></dl>
+
+</div>
+</div>
+<a id="a18f9fb1f1032bdc6901b3abcf76c0e63"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18f9fb1f1032bdc6901b3abcf76c0e63">&#9670;&nbsp;</a></span>setInt1ActiveLow()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Adafruit_ICM20649::setInt1ActiveLow </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>active_low</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets the polarity of the int1 pin. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">active_low</td><td>Set to true to make INT1 active low, false to make it active high </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aa7fa9b9020322b84f3ea1fd75853a6ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7fa9b9020322b84f3ea1fd75853a6ba">&#9670;&nbsp;</a></span>setInt2ActiveLow()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Adafruit_ICM20649::setInt2ActiveLow </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>active_low</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets the polarity of the INT2 pin. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">active_low</td><td>Set to true to make INT1 active low, false to make it active high </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aafb17e4ce8d0973493112303a95c946c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aafb17e4ce8d0973493112303a95c946c">&#9670;&nbsp;</a></span>setI2CBypass()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Adafruit_ICM20649::setI2CBypass </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>bypass_i2c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets the bypass status of the I2C master bus support. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bypass_i2c</td><td>Set to true to bypass the internal I2C master circuitry, connecting the external I2C bus to the main I2C bus. Set to false to re-connect </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
