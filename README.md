@@ -1,6 +1,5 @@
+# Adafruit ICM20649 ![Build Status](https://github.com/adafruit/Adafruit_ICM20649/workflows/Arduino%20Library%20CI/badge.svg)
 
-
-Adafruit ICM20649 ![Build Status](https://travis-ci.com/adafruit/Adafruit_ICM20649.svg?branch=master)
 ================
 
 This is the Adafruit ICM20649 Wide-Range 6-DoF Accelerometer and Gyroscope Library for Arduino
