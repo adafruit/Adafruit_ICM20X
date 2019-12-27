@@ -40,7 +40,7 @@
 #include "Adafruit_ICM20649.h"
 
 /*!
- *    @brief  Instantiates a new ICM20649 class
+ *    @brief  Instantiates a new ICM20649 class!
  */
 Adafruit_ICM20649::Adafruit_ICM20649(void) {}
 
