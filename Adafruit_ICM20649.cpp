@@ -45,6 +45,15 @@
 Adafruit_ICM20649::Adafruit_ICM20649(void) {}
 
 /*!
+ *    @brief  Cleans up the ICM20649
+ */
+Adafruit_ICM20649::~Adafruit_ICM20649(void) {
+  if (temp_sensor)
+    delete temp_sensor;
+  //TODO: delete other sensors
+}
+
+/*!
  *    @brief  Sets up the hardware and initializes I2C
  *    @param  i2c_address
  *            The I2C address to be used.
@@ -56,8 +65,13 @@ Adafruit_ICM20649::Adafruit_ICM20649(void) {}
  * gyro get +1 and the temperature sensor +2.
  *    @return True if initialization was successful, otherwise false.
  */
-boolean Adafruit_ICM20649::begin_I2C(uint8_t i2c_address, TwoWire *wire,
+bool Adafruit_ICM20649::begin_I2C(uint8_t i2c_address, TwoWire *wire,
                                      int32_t sensor_id) {
+
+  if (i2c_dev) {
+    delete i2c_dev; // remove old interface
+  }
+
   i2c_dev = new Adafruit_I2CDevice(i2c_address, wire);
 
   if (!i2c_dev->begin()) {
@@ -65,10 +79,7 @@ boolean Adafruit_ICM20649::begin_I2C(uint8_t i2c_address, TwoWire *wire,
     return false;
   }
 
-  _sensorid_accel = sensor_id;
-  _sensorid_gyro = sensor_id + 1;
-  _sensorid_temp = sensor_id + 2;
-  return _init();
+  return _init(sensor_id);
 }
 
 /*!
@@ -84,6 +95,10 @@ bool Adafruit_ICM20649::begin_SPI(uint8_t cs_pin, SPIClass *theSPI,
                                   int32_t sensor_id) {
   i2c_dev = NULL;
 
+  if (spi_dev) {
+    delete spi_dev; // remove old interface
+  }
+
   spi_dev = new Adafruit_SPIDevice(cs_pin,
                                    1000000,               // frequency
                                    SPI_BITORDER_MSBFIRST, // bit order
@@ -93,11 +108,8 @@ bool Adafruit_ICM20649::begin_SPI(uint8_t cs_pin, SPIClass *theSPI,
   if (!spi_dev->begin()) {
     return false;
   }
-  _sensorid_accel = sensor_id;
-  _sensorid_gyro = sensor_id + 1;
-  _sensorid_temp = sensor_id + 2;
-  return _init();
-  // return true;
+
+  return _init(sensor_id);
 }
 
 /*!
@@ -116,6 +128,9 @@ bool Adafruit_ICM20649::begin_SPI(int8_t cs_pin, int8_t sck_pin,
                                   int32_t sensor_id) {
   i2c_dev = NULL;
 
+  if (spi_dev) {
+    delete spi_dev; // remove old interface
+  }
   spi_dev = new Adafruit_SPIDevice(cs_pin, sck_pin, miso_pin, mosi_pin,
                                    1000000,               // frequency
                                    SPI_BITORDER_MSBFIRST, // bit order
@@ -123,11 +138,8 @@ bool Adafruit_ICM20649::begin_SPI(int8_t cs_pin, int8_t sck_pin,
   if (!spi_dev->begin()) {
     return false;
   }
-  _sensorid_accel = sensor_id;
-  _sensorid_gyro = sensor_id + 1;
-  _sensorid_temp = sensor_id + 2;
-  return _init();
-  // return true;
+
+  return _init(sensor_id);
 }
 
 /**
@@ -150,23 +162,28 @@ void Adafruit_ICM20649::reset(void) {
     delay(10);
   };
 }
-boolean Adafruit_ICM20649::_init(void) {
+bool Adafruit_ICM20649::_init(int32_t sensor_id) {
 
   Adafruit_BusIO_Register chip_id = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20649_WHOAMI, 2);
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20649_WHOAMI);
 
   Adafruit_BusIO_Register reg_bank_sel = Adafruit_BusIO_Register(
       i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20649_REG_BANK_SEL);
 
   Adafruit_BusIO_RegisterBits bank =
       Adafruit_BusIO_RegisterBits(&reg_bank_sel, 2, 4);
-
   _setBank(0);
+
 
   // make sure we're talking to the right chip
   if (chip_id.read() != ICM20649_CHIP_ID) {
     return false;
   }
+
+  _sensorid_accel = sensor_id;
+  _sensorid_gyro = sensor_id + 1;
+  _sensorid_temp = sensor_id + 2;
+
   // do any software reset or other initial setup
   reset();
 
@@ -223,47 +240,66 @@ boolean Adafruit_ICM20649::_init(void) {
     @param  accel
             Pointer to an Adafruit Unified sensor_event_t object to be filled
             with acceleration event data.
+
     @param  gyro
             Pointer to an Adafruit Unified sensor_event_t object to be filled
             with gyro event data.
+
     @param  temp
             Pointer to an Adafruit Unified sensor_event_t object to be filled
             with temperature event data.
+
     @return True on successful read
 */
 /**************************************************************************/
 bool Adafruit_ICM20649::getEvent(sensors_event_t *accel, sensors_event_t *gyro,
-                                 sensors_event_t *temp) {
+                               sensors_event_t *temp) {
   uint32_t t = millis();
   _read();
 
-  memset(accel, 0, sizeof(sensors_event_t));
-  accel->version = 1;
-  accel->sensor_id = _sensorid_accel;
-  accel->type = SENSOR_TYPE_ACCELEROMETER;
-  accel->timestamp = t;
-  accel->acceleration.x = accX * SENSORS_GRAVITY_EARTH;
-  accel->acceleration.y = accY * SENSORS_GRAVITY_EARTH;
-  accel->acceleration.z = accZ * SENSORS_GRAVITY_EARTH;
+  // use helpers to fill in the events
+  fillAccelEvent(accel, t);
+  fillGyroEvent(gyro, t);
+  fillTempEvent(temp, t);
+  return true;
+}
 
-  memset(gyro, 0, sizeof(sensors_event_t));
-  gyro->version = 1;
-  gyro->sensor_id = _sensorid_gyro;
-  gyro->type = SENSOR_TYPE_GYROSCOPE;
-  gyro->timestamp = t;
-  gyro->gyro.x = gyroX;
-  gyro->gyro.y = gyroY;
-  gyro->gyro.z = gyroZ;
+void Adafruit_ICM20649::fillTempEvent(sensors_event_t *temp, uint32_t timestamp) {
 
   memset(temp, 0, sizeof(sensors_event_t));
   temp->version = sizeof(sensors_event_t);
   temp->sensor_id = _sensorid_temp;
   temp->type = SENSOR_TYPE_AMBIENT_TEMPERATURE;
-  temp->timestamp = t;
+temp->timestamp = timestamp;
   temp->temperature = (temperature / 333.87) + 21.0;
 
-  return true;
 }
+
+void Adafruit_ICM20649::fillGyroEvent(sensors_event_t *gyro, uint32_t timestamp) {
+  memset(gyro, 0, sizeof(sensors_event_t));
+  gyro->version = 1;
+  gyro->sensor_id = _sensorid_gyro;
+  gyro->type = SENSOR_TYPE_GYROSCOPE;
+  gyro->timestamp = timestamp;
+  gyro->gyro.x = gyroX;
+  gyro->gyro.y = gyroY;
+  gyro->gyro.z = gyroZ;
+}
+
+void Adafruit_ICM20649::fillAccelEvent(sensors_event_t *accel,
+                                     uint32_t timestamp) {
+  memset(accel, 0, sizeof(sensors_event_t));
+  accel->version = 1;
+  accel->sensor_id = _sensorid_accel;
+  accel->type = SENSOR_TYPE_ACCELEROMETER;
+  accel->timestamp = timestamp;
+
+  // TODO: update to do final scaling in _read
+  accel->acceleration.x = accX * SENSORS_GRAVITY_EARTH; // SENSORS_GRAVITY_STANDARD
+  accel->acceleration.y = accY * SENSORS_GRAVITY_EARTH;
+  accel->acceleration.z = accZ * SENSORS_GRAVITY_EARTH;
+}
+
 
 /******************* Adafruit_Sensor functions *****************/
 /*!
@@ -324,6 +360,28 @@ void Adafruit_ICM20649::_read(void) {
   accZ = rawAccZ / accel_scale;
   _setBank(0);
 }
+/*!
+    @brief  Gets an Adafruit Unified Sensor object for the temp sensor component
+    @return Adafruit_Sensor pointer to temperature sensor
+ */
+Adafruit_Sensor *Adafruit_ICM20649::getTemperatureSensor(void) {
+  return temp_sensor;
+}
+
+/*!
+    @brief  Gets an Adafruit Unified Sensor object for the accelerometer
+    sensor component
+    @return Adafruit_Sensor pointer to accelerometer sensor
+ */
+Adafruit_Sensor *Adafruit_ICM20649::getAccelerometerSensor(void) {
+  return accel_sensor;
+}
+
+/*!
+    @brief  Gets an Adafruit Unified Sensor object for the gyro sensor component
+    @return Adafruit_Sensor pointer to gyro sensor
+ */
+Adafruit_Sensor *Adafruit_ICM20649::getGyroSensor(void) { return gyro_sensor; }
 
 /**************************************************************************/
 /*!
