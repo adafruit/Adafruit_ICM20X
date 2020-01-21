@@ -112,7 +112,6 @@ private:
   Adafruit_ICM20649 *_theICM20649 = NULL;
 };
 
-
 /*!
  *    @brief  Class that stores state and functions for interacting with
  *            the ST ICM20649 6-DoF Accelerometer and Gyro
@@ -145,8 +144,6 @@ public:
   uint16_t getAccelRateDivisor(void);
   void setAccelRateDivisor(uint16_t new_accel_divisor);
 
-
-
   void reset(void);
   void setInt1ActiveLow(bool active_low);
   void setInt2ActiveLow(bool active_low);
@@ -157,27 +154,37 @@ public:
   Adafruit_Sensor *getGyroSensor(void);
 
 protected:
-  float temperature, accX, accY, accZ, gyroX, gyroY, gyroZ;
+  float temperature, ///< Last reading's temperature (C)
+      accX,          ///< Last reading's accelerometer X axis m/s^2
+      accY,          ///< Last reading's accelerometer Y axis m/s^2
+      accZ,          ///< Last reading's accelerometer Z axis m/s^2
+      gyroX,         ///< Last reading's gyro X axis in rad/s
+      gyroY,         ///< Last reading's gyro Y axis in rad/s
+      gyroZ;         ///< Last reading's gyro Z axis in rad/s
 
-  Adafruit_I2CDevice *i2c_dev;
-  Adafruit_SPIDevice *spi_dev;
+  Adafruit_I2CDevice *i2c_dev = NULL; ///< Pointer to I2C bus interface
+  Adafruit_SPIDevice *spi_dev = NULL; ///< Pointer to SPI bus interface
 
   Adafruit_ICM20649_Temp *temp_sensor = NULL; ///< Temp sensor data object
-  Adafruit_ICM20649_Accelerometer *accel_sensor = NULL; ///< Accelerometer data object
+  Adafruit_ICM20649_Accelerometer *accel_sensor =
+      NULL;                                   ///< Accelerometer data object
   Adafruit_ICM20649_Gyro *gyro_sensor = NULL; ///< Gyro data object
 
-  uint8_t _sensorid_accel, _sensorid_gyro, _sensorid_temp;
+  uint16_t _sensorid_accel, ///< ID number for accelerometer
+      _sensorid_gyro,       ///< ID number for gyro
+      _sensorid_temp;       ///< ID number for temperature
+
   void _read(void);
   virtual bool _init(int32_t sensor_id);
-private:
 
+private:
   friend class Adafruit_ICM20649_Temp; ///< Gives access to private members to
-                                     ///< Temp data object
+                                       ///< Temp data object
   friend class Adafruit_ICM20649_Accelerometer; ///< Gives access to private
-                                              ///< members to Accelerometer data
-                                              ///< object
+                                                ///< members to Accelerometer
+                                                ///< data object
   friend class Adafruit_ICM20649_Gyro; ///< Gives access to private members to
-                                     ///< Gyro data object
+                                       ///< Gyro data object
 
   void _setBank(uint8_t bank_number);
   int16_t rawAccX, rawAccY, rawAccZ, rawTemp, rawGyroX, rawGyroY, rawGyroZ;
@@ -185,7 +192,6 @@ private:
   void fillTempEvent(sensors_event_t *temp, uint32_t timestamp);
   void fillAccelEvent(sensors_event_t *accel, uint32_t timestamp);
   void fillGyroEvent(sensors_event_t *gyro, uint32_t timestamp);
-
 };
 
 #endif

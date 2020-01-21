@@ -50,7 +50,7 @@ Adafruit_ICM20649::Adafruit_ICM20649(void) {}
 Adafruit_ICM20649::~Adafruit_ICM20649(void) {
   if (temp_sensor)
     delete temp_sensor;
-  //TODO: delete other sensors
+  // TODO: delete other sensors
 }
 
 /*!
@@ -66,7 +66,7 @@ Adafruit_ICM20649::~Adafruit_ICM20649(void) {
  *    @return True if initialization was successful, otherwise false.
  */
 bool Adafruit_ICM20649::begin_I2C(uint8_t i2c_address, TwoWire *wire,
-                                     int32_t sensor_id) {
+                                  int32_t sensor_id) {
 
   if (i2c_dev) {
     delete i2c_dev; // remove old interface
@@ -162,6 +162,11 @@ void Adafruit_ICM20649::reset(void) {
     delay(10);
   };
 }
+
+/*!  @brief Initilizes the sensor
+ *   @param sensor_id Optional unique ID for the sensor set
+ *   @returns True if chip identified and initialized
+ */
 bool Adafruit_ICM20649::_init(int32_t sensor_id) {
 
   Adafruit_BusIO_Register chip_id = Adafruit_BusIO_Register(
@@ -173,7 +178,6 @@ bool Adafruit_ICM20649::_init(int32_t sensor_id) {
   Adafruit_BusIO_RegisterBits bank =
       Adafruit_BusIO_RegisterBits(&reg_bank_sel, 2, 4);
   _setBank(0);
-
 
   // make sure we're talking to the right chip
   if (chip_id.read() != ICM20649_CHIP_ID) {
@@ -227,7 +231,9 @@ bool Adafruit_ICM20649::_init(int32_t sensor_id) {
 
   // # //ORD = 1100Hz/(1+10) = 100Hz
   // self._gyro_rate_divisor = 0x0A
-
+  temp_sensor = new Adafruit_ICM20649_Temp(this);
+  accel_sensor = new Adafruit_ICM20649_Accelerometer(this);
+  gyro_sensor = new Adafruit_ICM20649_Gyro(this);
   _setBank(0);
   delay(20);
 
@@ -253,7 +259,7 @@ bool Adafruit_ICM20649::_init(int32_t sensor_id) {
 */
 /**************************************************************************/
 bool Adafruit_ICM20649::getEvent(sensors_event_t *accel, sensors_event_t *gyro,
-                               sensors_event_t *temp) {
+                                 sensors_event_t *temp) {
   uint32_t t = millis();
   _read();
 
@@ -264,18 +270,19 @@ bool Adafruit_ICM20649::getEvent(sensors_event_t *accel, sensors_event_t *gyro,
   return true;
 }
 
-void Adafruit_ICM20649::fillTempEvent(sensors_event_t *temp, uint32_t timestamp) {
+void Adafruit_ICM20649::fillTempEvent(sensors_event_t *temp,
+                                      uint32_t timestamp) {
 
   memset(temp, 0, sizeof(sensors_event_t));
   temp->version = sizeof(sensors_event_t);
   temp->sensor_id = _sensorid_temp;
   temp->type = SENSOR_TYPE_AMBIENT_TEMPERATURE;
-temp->timestamp = timestamp;
+  temp->timestamp = timestamp;
   temp->temperature = (temperature / 333.87) + 21.0;
-
 }
 
-void Adafruit_ICM20649::fillGyroEvent(sensors_event_t *gyro, uint32_t timestamp) {
+void Adafruit_ICM20649::fillGyroEvent(sensors_event_t *gyro,
+                                      uint32_t timestamp) {
   memset(gyro, 0, sizeof(sensors_event_t));
   gyro->version = 1;
   gyro->sensor_id = _sensorid_gyro;
@@ -287,7 +294,7 @@ void Adafruit_ICM20649::fillGyroEvent(sensors_event_t *gyro, uint32_t timestamp)
 }
 
 void Adafruit_ICM20649::fillAccelEvent(sensors_event_t *accel,
-                                     uint32_t timestamp) {
+                                       uint32_t timestamp) {
   memset(accel, 0, sizeof(sensors_event_t));
   accel->version = 1;
   accel->sensor_id = _sensorid_accel;
@@ -295,11 +302,11 @@ void Adafruit_ICM20649::fillAccelEvent(sensors_event_t *accel,
   accel->timestamp = timestamp;
 
   // TODO: update to do final scaling in _read
-  accel->acceleration.x = accX * SENSORS_GRAVITY_EARTH; // SENSORS_GRAVITY_STANDARD
+  accel->acceleration.x =
+      accX * SENSORS_GRAVITY_EARTH; // SENSORS_GRAVITY_STANDARD
   accel->acceleration.y = accY * SENSORS_GRAVITY_EARTH;
   accel->acceleration.z = accZ * SENSORS_GRAVITY_EARTH;
 }
-
 
 /******************* Adafruit_Sensor functions *****************/
 /*!
@@ -613,4 +620,109 @@ void Adafruit_ICM20649::setI2CBypass(bool bypass_i2c) {
       Adafruit_BusIO_RegisterBits(&int_enable_1, 1, 1);
 
   i2c_bypass_enable.write(bypass_i2c);
+}
+/**************************************************************************/
+/*!
+    @brief  Gets the sensor_t data for the ICM20649's gyroscope sensor
+*/
+/**************************************************************************/
+void Adafruit_ICM20649_Gyro::getSensor(sensor_t *sensor) {
+  /* Clear the sensor_t object */
+  memset(sensor, 0, sizeof(sensor_t));
+
+  /* Insert the sensor name in the fixed length char array */
+  strncpy(sensor->name, "ICM20649_G", sizeof(sensor->name) - 1);
+  sensor->name[sizeof(sensor->name) - 1] = 0;
+  sensor->version = 1;
+  sensor->sensor_id = _sensorID;
+  sensor->type = SENSOR_TYPE_GYROSCOPE;
+  sensor->min_delay = 0;
+  sensor->min_value = -69.81; /* -4000 dps -> rad/s (radians per second) */
+  sensor->max_value = +69.81;
+  sensor->resolution = 2.665e-7; /* 65.5 LSB/DPS */
+}
+
+/**************************************************************************/
+/*!
+    @brief  Gets the gyroscope as a standard sensor event
+    @param  event Sensor event object that will be populated
+    @returns True
+*/
+/**************************************************************************/
+bool Adafruit_ICM20649_Gyro::getEvent(sensors_event_t *event) {
+  _theICM20649->_read();
+  _theICM20649->fillGyroEvent(event, millis());
+
+  return true;
+}
+
+/**************************************************************************/
+/*!
+    @brief  Gets the sensor_t data for the ICM20649's accelerometer
+*/
+/**************************************************************************/
+void Adafruit_ICM20649_Accelerometer::getSensor(sensor_t *sensor) {
+  /* Clear the sensor_t object */
+  memset(sensor, 0, sizeof(sensor_t));
+
+  /* Insert the sensor name in the fixed length char array */
+  strncpy(sensor->name, "ICM20649_A", sizeof(sensor->name) - 1);
+  sensor->name[sizeof(sensor->name) - 1] = 0;
+  sensor->version = 1;
+  sensor->sensor_id = _sensorID;
+  sensor->type = SENSOR_TYPE_ACCELEROMETER;
+  sensor->min_delay = 0;
+  sensor->min_value = -294.1995F; /*  -30g = 294.1995 m/s^2  */
+  sensor->max_value = 294.1995F;  /* 30g = 294.1995 m/s^2  */
+  sensor->resolution =
+      0.122; /* 8192LSB/1000 mG -> 8.192 LSB/ mG => 0.122 mG/LSB at +-4g */
+}
+
+/**************************************************************************/
+/*!
+    @brief  Gets the accelerometer as a standard sensor event
+    @param  event Sensor event object that will be populated
+    @returns True
+*/
+/**************************************************************************/
+bool Adafruit_ICM20649_Accelerometer::getEvent(sensors_event_t *event) {
+  _theICM20649->_read();
+  _theICM20649->fillAccelEvent(event, millis());
+
+  return true;
+}
+
+/**************************************************************************/
+/*!
+    @brief  Gets the sensor_t data for the ICM20649's tenperature
+*/
+/**************************************************************************/
+void Adafruit_ICM20649_Temp::getSensor(sensor_t *sensor) {
+  /* Clear the sensor_t object */
+  memset(sensor, 0, sizeof(sensor_t));
+
+  /* Insert the sensor name in the fixed length char array */
+  strncpy(sensor->name, "ICM20649_T", sizeof(sensor->name) - 1);
+  sensor->name[sizeof(sensor->name) - 1] = 0;
+  sensor->version = 1;
+  sensor->sensor_id = _sensorID;
+  sensor->type = SENSOR_TYPE_AMBIENT_TEMPERATURE;
+  sensor->min_delay = 0;
+  sensor->min_value = -40;
+  sensor->max_value = 85;
+  sensor->resolution = 0.0029952; /* 333.87 LSB/C => 1/333.87 C/LSB */
+}
+
+/**************************************************************************/
+/*!
+    @brief  Gets the temperature as a standard sensor event
+    @param  event Sensor event object that will be populated
+    @returns True
+*/
+/**************************************************************************/
+bool Adafruit_ICM20649_Temp::getEvent(sensors_event_t *event) {
+  _theICM20649->_read();
+  _theICM20649->fillTempEvent(event, millis());
+
+  return true;
 }
