@@ -280,7 +280,6 @@ void Adafruit_ICM20649::fillTempEvent(sensors_event_t *temp,
   temp->timestamp = timestamp;
   temp->temperature = (temperature / 333.87) + 21.0;
 }
-
 void Adafruit_ICM20649::fillGyroEvent(sensors_event_t *gyro,
                                       uint32_t timestamp) {
   memset(gyro, 0, sizeof(sensors_event_t));
@@ -288,9 +287,9 @@ void Adafruit_ICM20649::fillGyroEvent(sensors_event_t *gyro,
   gyro->sensor_id = _sensorid_gyro;
   gyro->type = SENSOR_TYPE_GYROSCOPE;
   gyro->timestamp = timestamp;
-  gyro->gyro.x = gyroX;
-  gyro->gyro.y = gyroY;
-  gyro->gyro.z = gyroZ;
+  gyro->gyro.x = gyroX * SENSORS_DPS_TO_RADS;
+  gyro->gyro.y = gyroY * SENSORS_DPS_TO_RADS;
+  gyro->gyro.z = gyroZ * SENSORS_DPS_TO_RADS;
 }
 
 void Adafruit_ICM20649::fillAccelEvent(sensors_event_t *accel,

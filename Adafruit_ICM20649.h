@@ -50,7 +50,7 @@
  * Allowed values for `setProximityLEDCurrent`.
  */
 /** The accelerometer data range */
-typedef enum accel_range {
+typedef enum {
   ICM20649_ACCEL_RANGE_4_G,
   ICM20649_ACCEL_RANGE_8_G,
   ICM20649_ACCEL_RANGE_16_G,
@@ -58,7 +58,7 @@ typedef enum accel_range {
 } icm20649_accel_range_t;
 
 /** The gyro data range */
-typedef enum gyro_range {
+typedef enum {
   ICM20649_GYRO_RANGE_500_DPS,
   ICM20649_GYRO_RANGE_1000_DPS,
   ICM20649_GYRO_RANGE_2000_DPS,

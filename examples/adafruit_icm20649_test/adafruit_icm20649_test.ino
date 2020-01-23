@@ -113,7 +113,7 @@ void loop() {
   Serial.print(gyro.gyro.y);
   Serial.print(" \tZ: ");
   Serial.print(gyro.gyro.z);
-  Serial.println(" degrees/s ");
+  Serial.println(" radians/s ");
   Serial.println();
 
   delay(100);
