@@ -9,7 +9,6 @@ var searchData=
   ['getgyrosensor',['getGyroSensor',['../class_adafruit___i_c_m20649.html#a21bf06bb02f88bca275fdb1af50aebbe',1,'Adafruit_ICM20649']]],
   ['getsensor',['getSensor',['../class_adafruit___i_c_m20649___temp.html#aee45f3512a924b9eccfc6a13d65a5759',1,'Adafruit_ICM20649_Temp::getSensor()'],['../class_adafruit___i_c_m20649___accelerometer.html#a3aff369987f82c5e3dbae01ee25e4427',1,'Adafruit_ICM20649_Accelerometer::getSensor()'],['../class_adafruit___i_c_m20649___gyro.html#a29f3e18191e6a14c25a35a23ae433e49',1,'Adafruit_ICM20649_Gyro::getSensor()']]],
   ['gettemperaturesensor',['getTemperatureSensor',['../class_adafruit___i_c_m20649.html#aa12203cff01c2c4f1e87d038c0bb0a89',1,'Adafruit_ICM20649']]],
-  ['gyro_5frange',['gyro_range',['../_adafruit___i_c_m20649_8h.html#abd7e25190a4f35d6019cc958b71e20df',1,'Adafruit_ICM20649.h']]],
   ['gyro_5fsensor',['gyro_sensor',['../class_adafruit___i_c_m20649.html#a1729e8059d93b4c743c91cf5c0f68c0b',1,'Adafruit_ICM20649']]],
   ['gyrox',['gyroX',['../class_adafruit___i_c_m20649.html#ac8a872c9d4a68b0cf2c4f2efd7987282',1,'Adafruit_ICM20649']]],
   ['gyroy',['gyroY',['../class_adafruit___i_c_m20649.html#a6a6ea9c9ac5467cd58f7d658a3f2334c',1,'Adafruit_ICM20649']]],
