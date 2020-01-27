@@ -202,8 +202,8 @@ bool Adafruit_ICM20649::_init(int32_t sensor_id) {
   sleep.write(false);    // take out of default sleep state
   clock_source.write(1); // AUTO SELECT BEST CLOCK
 
-  setGyroRange(ICM20649_GYRO_RANGE_1000_DPS);
-  setAccelRange(ICM20649_ACCEL_RANGE_8_G);
+  setGyroRange(ICM20649_GYRO_RANGE_500_DPS);
+  setAccelRange(ICM20649_ACCEL_RANGE_4_G);
 
   // 1100Hz/(1+10) = 100Hz
   setGyroRateDivisor(10);
