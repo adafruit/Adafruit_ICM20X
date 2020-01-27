@@ -188,10 +188,8 @@ bool Adafruit_ICM20649::_init(int32_t sensor_id) {
   _sensorid_gyro = sensor_id + 1;
   _sensorid_temp = sensor_id + 2;
 
-  // do any software reset or other initial setup
   reset();
 
-  // _sleep = RWBit(_ICM20649_PWR_MGMT_1, 6)
   Adafruit_BusIO_Register pwr_mgmt_1 = Adafruit_BusIO_Register(
       i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20649_PWR_MGMT_1);
 
@@ -204,33 +202,15 @@ bool Adafruit_ICM20649::_init(int32_t sensor_id) {
   sleep.write(false);    // take out of default sleep state
   clock_source.write(1); // AUTO SELECT BEST CLOCK
 
-  // set ACCEL
-  _setBank(2);
-  Adafruit_BusIO_Register accel_config_1 = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20649_ACCEL_CONFIG_1);
+  setGyroRange(ICM20649_GYRO_RANGE_500_DPS);
+  setAccelRange(ICM20649_ACCEL_RANGE_4_G);
 
-  Adafruit_BusIO_RegisterBits accel_range =
-      Adafruit_BusIO_RegisterBits(&accel_config_1, 2, 1);
+  // 1100Hz/(1+10) = 100Hz
+  setGyroRateDivisor(10);
 
-  accel_range.write(0x01); // SET ACCEL RANGE TO 8G
-  accel_range.read();
-
-  // self._cached_accel_range = self._accel_range
-
-  // #TODO: CV-ify
-  // self._accel_dlpf_config = 3
-
-  // # 1.125 kHz/(1+ACCEL_SMPLRT_DIV[11:0]),
   // # 1125Hz/(1+20) = 53.57Hz
-  // self._accel_rate_divisor = 20
+  setAccelRateDivisor(20);
 
-  // # writeByte(ICM20649_ADDR,GYRO_CONFIG_1, gyroConfig);
-  // self._gyro_range = GyroRange.RANGE_500_DPS #pylint: disable=no-member
-  // sleep(0.100)
-  // self._cached_gyro_range = self._gyro_range
-
-  // # //ORD = 1100Hz/(1+10) = 100Hz
-  // self._gyro_rate_divisor = 0x0A
   temp_sensor = new Adafruit_ICM20649_Temp(this);
   accel_sensor = new Adafruit_ICM20649_Accelerometer(this);
   gyro_sensor = new Adafruit_ICM20649_Gyro(this);
@@ -300,9 +280,7 @@ void Adafruit_ICM20649::fillAccelEvent(sensors_event_t *accel,
   accel->type = SENSOR_TYPE_ACCELEROMETER;
   accel->timestamp = timestamp;
 
-  // TODO: update to do final scaling in _read
-  accel->acceleration.x =
-      accX * SENSORS_GRAVITY_EARTH; // SENSORS_GRAVITY_STANDARD
+  accel->acceleration.x = accX * SENSORS_GRAVITY_EARTH;
   accel->acceleration.y = accY * SENSORS_GRAVITY_EARTH;
   accel->acceleration.z = accZ * SENSORS_GRAVITY_EARTH;
 }
