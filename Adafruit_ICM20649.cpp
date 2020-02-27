@@ -178,9 +178,9 @@ bool Adafruit_ICM20649::_init(int32_t sensor_id) {
   Adafruit_BusIO_RegisterBits bank =
       Adafruit_BusIO_RegisterBits(&reg_bank_sel, 2, 4);
   _setBank(0);
-
+  uint8_t chip_id_ = chip_id.read();
   // make sure we're talking to the right chip
-  if (chip_id.read() != ICM20649_CHIP_ID) {
+  if ((chip_id_ != ICM20649_CHIP_ID) && (chip_id_ != ICM20948_CHIP_ID)) {
     return false;
   }
 
@@ -311,38 +311,65 @@ void Adafruit_ICM20649::_read(void) {
   temperature = buffer[12] << 8 | buffer[13];
 
   icm20649_gyro_range_t gyro_range = getGyroRange();
-
+  icm20649_accel_range_t accel_range = getAccelRange();
+  float accel_scale = 1.0;
   float gyro_scale = 1.0;
 
-  if (gyro_range == ICM20649_GYRO_RANGE_500_DPS)
+  if (gyro_range == ICM20948_GYRO_RANGE_250_DPS)
+    gyro_scale = 131.0;
+  if (gyro_range == ICM20948_GYRO_RANGE_500_DPS)
     gyro_scale = 65.5;
-  if (gyro_range == ICM20649_GYRO_RANGE_1000_DPS)
+  if (gyro_range == ICM20948_GYRO_RANGE_1000_DPS)
     gyro_scale = 32.8;
-  if (gyro_range == ICM20649_GYRO_RANGE_2000_DPS)
+  if (gyro_range == ICM20948_GYRO_RANGE_2000_DPS)
     gyro_scale = 16.4;
-  if (gyro_range == ICM20649_GYRO_RANGE_4000_DPS)
-    gyro_scale = 8.2;
+
+  if (accel_range == ICM20948_ACCEL_RANGE_2_G)
+    accel_scale = 16384.0;
+  if (accel_range == ICM20948_ACCEL_RANGE_4_G)
+    accel_scale = 8192.0;
+  if (accel_range == ICM20948_ACCEL_RANGE_8_G)
+    accel_scale = 4096.0;
+  if (accel_range == ICM20948_ACCEL_RANGE_16_G)
+    accel_scale = 2048.0;
 
   gyroX = rawGyroX / gyro_scale;
   gyroY = rawGyroY / gyro_scale;
   gyroZ = rawGyroZ / gyro_scale;
-
-  icm20649_accel_range_t accel_range = getAccelRange();
-  float accel_scale = 1.0;
-
-  if (accel_range == ICM20649_ACCEL_RANGE_4_G)
-    accel_scale = 8192.0;
-  if (accel_range == ICM20649_ACCEL_RANGE_8_G)
-    accel_scale = 4096.0;
-  if (accel_range == ICM20649_ACCEL_RANGE_16_G)
-    accel_scale = 2048.0;
-  if (accel_range == ICM20649_ACCEL_RANGE_30_G)
-    accel_scale = 1024.0;
-
   accX = rawAccX / accel_scale;
   accY = rawAccY / accel_scale;
   accZ = rawAccZ / accel_scale;
   _setBank(0);
+
+  // if (gyro_range == ICM20649_GYRO_RANGE_500_DPS)
+  //   gyro_scale = 65.5;
+  // if (gyro_range == ICM20649_GYRO_RANGE_1000_DPS)
+  //   gyro_scale = 32.8;
+  // if (gyro_range == ICM20649_GYRO_RANGE_2000_DPS)
+  //   gyro_scale = 16.4;
+  // if (gyro_range == ICM20649_GYRO_RANGE_4000_DPS)
+  //   gyro_scale = 8.2;
+
+  // gyroX = rawGyroX / gyro_scale;
+  // gyroY = rawGyroY / gyro_scale;
+  // gyroZ = rawGyroZ / gyro_scale;
+
+  // icm20649_accel_range_t accel_range = getAccelRange();
+  // float accel_scale = 1.0;
+
+  // if (accel_range == ICM20649_ACCEL_RANGE_4_G)
+  //   accel_scale = 8192.0;
+  // if (accel_range == ICM20649_ACCEL_RANGE_8_G)
+  //   accel_scale = 4096.0;
+  // if (accel_range == ICM20649_ACCEL_RANGE_16_G)
+  //   accel_scale = 2048.0;
+  // if (accel_range == ICM20649_ACCEL_RANGE_30_G)
+  //   accel_scale = 1024.0;
+
+  // accX = rawAccX / accel_scale;
+  // accY = rawAccY / accel_scale;
+  // accZ = rawAccZ / accel_scale;
+  // _setBank(0);
 }
 /*!
     @brief  Gets an Adafruit Unified Sensor object for the temp sensor component

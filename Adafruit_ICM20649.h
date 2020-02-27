@@ -26,7 +26,7 @@
 
 #define ICM20649_I2CADDR_DEFAULT 0x68 ///< ICM20649 default i2c address
 #define ICM20649_CHIP_ID 0xE1 ///< ICM20649 default device id from WHOAMI
-
+#define ICM20948_CHIP_ID 0xEA ///< ICM20948 default device id from WHOAMI
 // Bank 0
 #define ICM20649_WHOAMI 0x00           ///< Chip ID register
 #define ICM20649_REG_INT_PIN_CFG 0xF   ///< Interrupt config register
@@ -57,6 +57,14 @@ typedef enum {
   ICM20649_ACCEL_RANGE_30_G,
 } icm20649_accel_range_t;
 
+/** The accelerometer data range */
+typedef enum {
+  ICM20948_ACCEL_RANGE_2_G,
+  ICM20948_ACCEL_RANGE_4_G,
+  ICM20948_ACCEL_RANGE_8_G,
+  ICM20948_ACCEL_RANGE_16_G,
+} icm20948_accel_range_t;
+
 /** The gyro data range */
 typedef enum {
   ICM20649_GYRO_RANGE_500_DPS,
@@ -64,6 +72,14 @@ typedef enum {
   ICM20649_GYRO_RANGE_2000_DPS,
   ICM20649_GYRO_RANGE_4000_DPS,
 } icm20649_gyro_range_t;
+
+/** The gyro data range */
+typedef enum {
+  ICM20948_GYRO_RANGE_250_DPS,
+  ICM20948_GYRO_RANGE_500_DPS,
+  ICM20948_GYRO_RANGE_1000_DPS,
+  ICM20948_GYRO_RANGE_2000_DPS,
+} icm20948_gyro_range_t;
 
 class Adafruit_ICM20649;
 
