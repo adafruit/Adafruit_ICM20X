@@ -1,15 +1,15 @@
 
 /*!
- *  @file Adafruit_ICM20649.cpp
+ *  @file Adafruit_ICM20948.cpp
  *
- *  @mainpage Adafruit ICM20649 6-DoF Wide-Range Accelerometer and Gyro library
+ *  @mainpage Adafruit ICM20948 6-DoF Wide-Range Accelerometer and Gyro library
  *
  *  @section intro_sec Introduction
  *
- * 	I2C Driver for the Adafruit ICM20649 6-DoF Wide-Range Accelerometer and
+ * 	I2C Driver for the Adafruit ICM20948 6-DoF Wide-Range Accelerometer and
  * Gyro library
  *
- * 	This is a library for the Adafruit ICM20649 breakout:
+ * 	This is a library for the Adafruit ICM20948 breakout:
  * 	https://www.adafruit.com/product/4464
  *
  * 	Adafruit invests time and resources providing this open source code,
@@ -37,24 +37,24 @@
 #include "Arduino.h"
 #include <Wire.h>
 
-#include "Adafruit_ICM20649.h"
+#include "Adafruit_ICM20948.h"
 #include "Adafruit_ICM20X.h"
 
 /*!
- *    @brief  Instantiates a new ICM20649 class!
+ *    @brief  Instantiates a new ICM20948 class!
  */
-Adafruit_ICM20649::Adafruit_ICM20649(void) {}
+Adafruit_ICM20948::Adafruit_ICM20948(void) {}
 
 /*!
- *    @brief  Cleans up the ICM20649
+ *    @brief  Cleans up the ICM20948
  */
-Adafruit_ICM20649::~Adafruit_ICM20649(void) {
+Adafruit_ICM20948::~Adafruit_ICM20948(void) {
   // if (temp_sensor)
   //   delete temp_sensor;
-  // TODO: delete other sensors
+  // // TODO: delete other sensors
 }
 
-void Adafruit_ICM20649::_read(void) {
+void Adafruit_ICM20948::_read(void) {
 
   _setBank(0);
 
@@ -79,28 +79,27 @@ void Adafruit_ICM20649::_read(void) {
   float accel_scale = 1.0;
   float gyro_scale = 1.0;
 
-  if (gyro_range == ICM20649_GYRO_RANGE_500_DPS)
+  if (gyro_range == ICM20948_GYRO_RANGE_250_DPS)
+    gyro_scale = 131.0;
+  if (gyro_range == ICM20948_GYRO_RANGE_500_DPS)
     gyro_scale = 65.5;
-  if (gyro_range == ICM20649_GYRO_RANGE_1000_DPS)
+  if (gyro_range == ICM20948_GYRO_RANGE_1000_DPS)
     gyro_scale = 32.8;
-  if (gyro_range == ICM20649_GYRO_RANGE_2000_DPS)
+  if (gyro_range == ICM20948_GYRO_RANGE_2000_DPS)
     gyro_scale = 16.4;
-  if (gyro_range == ICM20649_GYRO_RANGE_4000_DPS)
-    gyro_scale = 8.2;
 
-  if (accel_range == ICM20649_ACCEL_RANGE_4_G)
+  if (accel_range == ICM20948_ACCEL_RANGE_2_G)
+    accel_scale = 16384.0;
+  if (accel_range == ICM20948_ACCEL_RANGE_4_G)
     accel_scale = 8192.0;
-  if (accel_range == ICM20649_ACCEL_RANGE_8_G)
+  if (accel_range == ICM20948_ACCEL_RANGE_8_G)
     accel_scale = 4096.0;
-  if (accel_range == ICM20649_ACCEL_RANGE_16_G)
+  if (accel_range == ICM20948_ACCEL_RANGE_16_G)
     accel_scale = 2048.0;
-  if (accel_range == ICM20649_ACCEL_RANGE_30_G)
-    accel_scale = 1024.0;
 
   gyroX = rawGyroX / gyro_scale;
   gyroY = rawGyroY / gyro_scale;
   gyroZ = rawGyroZ / gyro_scale;
-
   accX = rawAccX / accel_scale;
   accY = rawAccY / accel_scale;
   accZ = rawAccZ / accel_scale;
