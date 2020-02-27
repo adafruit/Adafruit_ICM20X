@@ -43,19 +43,14 @@
 /*!
  *    @brief  Instantiates a new ICM20948 class!
  */
-Adafruit_ICM20948::Adafruit_ICM20948(void) {}
 
-/*!
- *    @brief  Cleans up the ICM20948
- */
-Adafruit_ICM20948::~Adafruit_ICM20948(void) {
-  // if (temp_sensor)
-  //   delete temp_sensor;
-  // // TODO: delete other sensors
+
+Adafruit_ICM20948::Adafruit_ICM20948(void)  {
+  Serial.println("init 948 subclass");
 }
 
 void Adafruit_ICM20948::_read(void) {
-
+  Serial.print("SUB-KLASSIN");
   _setBank(0);
 
   Adafruit_BusIO_Register data_reg = Adafruit_BusIO_Register(

@@ -209,10 +209,12 @@ protected:
       _sensorid_temp;       ///< ID number for temperature
 
   void _read(void);
-  virtual bool _init(int32_t sensor_id);
+  // virtual bool _init(int32_t sensor_id);
+  bool _init(int32_t sensor_id);
   int16_t rawAccX, rawAccY, rawAccZ, rawTemp, rawGyroX, rawGyroY, rawGyroZ;
 
-  virtual void _setBank(uint8_t bank_number);
+  // virtual void _setBank(uint8_t bank_number);
+  void _setBank(uint8_t bank_number);
 
 private:
   friend class Adafruit_ICM20X_Temp; ///< Gives access to private members to

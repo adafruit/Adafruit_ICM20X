@@ -35,7 +35,13 @@
 //   ICM20948_GYRO_RANGE_1000_DPS,
 //   ICM20948_GYRO_RANGE_2000_DPS,
 // } icm20948_gyro_range_t;
-class Adafruit_ICM20948 : public Adafruit_Sensor {
+
+
+// class Adafruit_ISM330DHCT : public Adafruit_LSM6DSOX {
+// class Adafruit_LSM6DSOX : public Adafruit_LSM6DS {
+
+
+class Adafruit_ICM20948 : public Adafruit_ICM20X {
 public:
   Adafruit_ICM20948();
   ~Adafruit_ICM20948();

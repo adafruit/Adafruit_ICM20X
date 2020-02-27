@@ -23,45 +23,27 @@
 #define ICM20649_I2CADDR_DEFAULT 0x68 ///< ICM20649 default i2c address
 #define ICM20649_CHIP_ID 0xE1 ///< ICM20649 default device id from WHOAMI
 
-// /** The accelerometer data range */
-// typedef enum {
-//   ICM20649_ACCEL_RANGE_4_G,
-//   ICM20649_ACCEL_RANGE_8_G,
-//   ICM20649_ACCEL_RANGE_16_G,
-//   ICM20649_ACCEL_RANGE_30_G,
-// } icm20649_accel_range_t;
 
-// /** The gyro data range */
-// typedef enum {
-//   ICM20649_GYRO_RANGE_500_DPS,
-//   ICM20649_GYRO_RANGE_1000_DPS,
-//   ICM20649_GYRO_RANGE_2000_DPS,
-//   ICM20649_GYRO_RANGE_4000_DPS,
-// } icm20649_gyro_range_t;
-
-class Adafruit_ICM20649 {
+class Adafruit_ICM20649 : public Adafruit_ICM20X {
 public:
   Adafruit_ICM20649();
-  ~Adafruit_ICM20649();
-  Adafruit_I2CDevice *i2c_dev = NULL; ///< Pointer to I2C bus interface
-  Adafruit_SPIDevice *spi_dev = NULL; ///< Pointer to SPI bus interface
-  float temperature,                  ///< Last reading's temperature (C)
-      accX,  ///< Last reading's accelerometer X axis m/s^2
-      accY,  ///< Last reading's accelerometer Y axis m/s^2
-      accZ,  ///< Last reading's accelerometer Z axis m/s^2
-      gyroX, ///< Last reading's gyro X axis in rad/s
-      gyroY, ///< Last reading's gyro Y axis in rad/s
-      gyroZ; ///< Last reading's gyro Z axis in rad/s
-  int16_t rawAccX, rawAccY, rawAccZ, rawTemp, rawGyroX, rawGyroY, rawGyroZ;
-  icm20x_accel_range_t getAccelRange(void);
-  icm20x_gyro_range_t getGyroRange(void);
-
-protected:
-  virtual bool _init(int32_t sensor_id);
+  ~Adafruit_ICM20649(){};
+  // Adafruit_I2CDevice *i2c_dev = NULL; ///< Pointer to I2C bus interface
+  // Adafruit_SPIDevice *spi_dev = NULL; ///< Pointer to SPI bus interface
+  // float temperature,                  ///< Last reading's temperature (C)
+  //     accX,  ///< Last reading's accelerometer X axis m/s^2
+  //     accY,  ///< Last reading's accelerometer Y axis m/s^2
+  //     accZ,  ///< Last reading's accelerometer Z axis m/s^2
+  //     gyroX, ///< Last reading's gyro X axis in rad/s
+  //     gyroY, ///< Last reading's gyro Y axis in rad/s
+  //     gyroZ; ///< Last reading's gyro Z axis in rad/s
+  // int16_t rawAccX, rawAccY, rawAccZ, rawTemp, rawGyroX, rawGyroY, rawGyroZ;
+  // icm20x_accel_range_t getAccelRange(void);
+  // icm20x_gyro_range_t getGyroRange(void);
 
 private:
-  void _read(void);
-  void _setBank(uint8_t bank_number);
+  // void _read(void);
+  // void _setBank(uint8_t bank_number);
 };
 
 #endif
