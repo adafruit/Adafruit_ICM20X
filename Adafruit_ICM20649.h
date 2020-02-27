@@ -42,7 +42,7 @@ public:
   // icm20x_gyro_range_t getGyroRange(void);
 
 private:
-  // void _read(void);
+  void _read(void);
   // void _setBank(uint8_t bank_number);
 };
 

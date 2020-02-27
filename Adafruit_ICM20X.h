@@ -208,7 +208,7 @@ protected:
       _sensorid_gyro,       ///< ID number for gyro
       _sensorid_temp;       ///< ID number for temperature
 
-  void _read(void);
+  virtual void _read(void);
   // virtual bool _init(int32_t sensor_id);
   bool _init(int32_t sensor_id);
   int16_t rawAccX, rawAccY, rawAccZ, rawTemp, rawGyroX, rawGyroY, rawGyroZ;
