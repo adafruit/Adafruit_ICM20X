@@ -70,7 +70,9 @@ Adafruit_ICM20X::~Adafruit_ICM20X(void) {
  *    @return True if initialization was successful, otherwise false.
  */
 bool Adafruit_ICM20X::begin_I2C(uint8_t i2c_address, TwoWire *wire,
-                                int32_t sensor_id) {return false;}
+                                int32_t sensor_id) {
+  return false;
+}
 
 /*!
  *    @brief  Sets up the hardware and initializes hardware SPI
@@ -191,7 +193,7 @@ bool Adafruit_ICM20X::_init(int32_t sensor_id) {
   sleep.write(false);    // take out of default sleep state
   clock_source.write(1); // AUTO SELECT BEST CLOCK
 
-  writeGyroRange(3); // will set the top rate for either subclass
+  writeGyroRange(3);  // will set the top rate for either subclass
   writeAccelRange(3); // will set the top rate for either subclass
 
   // 1100Hz/(1+10) = 100Hz
@@ -300,11 +302,11 @@ void Adafruit_ICM20X::_read(void) {
   _scale_values();
   _setBank(0);
 }
-
-
-void Adafruit_ICM20X::_scale_values(void) {
-}
-
+/**
+ * @brief Scales the raw variables based on the current measurement range
+ *
+ */
+void Adafruit_ICM20X::_scale_values(void) {}
 
 /*!
     @brief  Gets an Adafruit Unified Sensor object for the temp sensor component
@@ -363,7 +365,6 @@ uint8_t Adafruit_ICM20X::readAccelRange(void) {
   uint8_t range = accel_range.read();
   _setBank(0);
   return range;
-
 }
 
 /**************************************************************************/
@@ -435,8 +436,9 @@ void Adafruit_ICM20X::writeGyroRange(uint8_t new_gyro_range) {
 uint16_t Adafruit_ICM20X::getAccelRateDivisor(void) {
   _setBank(2);
 
-  Adafruit_BusIO_Register accel_rate_divisor = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_ACCEL_SMPLRT_DIV_1, 2, MSBFIRST);
+  Adafruit_BusIO_Register accel_rate_divisor =
+      Adafruit_BusIO_Register(i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD,
+                              ICM20X_ACCEL_SMPLRT_DIV_1, 2, MSBFIRST);
 
   uint16_t divisor_val = accel_rate_divisor.read();
 
@@ -455,8 +457,9 @@ uint16_t Adafruit_ICM20X::getAccelRateDivisor(void) {
 void Adafruit_ICM20X::setAccelRateDivisor(uint16_t new_accel_divisor) {
   _setBank(2);
 
-  Adafruit_BusIO_Register accel_rate_divisor = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_ACCEL_SMPLRT_DIV_1, 2, MSBFIRST);
+  Adafruit_BusIO_Register accel_rate_divisor =
+      Adafruit_BusIO_Register(i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD,
+                              ICM20X_ACCEL_SMPLRT_DIV_1, 2, MSBFIRST);
 
   accel_rate_divisor.write(new_accel_divisor);
   _setBank(0);

@@ -41,7 +41,6 @@
 #define ICM20X_ACCEL_SMPLRT_DIV_2 0x11 ///< Accel data rate divisor LSByte
 #define ICM20X_ACCEL_CONFIG_1 0x14     ///< Accel config for setting range
 
-
 #define ICM20948_CHIP_ID 0xEA ///< ICM20948 default device id from WHOAMI
 #define ICM20649_CHIP_ID 0xE1 ///< ICM20649 default device id from WHOAMI
 
@@ -98,13 +97,10 @@ private:
  *    @brief  Class that stores state and functions for interacting with
  *            the ST ICM20X 6-DoF Accelerometer and Gyro
  */
-// class Adafruit_ICM20X {
 class Adafruit_ICM20X {
 public:
   Adafruit_ICM20X();
   ~Adafruit_ICM20X();
-
-
 
   bool begin_SPI(uint8_t cs_pin, SPIClass *theSPI = &SPI,
                  int32_t sensor_id = 0);
@@ -113,7 +109,6 @@ public:
 
   bool getEvent(sensors_event_t *accel, sensors_event_t *gyro,
                 sensors_event_t *temp);
-
 
   uint8_t getGyroRateDivisor(void);
   void setGyroRateDivisor(uint8_t new_gyro_divisor);
@@ -153,12 +148,17 @@ protected:
 
   void _read(void);
   virtual void _scale_values(void);
-  virtual bool begin_I2C(uint8_t i2c_add,
-                 TwoWire *wire, int32_t sensor_id);
+  virtual bool begin_I2C(uint8_t i2c_add, TwoWire *wire, int32_t sensor_id);
 
   // virtual bool _init(int32_t sensor_id);
   bool _init(int32_t sensor_id);
-  int16_t rawAccX, rawAccY, rawAccZ, rawTemp, rawGyroX, rawGyroY, rawGyroZ;
+  int16_t rawAccX, ///< temp variables
+      rawAccY,     ///< temp variables
+      rawAccZ,     ///< temp variables
+      rawTemp,     ///< temp variables
+      rawGyroX,    ///< temp variables
+      rawGyroY,    ///< temp variables
+      rawGyroZ;    ///< temp variables
 
   // virtual void _setBank(uint8_t bank_number);
   void _setBank(uint8_t bank_number);

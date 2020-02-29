@@ -22,7 +22,6 @@
 
 #define ICM20649_I2CADDR_DEFAULT 0x68 ///< ICM20X default i2c address
 
-
 /** The accelerometer data range */
 typedef enum {
   ICM20649_ACCEL_RANGE_4_G,
@@ -39,6 +38,10 @@ typedef enum {
   ICM20649_GYRO_RANGE_4000_DPS,
 } icm20649_gyro_range_t;
 
+/*!
+ *    @brief  Class that stores state and functions for interacting with
+ *            the ST ICM20649 6-DoF Accelerometer and Gyro
+ */
 class Adafruit_ICM20649 : public Adafruit_ICM20X {
 public:
   Adafruit_ICM20649();
@@ -51,9 +54,9 @@ public:
 
   icm20649_gyro_range_t getGyroRange(void);
   void setGyroRange(icm20649_gyro_range_t new_gyro_range);
+
 private:
   void _scale_values(void);
-
 };
 
 #endif

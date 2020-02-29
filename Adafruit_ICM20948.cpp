@@ -1,39 +1,4 @@
 
-/*!
- *  @file Adafruit_ICM20948.cpp
- *
- *  @mainpage Adafruit ICM20948 6-DoF Wide-Range Accelerometer and Gyro library
- *
- *  @section intro_sec Introduction
- *
- * 	I2C Driver for the Adafruit ICM20948 6-DoF Wide-Range Accelerometer and
- * Gyro library
- *
- * 	This is a library for the Adafruit ICM20948 breakout:
- * 	https://www.adafruit.com/product/4464
- *
- * 	Adafruit invests time and resources providing this open source code,
- *  please support Adafruit and open-source hardware by purchasing products from
- * 	Adafruit!
- *
- *  @section dependencies Dependencies
- *  This library depends on the Adafruit BusIO library
- *
- *  This library depends on the Adafruit Unified Sensor library
- *
- *  @section author Author
- *
- *  Bryan Siepert for Adafruit Industries
- *
- * 	@section license License
- *
- * 	BSD (see license.txt)
- *
- * 	@section  HISTORY
- *
- *     v1.0 - First release
- */
-
 #include "Arduino.h"
 #include <Wire.h>
 
@@ -57,7 +22,7 @@
  *    @return True if initialization was successful, otherwise false.
  */
 bool Adafruit_ICM20948::begin_I2C(uint8_t i2c_address, TwoWire *wire,
-                                int32_t sensor_id) {
+                                  int32_t sensor_id) {
 
   if (i2c_dev) {
     delete i2c_dev; // remove old interface
@@ -73,8 +38,7 @@ bool Adafruit_ICM20948::begin_I2C(uint8_t i2c_address, TwoWire *wire,
   return _init(sensor_id);
 }
 
-Adafruit_ICM20948::Adafruit_ICM20948(void)  {
-}
+Adafruit_ICM20948::Adafruit_ICM20948(void) {}
 
 void Adafruit_ICM20948::_scale_values(void) {
 
@@ -82,7 +46,6 @@ void Adafruit_ICM20948::_scale_values(void) {
   icm20948_accel_range_t accel_range = getAccelRange();
   float accel_scale = 1.0;
   float gyro_scale = 1.0;
-
 
   if (gyro_range == ICM20948_GYRO_RANGE_250_DPS)
     gyro_scale = 131.0;
@@ -117,9 +80,8 @@ void Adafruit_ICM20948::_scale_values(void) {
     @returns The accelerometer's measurement range (`icm20948_accel_range_t`).
 */
 icm20948_accel_range_t Adafruit_ICM20948::getAccelRange(void) {
-   return (icm20948_accel_range_t)readAccelRange();
+  return (icm20948_accel_range_t)readAccelRange();
 }
-
 
 /**************************************************************************/
 /*!
@@ -131,7 +93,6 @@ icm20948_accel_range_t Adafruit_ICM20948::getAccelRange(void) {
 */
 void Adafruit_ICM20948::setAccelRange(icm20948_accel_range_t new_accel_range) {
   writeAccelRange((uint8_t)new_accel_range);
-
 }
 
 /**************************************************************************/
@@ -140,9 +101,8 @@ void Adafruit_ICM20948::setAccelRange(icm20948_accel_range_t new_accel_range) {
     @returns The gyro's measurement range (`icm20948_gyro_range_t`).
 */
 icm20948_gyro_range_t Adafruit_ICM20948::getGyroRange(void) {
-   return (icm20948_gyro_range_t)readGyroRange();
+  return (icm20948_gyro_range_t)readGyroRange();
 }
-
 
 /**************************************************************************/
 /*!

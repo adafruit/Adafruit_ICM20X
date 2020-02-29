@@ -37,6 +37,10 @@ typedef enum {
   ICM20948_GYRO_RANGE_2000_DPS,
 } icm20948_gyro_range_t;
 
+/*!
+ *    @brief  Class that stores state and functions for interacting with
+ *            the ST ICM2948 9-DoF Accelerometer, gyro, and magnetometer
+ */
 class Adafruit_ICM20948 : public Adafruit_ICM20X {
 public:
   Adafruit_ICM20948();
@@ -49,9 +53,9 @@ public:
 
   icm20948_gyro_range_t getGyroRange(void);
   void setGyroRange(icm20948_gyro_range_t new_gyro_range);
+
 private:
   void _scale_values(void);
-
 };
 
 #endif
