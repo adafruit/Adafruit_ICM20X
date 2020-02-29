@@ -50,6 +50,10 @@ Adafruit_ICM20649::Adafruit_ICM20649(void) {}
 Adafruit_ICM20649::~Adafruit_ICM20649(void) {
   if (temp_sensor)
     delete temp_sensor;
+  if (accel_sensor)
+    delete accel_sensor;
+  if (gyro_sensor)
+    delete gyro_sensor;
   // TODO: delete other sensors
 }
 
@@ -475,8 +479,9 @@ void Adafruit_ICM20649::setGyroRange(icm20649_gyro_range_t new_gyro_range) {
 uint16_t Adafruit_ICM20649::getAccelRateDivisor(void) {
   _setBank(2);
 
-  Adafruit_BusIO_Register accel_rate_divisor = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20649_ACCEL_SMPLRT_DIV_1, 2);
+  Adafruit_BusIO_Register accel_rate_divisor =
+      Adafruit_BusIO_Register(i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD,
+                              ICM20649_ACCEL_SMPLRT_DIV_1, 2, MSBFIRST);
 
   uint16_t divisor_val = accel_rate_divisor.read();
 
@@ -495,8 +500,9 @@ uint16_t Adafruit_ICM20649::getAccelRateDivisor(void) {
 void Adafruit_ICM20649::setAccelRateDivisor(uint16_t new_accel_divisor) {
   _setBank(2);
 
-  Adafruit_BusIO_Register accel_rate_divisor = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20649_ACCEL_SMPLRT_DIV_1, 2);
+  Adafruit_BusIO_Register accel_rate_divisor =
+      Adafruit_BusIO_Register(i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD,
+                              ICM20649_ACCEL_SMPLRT_DIV_1, 2, MSBFIRST);
 
   accel_rate_divisor.write(new_accel_divisor);
   _setBank(0);
