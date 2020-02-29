@@ -17,8 +17,5 @@ var searchData=
   ['icm20649_5freg_5fint_5fenable',['ICM20649_REG_INT_ENABLE',['../_adafruit___i_c_m20649_8h.html#aae519ed8f06b54c8bbf77e02a5848b60',1,'Adafruit_ICM20649.h']]],
   ['icm20649_5freg_5fint_5fenable_5f1',['ICM20649_REG_INT_ENABLE_1',['../_adafruit___i_c_m20649_8h.html#afa8e84ceebcb511d9e2b9b492d163e1b',1,'Adafruit_ICM20649.h']]],
   ['icm20649_5freg_5fint_5fpin_5fcfg',['ICM20649_REG_INT_PIN_CFG',['../_adafruit___i_c_m20649_8h.html#adbf7d157399370dcb3afcd1d4551f2d2',1,'Adafruit_ICM20649.h']]],
-  ['icm20649_5fwhoami',['ICM20649_WHOAMI',['../_adafruit___i_c_m20649_8h.html#aa617de4be0f4d258f353843784fcda81',1,'Adafruit_ICM20649.h']]],
-  ['icm20948_5faccel_5frange_5ft',['icm20948_accel_range_t',['../_adafruit___i_c_m20649_8h.html#a29c708254befd297b23c847fa9399e10',1,'Adafruit_ICM20649.h']]],
-  ['icm20948_5fchip_5fid',['ICM20948_CHIP_ID',['../_adafruit___i_c_m20649_8h.html#a7fbff378c5e926ec6391a30de0ba9ce8',1,'Adafruit_ICM20649.h']]],
-  ['icm20948_5fgyro_5frange_5ft',['icm20948_gyro_range_t',['../_adafruit___i_c_m20649_8h.html#aa50e555b2145906685efe39c3d1e38f5',1,'Adafruit_ICM20649.h']]]
+  ['icm20649_5fwhoami',['ICM20649_WHOAMI',['../_adafruit___i_c_m20649_8h.html#aa617de4be0f4d258f353843784fcda81',1,'Adafruit_ICM20649.h']]]
 ];
