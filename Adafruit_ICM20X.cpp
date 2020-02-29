@@ -54,7 +54,6 @@ Adafruit_ICM20X::~Adafruit_ICM20X(void) {
     delete accel_sensor;
   if (gyro_sensor)
     delete gyro_sensor;
-  // TODO: delete other sensors
 }
 
 /*!

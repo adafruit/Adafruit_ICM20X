@@ -9,6 +9,7 @@
  *    @brief  Instantiates a new ICM20948 class!
  */
 
+Adafruit_ICM20948::Adafruit_ICM20948(void) {}
 /*!
  *    @brief  Sets up the hardware and initializes I2C
  *    @param  i2c_address
@@ -37,8 +38,6 @@ bool Adafruit_ICM20948::begin_I2C(uint8_t i2c_address, TwoWire *wire,
 
   return _init(sensor_id);
 }
-
-Adafruit_ICM20948::Adafruit_ICM20948(void) {}
 
 void Adafruit_ICM20948::_scale_values(void) {
 
