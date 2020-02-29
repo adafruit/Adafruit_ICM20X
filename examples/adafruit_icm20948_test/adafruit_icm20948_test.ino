@@ -1,11 +1,11 @@
-// Basic demo for accelerometer readings from Adafruit ICM20649
+// Basic demo for accelerometer readings from Adafruit ICM20948
 
 #include <Adafruit_ICM20X.h>
-#include <Adafruit_ICM20649.h>
+#include <Adafruit_ICM20948.h>
 #include <Adafruit_Sensor.h>
 #include <Wire.h>
 
-Adafruit_ICM20649 icm;
+Adafruit_ICM20948 icm;
 uint16_t measurement_delay_us = 65535; // Delay between measurements for testing
 // For SPI mode, we need a CS pin
 #define ICM_CS 10
@@ -19,50 +19,51 @@ void setup(void) {
   while (!Serial)
     delay(10); // will pause Zero, Leonardo, etc until serial console opens
 
-  Serial.println("Adafruit ICM20649 test!");
+  Serial.println("Adafruit ICM20948 test!");
 
   // Try to initialize!
   if (!icm.begin_I2C()) {
     // if (!icm.begin_SPI(ICM_CS)) {
     // if (!icm.begin_SPI(ICM_CS, ICM_SCK, ICM_MISO, ICM_MOSI)) {
 
-    Serial.println("Failed to find ICM20649 chip");
+    Serial.println("Failed to find ICM20948 chip");
     while (1) {
       delay(10);
     }
   }
-  Serial.println("ICM20649 Found!");
-  // icm.setAccelRange(ICM20649_ACCEL_RANGE_4_G);
+  Serial.println("ICM20948 Found!");
+  // icm.setAccelRange(ICM20948_ACCEL_RANGE_16_G);
   Serial.print("Accelerometer range set to: ");
   switch (icm.getAccelRange()) {
-  case ICM20649_ACCEL_RANGE_4_G:
+  case ICM20948_ACCEL_RANGE_2_G:
+    Serial.println("+-2G");
+    break;
+  case ICM20948_ACCEL_RANGE_4_G:
     Serial.println("+-4G");
     break;
-  case ICM20649_ACCEL_RANGE_8_G:
+  case ICM20948_ACCEL_RANGE_8_G:
     Serial.println("+-8G");
     break;
-  case ICM20649_ACCEL_RANGE_16_G:
+  case ICM20948_ACCEL_RANGE_16_G:
     Serial.println("+-16G");
     break;
-  case ICM20649_ACCEL_RANGE_30_G:
-    Serial.println("+-30G");
-    break;
   }
+  Serial.println("OK");
 
-  // icm.setGyroRange(ICM20649_GYRO_RANGE_500_DPS);
+  // icm.setGyroRange(ICM20948_GYRO_RANGE_2000_DPS);
   Serial.print("Gyro range set to: ");
   switch (icm.getGyroRange()) {
-  case ICM20649_GYRO_RANGE_500_DPS:
+  case ICM20948_GYRO_RANGE_250_DPS:
+    Serial.println("250 degrees/s");
+    break;
+  case ICM20948_GYRO_RANGE_500_DPS:
     Serial.println("500 degrees/s");
     break;
-  case ICM20649_GYRO_RANGE_1000_DPS:
+  case ICM20948_GYRO_RANGE_1000_DPS:
     Serial.println("1000 degrees/s");
     break;
-  case ICM20649_GYRO_RANGE_2000_DPS:
+  case ICM20948_GYRO_RANGE_2000_DPS:
     Serial.println("2000 degrees/s");
-    break;
-  case ICM20649_GYRO_RANGE_4000_DPS:
-    Serial.println("4000 degrees/s");
     break;
   }
 

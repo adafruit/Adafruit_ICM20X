@@ -24,12 +24,6 @@
 #include <Adafruit_Sensor.h>
 #include <Wire.h>
 
-#define ICM20X_I2CADDR_DEFAULT 0x68 ///< ICM20X default i2c address
-#define ICM20X_CHIP_ID 0xE1         ///< ICM20X default device id from WHOAMI
-
-#define ICM20948_I2CADDR_DEFAULT 0x69 ///< ICM20948 default i2c address
-#define ICM20948_CHIP_ID 0xEA ///< ICM20948 default device id from WHOAMI
-
 // Bank 0
 #define ICM20X_WHOAMI 0x00           ///< Chip ID register
 #define ICM20X_REG_INT_PIN_CFG 0xF   ///< Interrupt config register
@@ -47,54 +41,9 @@
 #define ICM20X_ACCEL_SMPLRT_DIV_2 0x11 ///< Accel data rate divisor LSByte
 #define ICM20X_ACCEL_CONFIG_1 0x14     ///< Accel config for setting range
 
-/////////////// TEMP /////////////////
-/** The accelerometer data range */
-typedef enum {
-  ICM20X_ACCEL_RANGE_4_G,
-  ICM20X_ACCEL_RANGE_8_G,
-  ICM20X_ACCEL_RANGE_16_G,
-  ICM20X_ACCEL_RANGE_30_G,
-} icm20x_accel_range_t;
 
-/** The gyro data range */
-typedef enum {
-  ICM20X_GYRO_RANGE_500_DPS,
-  ICM20X_GYRO_RANGE_1000_DPS,
-  ICM20X_GYRO_RANGE_2000_DPS,
-  ICM20X_GYRO_RANGE_4000_DPS,
-} icm20x_gyro_range_t;
-
-/** The accelerometer data range */
-typedef enum {
-  ICM20948_ACCEL_RANGE_2_G,
-  ICM20948_ACCEL_RANGE_4_G,
-  ICM20948_ACCEL_RANGE_8_G,
-  ICM20948_ACCEL_RANGE_16_G,
-} icm20948_accel_range_t;
-
-/** The gyro data range */
-typedef enum {
-  ICM20948_GYRO_RANGE_250_DPS,
-  ICM20948_GYRO_RANGE_500_DPS,
-  ICM20948_GYRO_RANGE_1000_DPS,
-  ICM20948_GYRO_RANGE_2000_DPS,
-} icm20948_gyro_range_t;
-
-/** The accelerometer data range */
-typedef enum {
-  ICM20649_ACCEL_RANGE_4_G,
-  ICM20649_ACCEL_RANGE_8_G,
-  ICM20649_ACCEL_RANGE_16_G,
-  ICM20649_ACCEL_RANGE_30_G,
-} icm20649_accel_range_t;
-
-/** The gyro data range */
-typedef enum {
-  ICM20649_GYRO_RANGE_500_DPS,
-  ICM20649_GYRO_RANGE_1000_DPS,
-  ICM20649_GYRO_RANGE_2000_DPS,
-  ICM20649_GYRO_RANGE_4000_DPS,
-} icm20649_gyro_range_t;
+#define ICM20948_CHIP_ID 0xEA ///< ICM20948 default device id from WHOAMI
+#define ICM20649_CHIP_ID 0xE1 ///< ICM20649 default device id from WHOAMI
 
 /////////////////////////////////////////
 
@@ -155,8 +104,7 @@ public:
   Adafruit_ICM20X();
   ~Adafruit_ICM20X();
 
-  bool begin_I2C(uint8_t i2c_addr = ICM20X_I2CADDR_DEFAULT,
-                 TwoWire *wire = &Wire, int32_t sensor_id = 0);
+
 
   bool begin_SPI(uint8_t cs_pin, SPIClass *theSPI = &SPI,
                  int32_t sensor_id = 0);
@@ -166,11 +114,6 @@ public:
   bool getEvent(sensors_event_t *accel, sensors_event_t *gyro,
                 sensors_event_t *temp);
 
-  icm20x_accel_range_t getAccelRange(void);
-  void setAccelRange(icm20x_accel_range_t new_accel_range);
-
-  icm20x_gyro_range_t getGyroRange(void);
-  void setGyroRange(icm20x_gyro_range_t new_gyro_range);
 
   uint8_t getGyroRateDivisor(void);
   void setGyroRateDivisor(uint8_t new_gyro_divisor);
@@ -208,13 +151,23 @@ protected:
       _sensorid_gyro,       ///< ID number for gyro
       _sensorid_temp;       ///< ID number for temperature
 
-  virtual void _read(void);
+  void _read(void);
+  virtual void _scale_values(void);
+  virtual bool begin_I2C(uint8_t i2c_add,
+                 TwoWire *wire, int32_t sensor_id);
+
   // virtual bool _init(int32_t sensor_id);
   bool _init(int32_t sensor_id);
   int16_t rawAccX, rawAccY, rawAccZ, rawTemp, rawGyroX, rawGyroY, rawGyroZ;
 
   // virtual void _setBank(uint8_t bank_number);
   void _setBank(uint8_t bank_number);
+
+  uint8_t readAccelRange(void);
+  void writeAccelRange(uint8_t new_accel_range);
+
+  uint8_t readGyroRange(void);
+  void writeGyroRange(uint8_t new_gyro_range);
 
 private:
   friend class Adafruit_ICM20X_Temp; ///< Gives access to private members to

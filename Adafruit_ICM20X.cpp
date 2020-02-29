@@ -50,6 +50,10 @@ Adafruit_ICM20X::Adafruit_ICM20X(void) {}
 Adafruit_ICM20X::~Adafruit_ICM20X(void) {
   if (temp_sensor)
     delete temp_sensor;
+  if (accel_sensor)
+    delete accel_sensor;
+  if (gyro_sensor)
+    delete gyro_sensor;
   // TODO: delete other sensors
 }
 
@@ -66,21 +70,7 @@ Adafruit_ICM20X::~Adafruit_ICM20X(void) {
  *    @return True if initialization was successful, otherwise false.
  */
 bool Adafruit_ICM20X::begin_I2C(uint8_t i2c_address, TwoWire *wire,
-                                int32_t sensor_id) {
-
-  if (i2c_dev) {
-    delete i2c_dev; // remove old interface
-  }
-
-  i2c_dev = new Adafruit_I2CDevice(i2c_address, wire);
-
-  if (!i2c_dev->begin()) {
-    Serial.println("I2C begin Failed");
-    return false;
-  }
-
-  return _init(sensor_id);
-}
+                                int32_t sensor_id) {return false;}
 
 /*!
  *    @brief  Sets up the hardware and initializes hardware SPI
@@ -179,7 +169,7 @@ bool Adafruit_ICM20X::_init(int32_t sensor_id) {
   _setBank(0);
   uint8_t chip_id_ = chip_id.read();
   // make sure we're talking to the right chip
-  if ((chip_id_ != ICM20X_CHIP_ID) && (chip_id_ != ICM20948_CHIP_ID)) {
+  if ((chip_id_ != ICM20649_CHIP_ID) && (chip_id_ != ICM20948_CHIP_ID)) {
     return false;
   }
 
@@ -201,8 +191,8 @@ bool Adafruit_ICM20X::_init(int32_t sensor_id) {
   sleep.write(false);    // take out of default sleep state
   clock_source.write(1); // AUTO SELECT BEST CLOCK
 
-  setGyroRange(ICM20X_GYRO_RANGE_500_DPS);
-  setAccelRange(ICM20X_ACCEL_RANGE_4_G);
+  writeGyroRange(3); // will set the top rate for either subclass
+  writeAccelRange(3); // will set the top rate for either subclass
 
   // 1100Hz/(1+10) = 100Hz
   setGyroRateDivisor(10);
@@ -307,39 +297,15 @@ void Adafruit_ICM20X::_read(void) {
 
   temperature = buffer[12] << 8 | buffer[13];
 
-  icm20x_gyro_range_t gyro_range = getGyroRange();
-  icm20x_accel_range_t accel_range = getAccelRange();
-  float accel_scale = 1.0;
-  float gyro_scale = 1.0;
-
-  _setBank(0);
-
-  if (gyro_range == ICM20X_GYRO_RANGE_500_DPS)
-    gyro_scale = 65.5;
-  if (gyro_range == ICM20X_GYRO_RANGE_1000_DPS)
-    gyro_scale = 32.8;
-  if (gyro_range == ICM20X_GYRO_RANGE_2000_DPS)
-    gyro_scale = 16.4;
-  if (gyro_range == ICM20X_GYRO_RANGE_4000_DPS)
-    gyro_scale = 8.2;
-
-  if (accel_range == ICM20X_ACCEL_RANGE_4_G)
-    accel_scale = 8192.0;
-  if (accel_range == ICM20X_ACCEL_RANGE_8_G)
-    accel_scale = 4096.0;
-  if (accel_range == ICM20X_ACCEL_RANGE_16_G)
-    accel_scale = 2048.0;
-  if (accel_range == ICM20X_ACCEL_RANGE_30_G)
-    accel_scale = 1024.0;
-
-  gyroX = rawGyroX / gyro_scale;
-  gyroY = rawGyroY / gyro_scale;
-  gyroZ = rawGyroZ / gyro_scale;
-  accX = rawAccX / accel_scale;
-  accY = rawAccY / accel_scale;
-  accZ = rawAccZ / accel_scale;
+  _scale_values();
   _setBank(0);
 }
+
+
+void Adafruit_ICM20X::_scale_values(void) {
+}
+
+
 /*!
     @brief  Gets an Adafruit Unified Sensor object for the temp sensor component
     @return Adafruit_Sensor pointer to temperature sensor
@@ -385,7 +351,7 @@ void Adafruit_ICM20X::_setBank(uint8_t bank_number) {
     @brief Get the accelerometer's measurement range.
     @returns The accelerometer's measurement range (`icm20x_accel_range_t`).
 */
-icm20x_accel_range_t Adafruit_ICM20X::getAccelRange(void) {
+uint8_t Adafruit_ICM20X::readAccelRange(void) {
   _setBank(2);
 
   Adafruit_BusIO_Register accel_config_1 = Adafruit_BusIO_Register(
@@ -394,11 +360,10 @@ icm20x_accel_range_t Adafruit_ICM20X::getAccelRange(void) {
   Adafruit_BusIO_RegisterBits accel_range =
       Adafruit_BusIO_RegisterBits(&accel_config_1, 2, 1);
 
-  icm20x_accel_range_t range_val = (icm20x_accel_range_t)accel_range.read();
-
+  uint8_t range = accel_range.read();
   _setBank(0);
+  return range;
 
-  return range_val;
 }
 
 /**************************************************************************/
@@ -409,7 +374,7 @@ icm20x_accel_range_t Adafruit_ICM20X::getAccelRange(void) {
             Measurement range to be set. Must be an
             `icm20x_accel_range_t`.
 */
-void Adafruit_ICM20X::setAccelRange(icm20x_accel_range_t new_accel_range) {
+void Adafruit_ICM20X::writeAccelRange(uint8_t new_accel_range) {
   _setBank(2);
 
   Adafruit_BusIO_Register accel_config_1 = Adafruit_BusIO_Register(
@@ -427,7 +392,7 @@ void Adafruit_ICM20X::setAccelRange(icm20x_accel_range_t new_accel_range) {
     @brief Get the gyro's measurement range.
     @returns The gyro's measurement range (`icm20x_gyro_range_t`).
 */
-icm20x_gyro_range_t Adafruit_ICM20X::getGyroRange(void) {
+uint8_t Adafruit_ICM20X::readGyroRange(void) {
   _setBank(2);
 
   Adafruit_BusIO_Register gyro_config_1 = Adafruit_BusIO_Register(
@@ -436,10 +401,9 @@ icm20x_gyro_range_t Adafruit_ICM20X::getGyroRange(void) {
   Adafruit_BusIO_RegisterBits gyro_range =
       Adafruit_BusIO_RegisterBits(&gyro_config_1, 2, 1);
 
-  icm20x_gyro_range_t range_val = (icm20x_gyro_range_t)gyro_range.read();
-
+  uint8_t range = gyro_range.read();
   _setBank(0);
-  return range_val;
+  return range;
 }
 
 /**************************************************************************/
@@ -450,7 +414,7 @@ icm20x_gyro_range_t Adafruit_ICM20X::getGyroRange(void) {
             Measurement range to be set. Must be an
             `icm20x_gyro_range_t`.
 */
-void Adafruit_ICM20X::setGyroRange(icm20x_gyro_range_t new_gyro_range) {
+void Adafruit_ICM20X::writeGyroRange(uint8_t new_gyro_range) {
   _setBank(2);
 
   Adafruit_BusIO_Register gyro_config_1 = Adafruit_BusIO_Register(
@@ -472,7 +436,7 @@ uint16_t Adafruit_ICM20X::getAccelRateDivisor(void) {
   _setBank(2);
 
   Adafruit_BusIO_Register accel_rate_divisor = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_ACCEL_SMPLRT_DIV_1, 2);
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_ACCEL_SMPLRT_DIV_1, 2, MSBFIRST);
 
   uint16_t divisor_val = accel_rate_divisor.read();
 
@@ -492,7 +456,7 @@ void Adafruit_ICM20X::setAccelRateDivisor(uint16_t new_accel_divisor) {
   _setBank(2);
 
   Adafruit_BusIO_Register accel_rate_divisor = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_ACCEL_SMPLRT_DIV_1, 2);
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_ACCEL_SMPLRT_DIV_1, 2, MSBFIRST);
 
   accel_rate_divisor.write(new_accel_divisor);
   _setBank(0);
