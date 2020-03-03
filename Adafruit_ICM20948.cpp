@@ -38,8 +38,14 @@ bool Adafruit_ICM20948::begin_I2C(uint8_t i2c_address, TwoWire *wire,
   if (! _setupMag()){
     Serial.println("failed to setup mag");
     return false;
+  } 
+  bool init_success = _init(sensor_id);
+  Serial.print("done with init: ");Serial.println(init_success);
+  if (! _setupMag()){
+    Serial.println("failed to setup mag");
+    return false;
   }
-  return _init(sensor_id);
+  return init_success;
 }
 
 bool Adafruit_ICM20948::_setupMag(void){
@@ -67,7 +73,31 @@ bool Adafruit_ICM20948::_setupMag(void){
   }
   Serial.println("set MST+CRTL");
 
-  // SET MAG MODE
+  // WRITE	BANK_SET	0x00
+    _setBank(0);
+  // READ	USER_CTRL	0x00
+  // WRITE	USER_CTRL	0x20
+  buffer[0] = ICM20X_USER_CTRL;
+  buffer[1] = 0x20;  // set I2C_MST_EN
+  if (!i2c_dev->write(buffer, 2)) {
+    return false;
+  }
+
+  Serial.println("sI2C_MST_ENABLE");
+
+
+uint8_t idl, idh;
+idl = _read_ext_reg(0x8C, 0x00);
+Serial.print("REad idH: 0x");Serial.println(idl, HEX);
+idh = _read_ext_reg(0x8C, 0x01);
+Serial.print("REad idL: 0x");Serial.println(idh, HEX);
+
+
+
+
+
+  /////////// SETUP DATA RATE FOR SLAVE4
+  _setBank(3);
 
   // WRITE	I2C_SLV4_ADDR	0x0C
   buffer[0] = ICM20948_I2C_SLV4_ADDR;
@@ -75,7 +105,7 @@ bool Adafruit_ICM20948::_setupMag(void){
   if (!i2c_dev->write(buffer, 2)) {
     return false;
   }
-  Serial.println("set slv4 addr");
+  Serial.println("slv4 addr set ");
 
   // WRITE	ICM20948_I2C_SLV4_REG	0x31	CNTL2
   buffer[0] = ICM20948_I2C_SLV4_REG;
@@ -83,30 +113,33 @@ bool Adafruit_ICM20948::_setupMag(void){
   if (!i2c_dev->write(buffer, 2)) {
     return false;
   }
-  Serial.println("set slv4 reg");
+  Serial.println("slv4 reg set ");
   // WRITE	ICM20948_I2C_SLV4_DO	0x08
   buffer[0] = ICM20948_I2C_SLV4_DO;
   buffer[1] = 0x08;
   if (!i2c_dev->write(buffer, 2)) {
     return false;
   }
-  Serial.println("set slv4 DO");
+  Serial.println("slv4 DO set ");
   // WRITE	ICM20948_I2C_SLV4_CTRL	0x80
   buffer[0] = ICM20948_I2C_SLV4_CTRL;
   buffer[1] = 0x80;
   if (!i2c_dev->write(buffer, 2)) {
     return false;
   }
-  Serial.println("set slv4 CTRL /active");
+  Serial.println("slv4 CTRL /active set");
 
   _setBank(0);
   uint8_t addrbuffer[2] = {(uint8_t)ICM20948_I2C_MST_STATUS, (uint8_t)0};
   buffer[0] = 0;
   buffer[1] = 0;
   while (buffer[0] != 0x40){
+    Serial.print("not ready: buffer[0] = 0x"); Serial.println(buffer[0], HEX);
+    Serial.print("not ready: buffer[1] = 0x"); Serial.println(buffer[1], HEX);
     i2c_dev->write_then_read(addrbuffer, 1, buffer, 1);
+    delay(100);
   }
-
+Serial.println("done checking slave 4 status");
   // SET MAG ADDRESS to read from map
   _setBank(3);
   // WRITE	ICM20948_I2C_SLV0_ADDR	0x8C
@@ -134,7 +167,67 @@ bool Adafruit_ICM20948::_setupMag(void){
   return true;
 
 }
+uint8_t Adafruit_ICM20948::_read_ext_reg(uint8_t slv_addr, uint8_t reg_addr) {
+  		// READ REAL ID BYTE		
+      // WRITE		BANK_SET	0x30	B3
+      // WRITE	13	I2C_SLV4_ADDR	0x8C	B3
+      // WRITE	14	I2C_SLV4_REG	0x01	B3
+      // WRITE	15	I2C_SLV4_CTRL	0x80	B3
+    // WRITE		BANK_SET	0x00	B0
+      // READ	17	I2C_MST_STATUS	0x00	B0
 
+      // READ	17	I2C_MST_STATUS	0x00	B0
+
+      // READ	17	I2C_MST_STATUS	0x40	B0
+     // WRITE		BANK_SET	0x30	B3
+      // READ	17	I2C_SLV4_DI	0x09	B3
+  _setBank(3);
+  uint8_t buffer[2];
+
+  // WRITE	I2C_SLV4_ADDR	0x0C
+  buffer[0] = ICM20948_I2C_SLV4_ADDR;
+  buffer[1] = slv_addr;
+  if (!i2c_dev->write(buffer, 2)) {
+    return false;
+  }
+  Serial.println("READEXT: slave address set ");
+
+
+  buffer[0] = ICM20948_I2C_SLV4_REG;
+  buffer[1] = reg_addr;
+  if (!i2c_dev->write(buffer, 2)) {
+    return false;
+  }
+  Serial.println("READEXT: slave address set ");
+  
+  buffer[0] = ICM20948_I2C_SLV4_CTRL;
+  buffer[1] = 0x80;
+  if (!i2c_dev->write(buffer, 2)) {
+    return false;
+  }
+  Serial.println("READEXT: slave enabled! ");
+
+  _setBank(0);
+
+
+  Serial.println("READEXT: checking for done ");
+  uint8_t addrbuffer[2] = {(uint8_t)ICM20948_I2C_MST_STATUS, (uint8_t)0};
+  buffer[0] = 0;
+  buffer[1] = 0;
+  while (buffer[0] != 0x40){
+    Serial.print("not ready: buffer[0] = 0x"); Serial.print(buffer[0], HEX);Serial.print(" buffer[1] = 0x"); Serial.println(buffer[1], HEX);
+    i2c_dev->write_then_read(addrbuffer, 1, buffer, 1);
+    delay(100);
+  }
+
+ _setBank(3);
+  addrbuffer[0] = (uint8_t)ICM20948_I2C_SLV4_DI;
+  // WRITE	ICM20948_I2C_SLV4_CTRL	0x80
+  buffer[0] = 0;
+  buffer[1] = 0;
+  i2c_dev->write_then_read(addrbuffer, 1, buffer, 1);
+  return buffer[0];
+}
 
 void Adafruit_ICM20948::_scale_values(void) {
 

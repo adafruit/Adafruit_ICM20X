@@ -26,6 +26,7 @@
 
 // Bank 0
 #define ICM20X_WHOAMI 0x00           ///< Chip ID register
+#define ICM20X_USER_CTRL 0x03           ///< Chip ID register
 #define ICM20X_REG_INT_PIN_CFG 0xF   ///< Interrupt config register
 #define ICM20X_REG_INT_ENABLE 0x10   ///< Interrupt enable register 0
 #define ICM20X_REG_INT_ENABLE_1 0x11 ///< Interrupt enable register 1
@@ -158,7 +159,7 @@ protected:
       rawTemp,     ///< temp variables
       rawGyroX,    ///< temp variables
       rawGyroY,    ///< temp variables
-      rawGyroZ,
+      rawGyroZ,    ///< temp variables
       rawMagX,    ///< temp variables
       rawMagY,    ///< temp variables
       rawMagZ;    ///< temp variables
