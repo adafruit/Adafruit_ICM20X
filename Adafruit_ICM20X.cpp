@@ -298,6 +298,15 @@ void Adafruit_ICM20X::_read(void) {
 
   temperature = buffer[12] << 8 | buffer[13];
 
+	//rawMagStat1 = buffer[14];
+	rawMagX = ((buffer[16] << 8) | (buffer[15] & 0xFF));//* 0.15//Mag data is read little endian
+	rawMagY = ((buffer[18] << 8) | (buffer[17] & 0xFF));//* 0.15
+	rawMagZ = ((buffer[20] << 8) | (buffer[19] & 0xFF));//* 0.15
+  Serial.print("magx: ");Serial.println(rawMagX*0.15);
+  Serial.print("magy: ");Serial.println(rawMagY*0.15);
+  Serial.print("magz: ");Serial.println(rawMagZ*0.15);
+	//rawMagStat2 = buffer[22];
+
   _scale_values();
   _setBank(0);
 }

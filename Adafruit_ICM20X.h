@@ -158,7 +158,10 @@ protected:
       rawTemp,     ///< temp variables
       rawGyroX,    ///< temp variables
       rawGyroY,    ///< temp variables
-      rawGyroZ;    ///< temp variables
+      rawGyroZ,
+      rawMagX,    ///< temp variables
+      rawMagY,    ///< temp variables
+      rawMagZ;    ///< temp variables
 
   // virtual void _setBank(uint8_t bank_number);
   void _setBank(uint8_t bank_number);

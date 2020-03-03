@@ -21,6 +21,24 @@
 #include "Adafruit_ICM20X.h"
 #define ICM20948_I2CADDR_DEFAULT 0x69 ///< ICM20948 default i2c address
 
+// Bank 0
+#define ICM20948_I2C_MST_STATUS 0x17
+// Bank 3
+#define ICM20948_I2C_MST_ODR_CONFIG 0x0
+#define ICM20948_I2C_MST_CTRL  0x1
+#define ICM20948_I2C_MST_DELAY_CTRL  0x2
+#define ICM20948_I2C_SLV0_ADDR 0x3
+#define ICM20948_I2C_SLV0_REG  0x4
+#define ICM20948_I2C_SLV0_CTRL 0x5
+#define ICM20948_I2C_SLV0_DO 0x6
+
+#define ICM20948_I2C_SLV4_ADDR 0x13
+#define ICM20948_I2C_SLV4_REG  0x14
+#define ICM20948_I2C_SLV4_CTRL 0x15
+#define ICM20948_I2C_SLV4_DO 0x16
+#define ICM20948_I2C_SLV4_DI 0x17
+
+
 /** The accelerometer data range */
 typedef enum {
   ICM20948_ACCEL_RANGE_2_G,
@@ -47,6 +65,8 @@ public:
   ~Adafruit_ICM20948(){};
   bool begin_I2C(uint8_t i2c_addr = ICM20948_I2CADDR_DEFAULT,
                  TwoWire *wire = &Wire, int32_t sensor_id = 0);
+
+  bool _setupMag(void);
 
   icm20948_accel_range_t getAccelRange(void);
   void setAccelRange(icm20948_accel_range_t new_accel_range);

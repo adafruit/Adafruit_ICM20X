@@ -35,9 +35,106 @@ bool Adafruit_ICM20948::begin_I2C(uint8_t i2c_address, TwoWire *wire,
     Serial.println("I2C begin Failed");
     return false;
   }
-
+  if (! _setupMag()){
+    Serial.println("failed to setup mag");
+    return false;
+  }
   return _init(sensor_id);
 }
+
+bool Adafruit_ICM20948::_setupMag(void){
+  
+
+
+  uint8_t buffer[2];
+
+  _setBank(0);
+
+  buffer[0] = ICM20X_REG_INT_PIN_CFG;
+  buffer[1] = 0x00;
+  if (!i2c_dev->write(buffer, 2)) {
+    return false;
+  }
+  Serial.println("set PIN CONFIG");
+  _setBank(3);
+
+
+  // WRITE	ICM20948_I2C_MST_CTRL	0x17		I2C_MST_P_ NSR	I2C_MST_CLK[3:0]	7
+  buffer[0] = ICM20948_I2C_MST_CTRL;
+  buffer[1] = 0x17;
+  if (!i2c_dev->write(buffer, 2)) {
+    return false;
+  }
+  Serial.println("set MST+CRTL");
+
+  // SET MAG MODE
+
+  // WRITE	I2C_SLV4_ADDR	0x0C
+  buffer[0] = ICM20948_I2C_SLV4_ADDR;
+  buffer[1] = 0x0C;
+  if (!i2c_dev->write(buffer, 2)) {
+    return false;
+  }
+  Serial.println("set slv4 addr");
+
+  // WRITE	ICM20948_I2C_SLV4_REG	0x31	CNTL2
+  buffer[0] = ICM20948_I2C_SLV4_REG;
+  buffer[1] = 0x31;
+  if (!i2c_dev->write(buffer, 2)) {
+    return false;
+  }
+  Serial.println("set slv4 reg");
+  // WRITE	ICM20948_I2C_SLV4_DO	0x08
+  buffer[0] = ICM20948_I2C_SLV4_DO;
+  buffer[1] = 0x08;
+  if (!i2c_dev->write(buffer, 2)) {
+    return false;
+  }
+  Serial.println("set slv4 DO");
+  // WRITE	ICM20948_I2C_SLV4_CTRL	0x80
+  buffer[0] = ICM20948_I2C_SLV4_CTRL;
+  buffer[1] = 0x80;
+  if (!i2c_dev->write(buffer, 2)) {
+    return false;
+  }
+  Serial.println("set slv4 CTRL /active");
+
+  _setBank(0);
+  uint8_t addrbuffer[2] = {(uint8_t)ICM20948_I2C_MST_STATUS, (uint8_t)0};
+  buffer[0] = 0;
+  buffer[1] = 0;
+  while (buffer[0] != 0x40){
+    i2c_dev->write_then_read(addrbuffer, 1, buffer, 1);
+  }
+
+  // SET MAG ADDRESS to read from map
+  _setBank(3);
+  // WRITE	ICM20948_I2C_SLV0_ADDR	0x8C
+
+  buffer[0] = ICM20948_I2C_SLV0_ADDR;
+  buffer[1] = 0x8C;
+  if (!i2c_dev->write(buffer, 2)) {
+    return false;
+  }
+
+  // WRITE	ICM20948_I2C_SLV0_REG	0x10
+  buffer[0] = ICM20948_I2C_SLV0_REG;
+  buffer[1] = 0x10;
+  if (!i2c_dev->write(buffer, 2)) {
+    return false;
+  }
+
+  // WRITE	ICM20948_I2C_SLV0_CTRL	0x89
+  buffer[0] = ICM20948_I2C_SLV0_CTRL;
+  buffer[1] = 0x89;
+  if (!i2c_dev->write(buffer, 2)) {
+    return false;
+  }
+
+  return true;
+
+}
+
 
 void Adafruit_ICM20948::_scale_values(void) {
 
