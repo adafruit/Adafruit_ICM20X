@@ -159,6 +159,7 @@ void Adafruit_ICM20X::reset(void) {
  */
 bool Adafruit_ICM20X::_init(int32_t sensor_id) {
 
+  Serial.println("*** _init()");
   Adafruit_BusIO_Register chip_id = Adafruit_BusIO_Register(
       i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_WHOAMI);
 
@@ -167,8 +168,13 @@ bool Adafruit_ICM20X::_init(int32_t sensor_id) {
 
   Adafruit_BusIO_RegisterBits bank =
       Adafruit_BusIO_RegisterBits(&reg_bank_sel, 2, 4);
+
+  Serial.println("*** Read Chip ID");
+
   _setBank(0);
   uint8_t chip_id_ = chip_id.read();
+  Serial.print("ID = "); Serial.println(chip_id_, HEX);
+
   // make sure we're talking to the right chip
   if ((chip_id_ != ICM20649_CHIP_ID) && (chip_id_ != ICM20948_CHIP_ID)) {
     return false;
@@ -177,6 +183,8 @@ bool Adafruit_ICM20X::_init(int32_t sensor_id) {
   _sensorid_accel = sensor_id;
   _sensorid_gyro = sensor_id + 1;
   _sensorid_temp = sensor_id + 2;
+
+  Serial.println("*** Reset");
 
   reset();
 
@@ -189,15 +197,24 @@ bool Adafruit_ICM20X::_init(int32_t sensor_id) {
   Adafruit_BusIO_RegisterBits clock_source =
       Adafruit_BusIO_RegisterBits(&pwr_mgmt_1, 3, 0);
 
+  Serial.println("*** out of default sleep");
+
   sleep.write(false);    // take out of default sleep state
+
+  Serial.println("*** auto select clock");
+
   clock_source.write(1); // AUTO SELECT BEST CLOCK
 
+  Serial.println("*** gyro range = 3");
   writeGyroRange(3);  // will set the top rate for either subclass
+  Serial.println("*** accel range = 3");
   writeAccelRange(3); // will set the top rate for either subclass
 
+  Serial.println("*** gyro rate = 100");
   // 1100Hz/(1+10) = 100Hz
   setGyroRateDivisor(10);
 
+  Serial.println("*** accel rate = 53");
   // # 1125Hz/(1+20) = 53.57Hz
   setAccelRateDivisor(20);
 
@@ -206,6 +223,7 @@ bool Adafruit_ICM20X::_init(int32_t sensor_id) {
   gyro_sensor = new Adafruit_ICM20X_Gyro(this);
   _setBank(0);
   delay(20);
+  Serial.println("*** _init done");
 
   return true;
 }
