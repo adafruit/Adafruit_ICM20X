@@ -124,8 +124,6 @@ public:
   bool begin_SPI(int8_t cs_pin, int8_t sck_pin, int8_t miso_pin,
                  int8_t mosi_pin, int32_t sensor_id = 0);
 
-  bool getEvent(sensors_event_t *accel, sensors_event_t *gyro,
-                sensors_event_t *mag, sensors_event_t *temp);
 
   uint8_t getGyroRateDivisor(void);
   void setGyroRateDivisor(uint8_t new_gyro_divisor);
@@ -143,6 +141,7 @@ public:
   Adafruit_Sensor *getMagnetometerSensor(void);
   Adafruit_Sensor *getTemperatureSensor(void);
 
+  bool getEvents(sensors_event_t *accel, sensors_event_t *gyro, sensors_event_t *temp);
 protected:
   float temperature, ///< Last reading's temperature (C)
       accX,          ///< Last reading's accelerometer X axis m/s^2
@@ -172,6 +171,7 @@ protected:
   void _read(void);
   virtual void _scale_values(void);
   virtual bool begin_I2C(uint8_t i2c_add, TwoWire *wire, int32_t sensor_id);
+  void fillMagEvent(sensors_event_t *mag, uint32_t timestamp);
 
   // virtual bool _init(int32_t sensor_id);
   bool _init(int32_t sensor_id);
@@ -211,7 +211,6 @@ private:
 
   void fillAccelEvent(sensors_event_t *accel, uint32_t timestamp);
   void fillGyroEvent(sensors_event_t *gyro, uint32_t timestamp);
-  void fillMagEvent(sensors_event_t *mag, uint32_t timestamp);
   void fillTempEvent(sensors_event_t *temp, uint32_t timestamp);
 };
 

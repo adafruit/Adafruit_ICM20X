@@ -36,11 +36,15 @@ bool Adafruit_ICM20948::begin_I2C(uint8_t i2c_address, TwoWire *wire,
     return false;
   }
   bool init_success = _init(sensor_id);
-  // Serial.print("done with init: ");Serial.println(init_success);
-  // if (! _setupMag()){
-  //   Serial.println("failed to setup mag");
-  //   return false;
-  // }
+  if (! _setupMag()){
+    Serial.println("failed to setup mag");
+    return false;
+  }
+
+  return init_success;
+}
+
+bool Adafruit_ICM20948::_setupMag(void) {
 
   uint8_t buffer[2];
 
@@ -71,10 +75,7 @@ bool Adafruit_ICM20948::begin_I2C(uint8_t i2c_address, TwoWire *wire,
   uint8_t idl, idh;
   idl = _read_ext_reg(0x8C, 0x00);
   idh = _read_ext_reg(0x8C, 0x01);
-  // Serial.println("REad idH: 0x");
-  // Serial.println(idl, HEX);
-  // Serial.println("REad idL: 0x");
-  // Serial.println(idh, HEX);
+  // TODO: Compare? Do we _really_ need this check?
 
   _setBank(3);
 
@@ -125,71 +126,6 @@ bool Adafruit_ICM20948::begin_I2C(uint8_t i2c_address, TwoWire *wire,
     return false;
   }
 
-  buffer[0] = ICM20948_I2C_SLV0_CTRL;
-  buffer[1] = 0x89;
-  if (!i2c_dev->write(buffer, 2)) {
-    return false;
-  }
-
-  return init_success;
-}
-
-bool Adafruit_ICM20948::_setupMag(void) {
-
-  uint8_t buffer[2];
-
-  // SETUP DATA RATE FOR SLAVE4
-  _setBank(3);
-
-  buffer[0] = ICM20948_I2C_SLV4_ADDR;
-  buffer[1] = 0x0C;
-  if (!i2c_dev->write(buffer, 2)) {
-    return false;
-  }
-
-  buffer[0] = ICM20948_I2C_SLV4_REG;
-  buffer[1] = 0x31;
-  if (!i2c_dev->write(buffer, 2)) {
-    return false;
-  }
-
-  buffer[0] = ICM20948_I2C_SLV4_DO;
-  buffer[1] = 0x08;
-  if (!i2c_dev->write(buffer, 2)) {
-    return false;
-  }
-  buffer[0] = ICM20948_I2C_SLV4_CTRL;
-  buffer[1] = 0x80;
-  if (!i2c_dev->write(buffer, 2)) {
-    return false;
-  }
-
-  _setBank(0);
-  uint8_t addrbuffer[2] = {(uint8_t)ICM20948_I2C_MST_STATUS, (uint8_t)0};
-  buffer[0] = 0;
-  buffer[1] = 0;
-  while (buffer[0] != 0x40) {
-
-    i2c_dev->write_then_read(addrbuffer, 1, buffer, 1);
-    delay(100);
-  }
-
-  _setBank(3);
-
-  buffer[0] = ICM20948_I2C_SLV0_ADDR;
-  buffer[1] = 0x8C;
-  if (!i2c_dev->write(buffer, 2)) {
-    return false;
-  }
-
-  // WRITE	ICM20948_I2C_SLV0_REG	0x10
-  buffer[0] = ICM20948_I2C_SLV0_REG;
-  buffer[1] = 0x10;
-  if (!i2c_dev->write(buffer, 2)) {
-    return false;
-  }
-
-  // WRITE	ICM20948_I2C_SLV0_CTRL	0x89
   buffer[0] = ICM20948_I2C_SLV0_CTRL;
   buffer[1] = 0x89;
   if (!i2c_dev->write(buffer, 2)) {
@@ -238,6 +174,25 @@ uint8_t Adafruit_ICM20948::_read_ext_reg(uint8_t slv_addr, uint8_t reg_addr) {
   buffer[1] = 0;
   i2c_dev->write_then_read(addrbuffer, 1, buffer, 1);
   return buffer[0];
+}
+
+bool Adafruit_ICM20948::getEvent(sensors_event_t *accel, sensors_event_t *gyro,
+                               sensors_event_t *mag, sensors_event_t *temp) {
+  uint32_t t = millis();
+  getEvents(accel, gyro, temp);
+  fillMagEvent(mag, t);
+  return true;
+}
+
+void Adafruit_ICM20948::fillMagEvent(sensors_event_t *mag, uint32_t timestamp) {
+  memset(mag, 0, sizeof(sensors_event_t));
+  mag->version = 1;
+  mag->sensor_id = _sensorid_mag;
+  mag->type = SENSOR_TYPE_MAGNETIC_FIELD;
+  mag->timestamp = timestamp;
+  mag->magnetic.x = magX; // magic number!
+  mag->magnetic.y = magY;
+  mag->magnetic.z = magZ;
 }
 
 void Adafruit_ICM20948::_scale_values(void) {
@@ -318,4 +273,39 @@ icm20948_gyro_range_t Adafruit_ICM20948::getGyroRange(void) {
 */
 void Adafruit_ICM20948::setGyroRange(icm20948_gyro_range_t new_gyro_range) {
   writeGyroRange((uint8_t)new_gyro_range);
+}
+
+/**************************************************************************/
+/*!
+    @brief  Gets the sensor_t data for the ICM20X's magnetometer sensor
+*/
+/**************************************************************************/
+void Adafruit_ICM20X_Magnetometer::getSensor(sensor_t *sensor) {
+  /* Clear the sensor_t object */
+  memset(sensor, 0, sizeof(sensor_t));
+
+  /* Insert the sensor name in the fixed length char array */
+  strncpy(sensor->name, "ICM20X_M", sizeof(sensor->name) - 1);
+  sensor->name[sizeof(sensor->name) - 1] = 0;
+  sensor->version = 1;
+  sensor->sensor_id = _sensorID;
+  sensor->type = SENSOR_TYPE_MAGNETIC_FIELD;
+  sensor->min_delay = 0;
+  // sensor->min_value = -69.81; /* -4000 dps -> rad/s (radians per second) */
+  // sensor->max_value = +69.81;
+  // sensor->resolution = 2.665e-7; /* 65.5 LSB/DPS */
+}
+
+/**************************************************************************/
+/*!
+    @brief  Gets the magnetometer as a standard sensor event
+    @param  event Sensor event object that will be populated
+    @returns True
+*/
+/**************************************************************************/
+bool Adafruit_ICM20X_Magnetometer::getEvent(sensors_event_t *event) {
+  _theICM20X->_read();
+  _theICM20X->fillMagEvent(event, millis());
+
+  return true;
 }

@@ -71,7 +71,8 @@ public:
   ~Adafruit_ICM20948(){};
   bool begin_I2C(uint8_t i2c_addr = ICM20948_I2CADDR_DEFAULT,
                  TwoWire *wire = &Wire, int32_t sensor_id = 0);
-
+ bool getEvent(sensors_event_t *accel, sensors_event_t *gyro,
+                sensors_event_t *mag, sensors_event_t *temp);
   icm20948_accel_range_t getAccelRange(void);
   void setAccelRange(icm20948_accel_range_t new_accel_range);
 
@@ -82,6 +83,7 @@ private:
   uint8_t _read_ext_reg(uint8_t slv_addr, uint8_t reg_addr);
   bool _setupMag(void);
   void _scale_values(void);
+  void fillMagEvent(sensors_event_t *mag, uint32_t timestamp);
 };
 
 #endif

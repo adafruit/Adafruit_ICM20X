@@ -278,15 +278,13 @@ void Adafruit_ICM20X::init1(void) {
     @return True on successful read
 */
 /**************************************************************************/
-bool Adafruit_ICM20X::getEvent(sensors_event_t *accel, sensors_event_t *gyro,
-                               sensors_event_t *mag, sensors_event_t *temp) {
+bool Adafruit_ICM20X::getEvents(sensors_event_t *accel, sensors_event_t *gyro, sensors_event_t *temp) {
   uint32_t t = millis();
   _read();
 
   // use helpers to fill in the events
   fillAccelEvent(accel, t);
   fillGyroEvent(gyro, t);
-  fillMagEvent(mag, t);
   fillTempEvent(temp, t);
   return true;
 }
@@ -313,17 +311,6 @@ void Adafruit_ICM20X::fillGyroEvent(sensors_event_t *gyro, uint32_t timestamp) {
   gyro->gyro.x = gyroX * SENSORS_DPS_TO_RADS;
   gyro->gyro.y = gyroY * SENSORS_DPS_TO_RADS;
   gyro->gyro.z = gyroZ * SENSORS_DPS_TO_RADS;
-}
-
-void Adafruit_ICM20X::fillMagEvent(sensors_event_t *mag, uint32_t timestamp) {
-  memset(mag, 0, sizeof(sensors_event_t));
-  mag->version = 1;
-  mag->sensor_id = _sensorid_mag;
-  mag->type = SENSOR_TYPE_MAGNETIC_FIELD;
-  mag->timestamp = timestamp;
-  mag->magnetic.x = magX; // magic number!
-  mag->magnetic.y = magY;
-  mag->magnetic.z = magZ;
 }
 
 void Adafruit_ICM20X::fillTempEvent(sensors_event_t *temp, uint32_t timestamp) {
@@ -707,41 +694,6 @@ void Adafruit_ICM20X_Gyro::getSensor(sensor_t *sensor) {
 bool Adafruit_ICM20X_Gyro::getEvent(sensors_event_t *event) {
   _theICM20X->_read();
   _theICM20X->fillGyroEvent(event, millis());
-
-  return true;
-}
-
-/**************************************************************************/
-/*!
-    @brief  Gets the sensor_t data for the ICM20X's magnetometer sensor
-*/
-/**************************************************************************/
-void Adafruit_ICM20X_Magnetometer::getSensor(sensor_t *sensor) {
-  /* Clear the sensor_t object */
-  memset(sensor, 0, sizeof(sensor_t));
-
-  /* Insert the sensor name in the fixed length char array */
-  strncpy(sensor->name, "ICM20X_M", sizeof(sensor->name) - 1);
-  sensor->name[sizeof(sensor->name) - 1] = 0;
-  sensor->version = 1;
-  sensor->sensor_id = _sensorID;
-  sensor->type = SENSOR_TYPE_MAGNETIC_FIELD;
-  sensor->min_delay = 0;
-  // sensor->min_value = -69.81; /* -4000 dps -> rad/s (radians per second) */
-  // sensor->max_value = +69.81;
-  // sensor->resolution = 2.665e-7; /* 65.5 LSB/DPS */
-}
-
-/**************************************************************************/
-/*!
-    @brief  Gets the magnetometer as a standard sensor event
-    @param  event Sensor event object that will be populated
-    @returns True
-*/
-/**************************************************************************/
-bool Adafruit_ICM20X_Magnetometer::getEvent(sensors_event_t *event) {
-  _theICM20X->_read();
-  _theICM20X->fillMagEvent(event, millis());
 
   return true;
 }
