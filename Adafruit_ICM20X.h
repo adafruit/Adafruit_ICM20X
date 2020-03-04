@@ -38,7 +38,7 @@
 
 // Bank 2
 #define ICM20X_GYRO_SMPLRT_DIV 0x00    ///< Gyroscope data rate divisor
-#define ICM20X_GYRO_CONFIG_1 0x01      ///< Gyro config for range setting
+#define ICM20X_GYRO_CONFIG_1  0x01      ///< Gyro config for range setting
 #define ICM20X_ACCEL_SMPLRT_DIV_1 0x10 ///< Accel data rate divisor MSByte
 #define ICM20X_ACCEL_SMPLRT_DIV_2 0x11 ///< Accel data rate divisor LSByte
 #define ICM20X_ACCEL_CONFIG_1 0x14     ///< Accel config for setting range
@@ -103,6 +103,8 @@ class Adafruit_ICM20X {
 public:
   Adafruit_ICM20X();
   ~Adafruit_ICM20X();
+
+  void init1(void);
 
   bool begin_SPI(uint8_t cs_pin, SPIClass *theSPI = &SPI,
                  int32_t sensor_id = 0);

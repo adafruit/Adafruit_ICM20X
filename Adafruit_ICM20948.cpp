@@ -37,17 +37,10 @@ bool Adafruit_ICM20948::begin_I2C(uint8_t i2c_address, TwoWire *wire,
   }
   bool init_success = _init(sensor_id);
   Serial.print("done with init: ");Serial.println(init_success);
-  if (! _setupMag()){
-    Serial.println("failed to setup mag");
-    return false;
-  } 
-
-  return init_success;
-}
-
-bool Adafruit_ICM20948::_setupMag(void){
-  
-
+  // if (! _setupMag()){
+  //   Serial.println("failed to setup mag");
+  //   return false;
+  // } 
 
   uint8_t buffer[2];
 
@@ -61,17 +54,16 @@ bool Adafruit_ICM20948::_setupMag(void){
   Serial.println("set PIN CONFIG");
   _setBank(3);
 
-
+  Serial.println("set i2c clk & stop");
   // WRITE	ICM20948_I2C_MST_CTRL	0x17		I2C_MST_P_ NSR	I2C_MST_CLK[3:0]	7
   buffer[0] = ICM20948_I2C_MST_CTRL;
   buffer[1] = 0x17;
   if (!i2c_dev->write(buffer, 2)) {
     return false;
   }
-  Serial.println("set MST+CRTL");
+  Serial.println("I2C_MST_EN=1");
 
-  // WRITE	BANK_SET	0x00
-    _setBank(0);
+   _setBank(0);
   // READ	USER_CTRL	0x00
   // WRITE	USER_CTRL	0x20
   buffer[0] = ICM20X_USER_CTRL;
@@ -80,7 +72,45 @@ bool Adafruit_ICM20948::_setupMag(void){
     return false;
   }
 
-  Serial.println("sI2C_MST_ENABLE");
+  return init_success;
+}
+
+bool Adafruit_ICM20948::_setupMag(void){
+  
+
+
+  uint8_t buffer[2];
+
+  // _setBank(0);
+
+  // buffer[0] = ICM20X_REG_INT_PIN_CFG;
+  // buffer[1] = 0x00;
+  // if (!i2c_dev->write(buffer, 2)) {
+  //   return false;
+  // }
+  // Serial.println("set PIN CONFIG");
+  // _setBank(3);
+
+
+  // // WRITE	ICM20948_I2C_MST_CTRL	0x17		I2C_MST_P_ NSR	I2C_MST_CLK[3:0]	7
+  // buffer[0] = ICM20948_I2C_MST_CTRL;
+  // buffer[1] = 0x17;
+  // if (!i2c_dev->write(buffer, 2)) {
+  //   return false;
+  // }
+  // Serial.println("set MST+CRTL");
+
+  // WRITE	BANK_SET	0x00
+    // _setBank(0);
+  // READ	USER_CTRL	0x00
+  // // WRITE	USER_CTRL	0x20
+  // buffer[0] = ICM20X_USER_CTRL;
+  // buffer[1] = 0x20;  // set I2C_MST_EN
+  // if (!i2c_dev->write(buffer, 2)) {
+  //   return false;
+  // }
+
+  // Serial.println("sI2C_MST_ENABLE");
 
 
 uint8_t idl, idh;

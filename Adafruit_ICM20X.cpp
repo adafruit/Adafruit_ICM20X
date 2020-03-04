@@ -163,12 +163,6 @@ bool Adafruit_ICM20X::_init(int32_t sensor_id) {
   Adafruit_BusIO_Register chip_id = Adafruit_BusIO_Register(
       i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_WHOAMI);
 
-  Adafruit_BusIO_Register reg_bank_sel = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_REG_BANK_SEL);
-
-  Adafruit_BusIO_RegisterBits bank =
-      Adafruit_BusIO_RegisterBits(&reg_bank_sel, 2, 4);
-
   Serial.println("*** Read Chip ID");
 
   _setBank(0);
@@ -201,6 +195,8 @@ bool Adafruit_ICM20X::_init(int32_t sensor_id) {
 
   Adafruit_BusIO_RegisterBits i2c_mst_cycle =
       Adafruit_BusIO_RegisterBits(&lp_config, 1, 6);
+
+
   Adafruit_BusIO_Register gyro_config_1 = Adafruit_BusIO_Register(
       i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_GYRO_CONFIG_1);
 
@@ -227,38 +223,76 @@ bool Adafruit_ICM20X::_init(int32_t sensor_id) {
 
   Serial.println("*** set i2c master duty cycle mode");
   i2c_mst_cycle.write(1);
-// Enable accel DLPF	WRITE:	0x14	0x1,
-  _setBank(2);
 
+  init1();
 
-  Serial.println("*** accel dlpf = 1");
-  accel_filter_bit.write(1);
-  // gyro_filter_bit.write(1);
+  // Serial.println("*** gyro range = 3");
+  // writeGyroRange(3);  // will set the top rate for either subclass
+  // Serial.println("*** accel range = 3");
+  // writeAccelRange(3); // will set the top rate for either subclass
 
+  // Serial.println("*** gyro rate = 100");
+  // // 1100Hz/(1+10) = 100Hz
+  // setGyroRateDivisor(10);
 
-    Serial.println("*** gyro range = 3");
-  writeGyroRange(3);  // will set the top rate for either subclass
-  Serial.println("*** accel range = 3");
-  writeAccelRange(3); // will set the top rate for either subclass
-
-  Serial.println("*** gyro rate = 100");
-  // 1100Hz/(1+10) = 100Hz
-  setGyroRateDivisor(10);
-
-  Serial.println("*** accel rate = 53");
-  // # 1125Hz/(1+20) = 53.57Hz
-  setAccelRateDivisor(20);
+  // Serial.println("*** accel rate = 53");
+  // // # 1125Hz/(1+20) = 53.57Hz
+  // setAccelRateDivisor(20);
 
   temp_sensor = new Adafruit_ICM20X_Temp(this);
   accel_sensor = new Adafruit_ICM20X_Accelerometer(this);
   gyro_sensor = new Adafruit_ICM20X_Gyro(this);
-  _setBank(0);
+  // _setBank(0);
   delay(20);
   Serial.println("*** _init done");
 
   return true;
 }
 
+void Adafruit_ICM20X::init1(void){
+
+  Adafruit_BusIO_Register gyro_config_1 = Adafruit_BusIO_Register(
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_GYRO_CONFIG_1);
+
+  Adafruit_BusIO_Register accel_config_1 = Adafruit_BusIO_Register(
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_ACCEL_CONFIG_1);
+  
+  Adafruit_BusIO_RegisterBits accel_filter_bit =
+      Adafruit_BusIO_RegisterBits(&accel_config_1, 1, 0);
+
+
+  Adafruit_BusIO_RegisterBits accel_filter_cnf =
+      Adafruit_BusIO_RegisterBits(&accel_config_1, 3, 3);
+
+
+  Adafruit_BusIO_RegisterBits gyro_filter_bit =
+      Adafruit_BusIO_RegisterBits(&gyro_config_1, 1, 0);
+
+
+  Adafruit_BusIO_RegisterBits gyro_filter_cnf =
+      Adafruit_BusIO_RegisterBits(&gyro_config_1, 3, 3);
+
+      // Enable accel DLPF	WRITE:	0x14	0x1,
+  _setBank(2);
+
+
+  Serial.println("*** accel dlpf = 1");
+  accel_filter_bit.write(1);
+    Serial.println("*** gyro dlpf = 1");
+  gyro_filter_bit.write(1);
+
+    Serial.println("**accel dlpf bw=7");
+  accel_filter_cnf.write(7);
+    Serial.println("**gyro dlpf bw=7");
+  gyro_filter_cnf.write(7);
+
+
+    Serial.println("*** accel dlpf = 0");
+  accel_filter_bit.write(0);
+    Serial.println("*** gyro dlpf = 0");
+  gyro_filter_bit.write(0);
+
+}
 /**************************************************************************/
 /*!
     @brief  Gets the most recent sensor event, Adafruit Unified Sensor format
