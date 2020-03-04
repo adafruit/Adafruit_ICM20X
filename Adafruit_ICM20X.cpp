@@ -189,13 +189,33 @@ bool Adafruit_ICM20X::_init(int32_t sensor_id) {
   reset();
 
   Adafruit_BusIO_Register pwr_mgmt_1 = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_PWR_MGMT_1);
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_PWR_MGMT_1);  
+  Adafruit_BusIO_Register lp_config = Adafruit_BusIO_Register(
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_LP_CONFIG);
 
   Adafruit_BusIO_RegisterBits sleep =
       Adafruit_BusIO_RegisterBits(&pwr_mgmt_1, 1, 6);
 
   Adafruit_BusIO_RegisterBits clock_source =
       Adafruit_BusIO_RegisterBits(&pwr_mgmt_1, 3, 0);
+
+  Adafruit_BusIO_RegisterBits i2c_mst_cycle =
+      Adafruit_BusIO_RegisterBits(&lp_config, 1, 6);
+  Adafruit_BusIO_Register gyro_config_1 = Adafruit_BusIO_Register(
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_GYRO_CONFIG_1);
+
+  Adafruit_BusIO_Register accel_config_1 = Adafruit_BusIO_Register(
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_ACCEL_CONFIG_1);
+
+  Adafruit_BusIO_RegisterBits gyro_filter_bit =
+      Adafruit_BusIO_RegisterBits(&gyro_config_1, 1, 0);
+  Adafruit_BusIO_RegisterBits accel_filter_bit =
+      Adafruit_BusIO_RegisterBits(&accel_config_1, 1, 0);
+
+
+
+
+
 
   Serial.println("*** out of default sleep");
 
@@ -205,7 +225,18 @@ bool Adafruit_ICM20X::_init(int32_t sensor_id) {
 
   clock_source.write(1); // AUTO SELECT BEST CLOCK
 
-  Serial.println("*** gyro range = 3");
+  Serial.println("*** set i2c master duty cycle mode");
+  i2c_mst_cycle.write(1);
+// Enable accel DLPF	WRITE:	0x14	0x1,
+  _setBank(2);
+
+
+  Serial.println("*** accel dlpf = 1");
+  accel_filter_bit.write(1);
+  // gyro_filter_bit.write(1);
+
+
+    Serial.println("*** gyro range = 3");
   writeGyroRange(3);  // will set the top rate for either subclass
   Serial.println("*** accel range = 3");
   writeAccelRange(3); // will set the top rate for either subclass
