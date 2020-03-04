@@ -94,7 +94,7 @@ void loop() {
   sensors_event_t gyro;
   sensors_event_t mag;
   sensors_event_t temp;
-  icm.getEvent(&accel, &gyro, &mag, &temp);
+  icm.getEvent(&accel, &gyro, &temp, &mag);
 
   Serial.print("\t\tTemperature ");
   Serial.print(temp.temperature);
@@ -144,8 +144,8 @@ void loop() {
   //
   //  Serial.print(",");
   //  Serial.print(mag.magnetic.x);
-  //  Serial.print(","); Serial.print(mag.magnetic.y);
-  //  Serial.print(","); Serial.print(mag.magnetic.z);
+  //  Serial.print(","); Serial.print(mag.magnetic.x);
+  //  Serial.print(","); Serial.print(mag.magnetic.xz);
 
   //  Serial.println();
   //
