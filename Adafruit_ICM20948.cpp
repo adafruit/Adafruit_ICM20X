@@ -72,6 +72,90 @@ bool Adafruit_ICM20948::begin_I2C(uint8_t i2c_address, TwoWire *wire,
     return false;
   }
 
+uint8_t idl, idh;
+Serial.println("REad idH: 0x");
+idl = _read_ext_reg(0x8C, 0x00);
+Serial.println(idl, HEX);
+
+Serial.println("REad idL: 0x");
+idh = _read_ext_reg(0x8C, 0x01);
+Serial.println(idh, HEX);
+
+_setBank(3);
+
+  Serial.println("slv4 addr set ");
+  // WRITE	I2C_SLV4_ADDR	0x0C
+  buffer[0] = ICM20948_I2C_SLV4_ADDR;
+  buffer[1] = 0x0C;
+  if (!i2c_dev->write(buffer, 2)) {
+    return false;
+  }
+
+  Serial.println("slv4 reg set ");
+  // WRITE	ICM20948_I2C_SLV4_REG	0x31	CNTL2
+  buffer[0] = ICM20948_I2C_SLV4_REG;
+  buffer[1] = 0x31;
+  if (!i2c_dev->write(buffer, 2)) {
+    return false;
+  }
+  Serial.println("slv4 DO set ");
+  // WRITE	ICM20948_I2C_SLV4_DO	0x08
+  buffer[0] = ICM20948_I2C_SLV4_DO;
+  buffer[1] = 0x08;
+  if (!i2c_dev->write(buffer, 2)) {
+    return false;
+  }
+  Serial.println("slv4 CTRL /active set");
+  // WRITE	ICM20948_I2C_SLV4_CTRL	0x80
+  buffer[0] = ICM20948_I2C_SLV4_CTRL;
+  buffer[1] = 0x80;
+  if (!i2c_dev->write(buffer, 2)) {
+    return false;
+  }
+
+Serial.println("checking slave 4 status");
+  _setBank(0);
+  uint8_t addrbuffer[2] = {(uint8_t)ICM20948_I2C_MST_STATUS, (uint8_t)0};
+  buffer[0] = 0;
+  buffer[1] = 0;
+  while (buffer[0] != 0x40){
+    Serial.print("not ready: buffer[0] = 0x"); Serial.println(buffer[0], HEX);
+    Serial.print("not ready: buffer[1] = 0x"); Serial.println(buffer[1], HEX);
+    i2c_dev->write_then_read(addrbuffer, 1, buffer, 1);
+    delay(100);
+  }
+  // SET MAG ADDRESS to read from map
+  _setBank(3);
+  // WRITE	ICM20948_I2C_SLV0_ADDR	0x8C
+  Serial.println("slv4 addr set ");
+
+  buffer[0] = ICM20948_I2C_SLV0_ADDR;
+  buffer[1] = 0x8C;
+  if (!i2c_dev->write(buffer, 2)) {
+    return false;
+  }
+  Serial.println("slv4 reg set ");
+  // WRITE	ICM20948_I2C_SLV0_REG	0x10
+  buffer[0] = ICM20948_I2C_SLV0_REG;
+  buffer[1] = 0x10;
+  if (!i2c_dev->write(buffer, 2)) {
+    return false;
+  }
+  Serial.println("slv4 CTRL /active set");
+
+  // WRITE	ICM20948_I2C_SLV0_CTRL	0x89
+  buffer[0] = ICM20948_I2C_SLV0_CTRL;
+  buffer[1] = 0x89;
+  if (!i2c_dev->write(buffer, 2)) {
+    return false;
+  }
+
+  return true;
+
+
+
+
+
   return init_success;
 }
 
@@ -113,11 +197,11 @@ bool Adafruit_ICM20948::_setupMag(void){
   // Serial.println("sI2C_MST_ENABLE");
 
 
-uint8_t idl, idh;
-idl = _read_ext_reg(0x8C, 0x00);
-Serial.print("REad idH: 0x");Serial.println(idl, HEX);
-idh = _read_ext_reg(0x8C, 0x01);
-Serial.print("REad idL: 0x");Serial.println(idh, HEX);
+// uint8_t idl, idh;
+// idl = _read_ext_reg(0x8C, 0x00);
+// Serial.print("REad idH: 0x");Serial.println(idl, HEX);
+// idh = _read_ext_reg(0x8C, 0x01);
+// Serial.print("REad idL: 0x");Serial.println(idh, HEX);
 
 
 
