@@ -92,8 +92,9 @@ void loop() {
   //  /* Get a new normalized sensor event */
   sensors_event_t accel;
   sensors_event_t gyro;
+  sensors_event_t mag;
   sensors_event_t temp;
-  icm.getEvent(&accel, &gyro, &temp);
+  icm.getEvent(&accel, &gyro, &mag, &temp);
 
   Serial.print("\t\tTemperature ");
   Serial.print(temp.temperature);
@@ -107,6 +108,14 @@ void loop() {
   Serial.print(" \tZ: ");
   Serial.print(accel.acceleration.z);
   Serial.println(" m/s^2 ");
+
+  Serial.print("\t\tMag X: ");
+  Serial.print(mag.magnetic.x);
+  Serial.print(" \tY: ");
+  Serial.print(mag.magnetic.y);
+  Serial.print(" \tZ: ");
+  Serial.print(mag.magnetic.z);
+  Serial.println(" uT");
 
   /* Display the results (acceleration is measured in m/s^2) */
   Serial.print("\t\tGyro X: ");
@@ -132,6 +141,11 @@ void loop() {
   //  Serial.print(gyro.gyro.x);
   //  Serial.print(","); Serial.print(gyro.gyro.y);
   //  Serial.print(","); Serial.print(gyro.gyro.z);
+  //
+  //  Serial.print(",");
+  //  Serial.print(mag.magnetic.x);
+  //  Serial.print(","); Serial.print(mag.magnetic.y);
+  //  Serial.print(","); Serial.print(mag.magnetic.z);
 
   //  Serial.println();
   //
