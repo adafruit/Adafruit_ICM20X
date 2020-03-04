@@ -136,7 +136,10 @@ protected:
       accZ,          ///< Last reading's accelerometer Z axis m/s^2
       gyroX,         ///< Last reading's gyro X axis in rad/s
       gyroY,         ///< Last reading's gyro Y axis in rad/s
-      gyroZ;         ///< Last reading's gyro Z axis in rad/s
+      gyroZ,         ///< Last reading's gyro Z axis in rad/s
+      magX,         ///< Last reading's mag X axis in rad/s
+      magY,         ///< Last reading's mag Y axis in rad/s
+      magZ;         ///< Last reading's mag Z axis in rad/s
 
   Adafruit_I2CDevice *i2c_dev = NULL; ///< Pointer to I2C bus interface
   Adafruit_SPIDevice *spi_dev = NULL; ///< Pointer to SPI bus interface

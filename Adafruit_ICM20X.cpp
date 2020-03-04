@@ -159,15 +159,15 @@ void Adafruit_ICM20X::reset(void) {
  */
 bool Adafruit_ICM20X::_init(int32_t sensor_id) {
 
-  Serial.println("*** _init()");
+  // Serial.println("*** _init()");
   Adafruit_BusIO_Register chip_id = Adafruit_BusIO_Register(
       i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_WHOAMI);
 
-  Serial.println("*** Read Chip ID");
+  // Serial.println("*** Read Chip ID");
 
   _setBank(0);
   uint8_t chip_id_ = chip_id.read();
-  Serial.print("ID = "); Serial.println(chip_id_, HEX);
+  // Serial.print("ID = "); Serial.println(chip_id_, HEX);
 
   // make sure we're talking to the right chip
   if ((chip_id_ != ICM20649_CHIP_ID) && (chip_id_ != ICM20948_CHIP_ID)) {
@@ -178,7 +178,7 @@ bool Adafruit_ICM20X::_init(int32_t sensor_id) {
   _sensorid_gyro = sensor_id + 1;
   _sensorid_temp = sensor_id + 2;
 
-  Serial.println("*** Reset");
+  // Serial.println("*** Reset");
 
   reset();
 
@@ -209,19 +209,15 @@ bool Adafruit_ICM20X::_init(int32_t sensor_id) {
       Adafruit_BusIO_RegisterBits(&accel_config_1, 1, 0);
 
 
-
-
-
-
-  Serial.println("*** out of default sleep");
+  // Serial.println("*** out of default sleep");
 
   sleep.write(false);    // take out of default sleep state
 
-  Serial.println("*** auto select clock");
+  // Serial.println("*** auto select clock");
 
   clock_source.write(1); // AUTO SELECT BEST CLOCK
 
-  Serial.println("*** set i2c master duty cycle mode");
+  // Serial.println("*** set i2c master duty cycle mode");
   i2c_mst_cycle.write(1);
 
   init1();
@@ -244,7 +240,7 @@ bool Adafruit_ICM20X::_init(int32_t sensor_id) {
   gyro_sensor = new Adafruit_ICM20X_Gyro(this);
   // _setBank(0);
   delay(20);
-  Serial.println("*** _init done");
+  // Serial.println("*** _init done");
 
   return true;
 }
@@ -276,20 +272,20 @@ void Adafruit_ICM20X::init1(void){
   _setBank(2);
 
 
-  Serial.println("*** accel dlpf = 1");
+  // Serial.println("*** accel dlpf = 1");
   accel_filter_bit.write(1);
-    Serial.println("*** gyro dlpf = 1");
+    // Serial.println("*** gyro dlpf = 1");
   gyro_filter_bit.write(1);
 
-    Serial.println("**accel dlpf bw=7");
+    // Serial.println("**accel dlpf bw=7");
   accel_filter_cnf.write(7);
-    Serial.println("**gyro dlpf bw=7");
+    // Serial.println("**gyro dlpf bw=7");
   gyro_filter_cnf.write(7);
 
 
-    Serial.println("*** accel dlpf = 0");
+    // Serial.println("*** accel dlpf = 0");
   accel_filter_bit.write(0);
-    Serial.println("*** gyro dlpf = 0");
+    // Serial.println("*** gyro dlpf = 0");
   gyro_filter_bit.write(0);
 
 }
@@ -365,11 +361,13 @@ void Adafruit_ICM20X::_read(void) {
 
   _setBank(0);
 
-  Adafruit_BusIO_Register data_reg = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_ACCEL_XOUT_H, 14);
+	const uint8_t numbytes = 14 + 9; //Read Accel, gyro, temp, and 9 bytes of mag
 
-  uint8_t buffer[14];
-  data_reg.read(buffer, 14);
+  Adafruit_BusIO_Register data_reg = Adafruit_BusIO_Register(
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_ACCEL_XOUT_H, numbytes);
+
+  uint8_t buffer[numbytes];
+  data_reg.read(buffer, numbytes);
 
   rawAccX = buffer[0] << 8 | buffer[1];
   rawAccY = buffer[2] << 8 | buffer[3];
@@ -385,9 +383,9 @@ void Adafruit_ICM20X::_read(void) {
 	rawMagX = ((buffer[16] << 8) | (buffer[15] & 0xFF));//* 0.15//Mag data is read little endian
 	rawMagY = ((buffer[18] << 8) | (buffer[17] & 0xFF));//* 0.15
 	rawMagZ = ((buffer[20] << 8) | (buffer[19] & 0xFF));//* 0.15
-  Serial.print("magx: ");Serial.println(rawMagX*0.15);
-  Serial.print("magy: ");Serial.println(rawMagY*0.15);
-  Serial.print("magz: ");Serial.println(rawMagZ*0.15);
+  // Serial.print("magx: ");Serial.println(rawMagX*0.15);
+  // Serial.print("magy: ");Serial.println(rawMagY*0.15);
+  // Serial.print("magz: ");Serial.println(rawMagZ*0.15);
 	//rawMagStat2 = buffer[22];
 
   _scale_values();
