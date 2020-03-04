@@ -50,19 +50,6 @@
 
 class Adafruit_ICM20X;
 
-/** Adafruit Unified Sensor interface for temperature component of ICM20X */
-class Adafruit_ICM20X_Temp : public Adafruit_Sensor {
-public:
-  /** @brief Create an Adafruit_Sensor compatible object for the temp sensor
-      @param parent A pointer to the ICM20X class */
-  Adafruit_ICM20X_Temp(Adafruit_ICM20X *parent) { _theICM20X = parent; }
-  bool getEvent(sensors_event_t *);
-  void getSensor(sensor_t *);
-
-private:
-  int _sensorID = 0x649;
-  Adafruit_ICM20X *_theICM20X = NULL;
-};
 
 /** Adafruit Unified Sensor interface for accelerometer component of ICM20X */
 class Adafruit_ICM20X_Accelerometer : public Adafruit_Sensor {
@@ -77,7 +64,7 @@ public:
   void getSensor(sensor_t *);
 
 private:
-  int _sensorID = 0x64A;
+  int _sensorID = 0x20A;
   Adafruit_ICM20X *_theICM20X = NULL;
 };
 
@@ -91,7 +78,35 @@ public:
   void getSensor(sensor_t *);
 
 private:
-  int _sensorID = 0x64B;
+  int _sensorID = 0x20B;
+  Adafruit_ICM20X *_theICM20X = NULL;
+};
+
+/** Adafruit Unified Sensor interface for magnetometer component of ICM20X */
+class Adafruit_ICM20X_Magnetometer : public Adafruit_Sensor {
+public:
+  /** @brief Create an Adafruit_Sensor compatible object for the magnetometer sensor
+      @param parent A pointer to the ICM20X class */
+  Adafruit_ICM20X_Magnetometer(Adafruit_ICM20X *parent) { _theICM20X = parent; }
+  bool getEvent(sensors_event_t *);
+  void getSensor(sensor_t *);
+
+private:
+  int _sensorID = 0x20C;
+  Adafruit_ICM20X *_theICM20X = NULL;
+};
+
+/** Adafruit Unified Sensor interface for temperature component of ICM20X */
+class Adafruit_ICM20X_Temp : public Adafruit_Sensor {
+public:
+  /** @brief Create an Adafruit_Sensor compatible object for the temp sensor
+      @param parent A pointer to the ICM20X class */
+  Adafruit_ICM20X_Temp(Adafruit_ICM20X *parent) { _theICM20X = parent; }
+  bool getEvent(sensors_event_t *);
+  void getSensor(sensor_t *);
+
+private:
+  int _sensorID = 0x20D;
   Adafruit_ICM20X *_theICM20X = NULL;
 };
 
@@ -111,7 +126,7 @@ public:
   bool begin_SPI(int8_t cs_pin, int8_t sck_pin, int8_t miso_pin,
                  int8_t mosi_pin, int32_t sensor_id = 0);
 
-  bool getEvent(sensors_event_t *accel, sensors_event_t *gyro,
+  bool getEvent(sensors_event_t *accel, sensors_event_t *gyro, sensors_event_t *mag,
                 sensors_event_t *temp);
 
   uint8_t getGyroRateDivisor(void);
@@ -125,10 +140,10 @@ public:
   void setInt2ActiveLow(bool active_low);
   void setI2CBypass(bool bypass_i2c);
 
-  Adafruit_Sensor *getTemperatureSensor(void);
   Adafruit_Sensor *getAccelerometerSensor(void);
   Adafruit_Sensor *getGyroSensor(void);
-
+  Adafruit_Sensor *getMagnetometerSensor(void);
+  Adafruit_Sensor *getTemperatureSensor(void);
 protected:
   float temperature, ///< Last reading's temperature (C)
       accX,          ///< Last reading's accelerometer X axis m/s^2
@@ -144,13 +159,13 @@ protected:
   Adafruit_I2CDevice *i2c_dev = NULL; ///< Pointer to I2C bus interface
   Adafruit_SPIDevice *spi_dev = NULL; ///< Pointer to SPI bus interface
 
-  Adafruit_ICM20X_Temp *temp_sensor = NULL; ///< Temp sensor data object
-  Adafruit_ICM20X_Accelerometer *accel_sensor =
-      NULL;                                 ///< Accelerometer data object
+  Adafruit_ICM20X_Accelerometer *accel_sensor = NULL;///< Accelerometer data object
   Adafruit_ICM20X_Gyro *gyro_sensor = NULL; ///< Gyro data object
-
+  Adafruit_ICM20X_Magnetometer *mag_sensor = NULL; ///< Magnetometer sensor data object
+  Adafruit_ICM20X_Temp *temp_sensor = NULL; ///< Temp sensor data object
   uint16_t _sensorid_accel, ///< ID number for accelerometer
       _sensorid_gyro,       ///< ID number for gyro
+      _sensorid_mag,       ///< ID number for mag
       _sensorid_temp;       ///< ID number for temperature
 
   void _read(void);
@@ -180,17 +195,21 @@ protected:
   void writeGyroRange(uint8_t new_gyro_range);
 
 private:
-  friend class Adafruit_ICM20X_Temp; ///< Gives access to private members to
-                                     ///< Temp data object
   friend class Adafruit_ICM20X_Accelerometer; ///< Gives access to private
                                               ///< members to Accelerometer
                                               ///< data object
   friend class Adafruit_ICM20X_Gyro; ///< Gives access to private members to
                                      ///< Gyro data object
+  friend class Adafruit_ICM20X_Magnetometer; ///< Gives access to private members to
+                                     ///< Magnetometer data object
 
-  void fillTempEvent(sensors_event_t *temp, uint32_t timestamp);
+  friend class Adafruit_ICM20X_Temp; ///< Gives access to private members to
+                                     ///< Temp data object
+
   void fillAccelEvent(sensors_event_t *accel, uint32_t timestamp);
   void fillGyroEvent(sensors_event_t *gyro, uint32_t timestamp);
+  void fillMagEvent(sensors_event_t *mag, uint32_t timestamp);
+  void fillTempEvent(sensors_event_t *temp, uint32_t timestamp);
 };
 
 #endif

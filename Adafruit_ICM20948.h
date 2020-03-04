@@ -38,6 +38,7 @@
 #define ICM20948_I2C_SLV4_DO 0x16
 #define ICM20948_I2C_SLV4_DI 0x17
 
+#define ICM20948_UT_PER_LSB 0.15
 
 /** The accelerometer data range */
 typedef enum {

@@ -2,15 +2,15 @@
 /*!
  *  @file Adafruit_ICM20X.cpp
  *
- *  @mainpage Adafruit ICM20X 6-DoF Wide-Range Accelerometer and Gyro library
+ *  @mainpage Adafruit ICM20X family motion sensor library
  *
  *  @section intro_sec Introduction
  *
- * 	I2C Driver for the Adafruit ICM20X 6-DoF Wide-Range Accelerometer and
- * Gyro library
+ * 	I2C Driver for the Adafruit ICM20X Family of motion sensors
  *
- * 	This is a library for the Adafruit ICM20X breakout:
+ * 	This is a library for the Adafruit ICM20X breakouts:
  * 	https://www.adafruit.com/product/4464
+ * 	https://www.adafruit.com/product/45XX
  *
  * 	Adafruit invests time and resources providing this open source code,
  *  please support Adafruit and open-source hardware by purchasing products from
@@ -48,12 +48,14 @@ Adafruit_ICM20X::Adafruit_ICM20X(void) {}
  *    @brief  Cleans up the ICM20X
  */
 Adafruit_ICM20X::~Adafruit_ICM20X(void) {
-  if (temp_sensor)
-    delete temp_sensor;
   if (accel_sensor)
     delete accel_sensor;
   if (gyro_sensor)
     delete gyro_sensor;
+  if (mag_sensor)
+    delete mag_sensor;
+  if (temp_sensor)
+    delete temp_sensor;
 }
 
 /*!
@@ -64,8 +66,7 @@ Adafruit_ICM20X::~Adafruit_ICM20X(void) {
  *            The Wire object to be used for I2C connections.
  *    @param  sensor_id
  *            An optional parameter to set the sensor ids to differentiate
- * similar sensors The passed value is assigned to the accelerometer and the
- * gyro get +1 and the temperature sensor +2.
+ * similar sensors The passed value is assigned to the accelerometer, the gyro gets +1, the magnetometer +2, and the temperature sensor +3.
  *    @return True if initialization was successful, otherwise false.
  */
 bool Adafruit_ICM20X::begin_I2C(uint8_t i2c_address, TwoWire *wire,
@@ -79,7 +80,7 @@ bool Adafruit_ICM20X::begin_I2C(uint8_t i2c_address, TwoWire *wire,
  *    @param  theSPI The SPI object to be used for SPI connections.
  *    @param  sensor_id An optional parameter to set the sensor ids to
  * differentiate similar sensors The passed value is assigned to the
- * accelerometer and the gyro get +1 and the temperature sensor +2.
+ * accelerometer, the gyro gets +1, the magnetometer +2, and the temperature sensor +3.
  *    @return True if initialization was successful, otherwise false.
  */
 bool Adafruit_ICM20X::begin_SPI(uint8_t cs_pin, SPIClass *theSPI,
@@ -111,7 +112,7 @@ bool Adafruit_ICM20X::begin_SPI(uint8_t cs_pin, SPIClass *theSPI,
  *    @param  mosi_pin The arduino pin # connected to SPI MOSI
  *    @param  sensor_id An optional parameter to set the sensor ids to
  * differentiate similar sensors The passed value is assigned to the
- * accelerometer and the gyro get +1 and the temperature sensor +2.
+ * accelerometer, the gyro gets +1, the magnetometer +2, and the temperature sensor +3.
  *    @return True if initialization was successful, otherwise false.
  */
 bool Adafruit_ICM20X::begin_SPI(int8_t cs_pin, int8_t sck_pin, int8_t miso_pin,
@@ -158,32 +159,25 @@ void Adafruit_ICM20X::reset(void) {
  *   @returns True if chip identified and initialized
  */
 bool Adafruit_ICM20X::_init(int32_t sensor_id) {
-
-  // Serial.println("*** _init()");
   Adafruit_BusIO_Register chip_id = Adafruit_BusIO_Register(
       i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_WHOAMI);
 
-  // Serial.println("*** Read Chip ID");
-
   _setBank(0);
   uint8_t chip_id_ = chip_id.read();
-  // Serial.print("ID = "); Serial.println(chip_id_, HEX);
 
-  // make sure we're talking to the right chip
   if ((chip_id_ != ICM20649_CHIP_ID) && (chip_id_ != ICM20948_CHIP_ID)) {
     return false;
   }
 
   _sensorid_accel = sensor_id;
   _sensorid_gyro = sensor_id + 1;
-  _sensorid_temp = sensor_id + 2;
-
-  // Serial.println("*** Reset");
+  _sensorid_mag = sensor_id + 2;
+  _sensorid_temp = sensor_id + 3;
 
   reset();
 
   Adafruit_BusIO_Register pwr_mgmt_1 = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_PWR_MGMT_1);  
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_PWR_MGMT_1);
   Adafruit_BusIO_Register lp_config = Adafruit_BusIO_Register(
       i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_LP_CONFIG);
 
@@ -208,39 +202,25 @@ bool Adafruit_ICM20X::_init(int32_t sensor_id) {
   Adafruit_BusIO_RegisterBits accel_filter_bit =
       Adafruit_BusIO_RegisterBits(&accel_config_1, 1, 0);
 
-
-  // Serial.println("*** out of default sleep");
-
-  sleep.write(false);    // take out of default sleep state
-
-  // Serial.println("*** auto select clock");
-
+  sleep.write(false); // take out of default sleep state
   clock_source.write(1); // AUTO SELECT BEST CLOCK
 
-  // Serial.println("*** set i2c master duty cycle mode");
   i2c_mst_cycle.write(1);
 
   init1();
 
-  // Serial.println("*** gyro range = 3");
-  // writeGyroRange(3);  // will set the top rate for either subclass
-  // Serial.println("*** accel range = 3");
-  // writeAccelRange(3); // will set the top rate for either subclass
-
-  // Serial.println("*** gyro rate = 100");
+  // writeGyroRange(3);
+  // writeAccelRange(3);
   // // 1100Hz/(1+10) = 100Hz
   // setGyroRateDivisor(10);
 
-  // Serial.println("*** accel rate = 53");
   // // # 1125Hz/(1+20) = 53.57Hz
   // setAccelRateDivisor(20);
 
   temp_sensor = new Adafruit_ICM20X_Temp(this);
   accel_sensor = new Adafruit_ICM20X_Accelerometer(this);
   gyro_sensor = new Adafruit_ICM20X_Gyro(this);
-  // _setBank(0);
   delay(20);
-  // Serial.println("*** _init done");
 
   return true;
 }
@@ -252,7 +232,7 @@ void Adafruit_ICM20X::init1(void){
 
   Adafruit_BusIO_Register accel_config_1 = Adafruit_BusIO_Register(
       i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_ACCEL_CONFIG_1);
-  
+
   Adafruit_BusIO_RegisterBits accel_filter_bit =
       Adafruit_BusIO_RegisterBits(&accel_config_1, 1, 0);
 
@@ -268,24 +248,14 @@ void Adafruit_ICM20X::init1(void){
   Adafruit_BusIO_RegisterBits gyro_filter_cnf =
       Adafruit_BusIO_RegisterBits(&gyro_config_1, 3, 3);
 
-      // Enable accel DLPF	WRITE:	0x14	0x1,
   _setBank(2);
 
 
-  // Serial.println("*** accel dlpf = 1");
   accel_filter_bit.write(1);
-    // Serial.println("*** gyro dlpf = 1");
   gyro_filter_bit.write(1);
-
-    // Serial.println("**accel dlpf bw=7");
   accel_filter_cnf.write(7);
-    // Serial.println("**gyro dlpf bw=7");
   gyro_filter_cnf.write(7);
-
-
-    // Serial.println("*** accel dlpf = 0");
   accel_filter_bit.write(0);
-    // Serial.println("*** gyro dlpf = 0");
   gyro_filter_bit.write(0);
 
 }
@@ -300,6 +270,10 @@ void Adafruit_ICM20X::init1(void){
             Pointer to an Adafruit Unified sensor_event_t object to be filled
             with gyro event data.
 
+    @param  mag
+            Pointer to an Adafruit Unified sensor_event_t object to be filled
+            with magnetometer event data.
+
     @param  temp
             Pointer to an Adafruit Unified sensor_event_t object to be filled
             with temperature event data.
@@ -307,36 +281,16 @@ void Adafruit_ICM20X::init1(void){
     @return True on successful read
 */
 /**************************************************************************/
-bool Adafruit_ICM20X::getEvent(sensors_event_t *accel, sensors_event_t *gyro,
-                               sensors_event_t *temp) {
+bool Adafruit_ICM20X:: getEvent(sensors_event_t *accel, sensors_event_t *gyro, sensors_event_t *mag, sensors_event_t *temp) {
   uint32_t t = millis();
   _read();
 
   // use helpers to fill in the events
   fillAccelEvent(accel, t);
   fillGyroEvent(gyro, t);
+  fillMagEvent(mag, t);
   fillTempEvent(temp, t);
   return true;
-}
-
-void Adafruit_ICM20X::fillTempEvent(sensors_event_t *temp, uint32_t timestamp) {
-
-  memset(temp, 0, sizeof(sensors_event_t));
-  temp->version = sizeof(sensors_event_t);
-  temp->sensor_id = _sensorid_temp;
-  temp->type = SENSOR_TYPE_AMBIENT_TEMPERATURE;
-  temp->timestamp = timestamp;
-  temp->temperature = (temperature / 333.87) + 21.0;
-}
-void Adafruit_ICM20X::fillGyroEvent(sensors_event_t *gyro, uint32_t timestamp) {
-  memset(gyro, 0, sizeof(sensors_event_t));
-  gyro->version = 1;
-  gyro->sensor_id = _sensorid_gyro;
-  gyro->type = SENSOR_TYPE_GYROSCOPE;
-  gyro->timestamp = timestamp;
-  gyro->gyro.x = gyroX * SENSORS_DPS_TO_RADS;
-  gyro->gyro.y = gyroY * SENSORS_DPS_TO_RADS;
-  gyro->gyro.z = gyroZ * SENSORS_DPS_TO_RADS;
 }
 
 void Adafruit_ICM20X::fillAccelEvent(sensors_event_t *accel,
@@ -352,6 +306,37 @@ void Adafruit_ICM20X::fillAccelEvent(sensors_event_t *accel,
   accel->acceleration.z = accZ * SENSORS_GRAVITY_EARTH;
 }
 
+void Adafruit_ICM20X::fillGyroEvent(sensors_event_t *gyro, uint32_t timestamp) {
+  memset(gyro, 0, sizeof(sensors_event_t));
+  gyro->version = 1;
+  gyro->sensor_id = _sensorid_gyro;
+  gyro->type = SENSOR_TYPE_GYROSCOPE;
+  gyro->timestamp = timestamp;
+  gyro->gyro.x = gyroX * SENSORS_DPS_TO_RADS;
+  gyro->gyro.y = gyroY * SENSORS_DPS_TO_RADS;
+  gyro->gyro.z = gyroZ * SENSORS_DPS_TO_RADS;
+}
+
+void Adafruit_ICM20X::fillMagEvent(sensors_event_t *mag, uint32_t timestamp) {
+  memset(mag, 0, sizeof(sensors_event_t));
+  mag->version = 1;
+  mag->sensor_id = _sensorid_mag;
+  mag->type = SENSOR_TYPE_MAGNETIC_FIELD;
+  mag->timestamp = timestamp;
+  mag->magnetic.x = magX; // magic number!
+  mag->magnetic.y = magY;
+  mag->magnetic.z = magZ;
+}
+
+void Adafruit_ICM20X::fillTempEvent(sensors_event_t *temp, uint32_t timestamp) {
+
+  memset(temp, 0, sizeof(sensors_event_t));
+  temp->version = sizeof(sensors_event_t);
+  temp->sensor_id = _sensorid_temp;
+  temp->type = SENSOR_TYPE_AMBIENT_TEMPERATURE;
+  temp->timestamp = timestamp;
+  temp->temperature = (temperature / 333.87) + 21.0;
+}
 /******************* Adafruit_Sensor functions *****************/
 /*!
  *     @brief  Updates the measurement data for all sensors simultaneously
@@ -380,12 +365,10 @@ void Adafruit_ICM20X::_read(void) {
   temperature = buffer[12] << 8 | buffer[13];
 
 	//rawMagStat1 = buffer[14];
-	rawMagX = ((buffer[16] << 8) | (buffer[15] & 0xFF));//* 0.15//Mag data is read little endian
-	rawMagY = ((buffer[18] << 8) | (buffer[17] & 0xFF));//* 0.15
-	rawMagZ = ((buffer[20] << 8) | (buffer[19] & 0xFF));//* 0.15
-  // Serial.print("magx: ");Serial.println(rawMagX*0.15);
-  // Serial.print("magy: ");Serial.println(rawMagY*0.15);
-  // Serial.print("magz: ");Serial.println(rawMagZ*0.15);
+	rawMagX = ((buffer[16] << 8) | (buffer[15] & 0xFF));//Mag data is read little endian
+	rawMagY = ((buffer[18] << 8) | (buffer[17] & 0xFF));
+	rawMagZ = ((buffer[20] << 8) | (buffer[19] & 0xFF));
+
 	//rawMagStat2 = buffer[22];
 
   _scale_values();
@@ -652,6 +635,42 @@ void Adafruit_ICM20X::setI2CBypass(bool bypass_i2c) {
 }
 /**************************************************************************/
 /*!
+    @brief  Gets the sensor_t data for the ICM20X's accelerometer
+*/
+/**************************************************************************/
+void Adafruit_ICM20X_Accelerometer::getSensor(sensor_t *sensor) {
+  /* Clear the sensor_t object */
+  memset(sensor, 0, sizeof(sensor_t));
+
+  /* Insert the sensor name in the fixed length char array */
+  strncpy(sensor->name, "ICM20X_A", sizeof(sensor->name) - 1);
+  sensor->name[sizeof(sensor->name) - 1] = 0;
+  sensor->version = 1;
+  sensor->sensor_id = _sensorID;
+  sensor->type = SENSOR_TYPE_ACCELEROMETER;
+  sensor->min_delay = 0;
+  sensor->min_value = -294.1995F; /*  -30g = 294.1995 m/s^2  */
+  sensor->max_value = 294.1995F;  /* 30g = 294.1995 m/s^2  */
+  sensor->resolution =
+      0.122; /* 8192LSB/1000 mG -> 8.192 LSB/ mG => 0.122 mG/LSB at +-4g */
+}
+
+/**************************************************************************/
+/*!
+    @brief  Gets the accelerometer as a standard sensor event
+    @param  event Sensor event object that will be populated
+    @returns True
+*/
+/**************************************************************************/
+bool Adafruit_ICM20X_Accelerometer::getEvent(sensors_event_t *event) {
+  _theICM20X->_read();
+  _theICM20X->fillAccelEvent(event, millis());
+
+  return true;
+}
+
+/**************************************************************************/
+/*!
     @brief  Gets the sensor_t data for the ICM20X's gyroscope sensor
 */
 /**************************************************************************/
@@ -687,36 +706,35 @@ bool Adafruit_ICM20X_Gyro::getEvent(sensors_event_t *event) {
 
 /**************************************************************************/
 /*!
-    @brief  Gets the sensor_t data for the ICM20X's accelerometer
+    @brief  Gets the sensor_t data for the ICM20X's magnetometer sensor
 */
 /**************************************************************************/
-void Adafruit_ICM20X_Accelerometer::getSensor(sensor_t *sensor) {
+void Adafruit_ICM20X_Magnetometer::getSensor(sensor_t *sensor) {
   /* Clear the sensor_t object */
   memset(sensor, 0, sizeof(sensor_t));
 
   /* Insert the sensor name in the fixed length char array */
-  strncpy(sensor->name, "ICM20X_A", sizeof(sensor->name) - 1);
+  strncpy(sensor->name, "ICM20X_M", sizeof(sensor->name) - 1);
   sensor->name[sizeof(sensor->name) - 1] = 0;
   sensor->version = 1;
   sensor->sensor_id = _sensorID;
-  sensor->type = SENSOR_TYPE_ACCELEROMETER;
+  sensor->type = SENSOR_TYPE_MAGNETIC_FIELD;
   sensor->min_delay = 0;
-  sensor->min_value = -294.1995F; /*  -30g = 294.1995 m/s^2  */
-  sensor->max_value = 294.1995F;  /* 30g = 294.1995 m/s^2  */
-  sensor->resolution =
-      0.122; /* 8192LSB/1000 mG -> 8.192 LSB/ mG => 0.122 mG/LSB at +-4g */
+  // sensor->min_value = -69.81; /* -4000 dps -> rad/s (radians per second) */
+  // sensor->max_value = +69.81;
+  // sensor->resolution = 2.665e-7; /* 65.5 LSB/DPS */
 }
 
 /**************************************************************************/
 /*!
-    @brief  Gets the accelerometer as a standard sensor event
+    @brief  Gets the magnetometer as a standard sensor event
     @param  event Sensor event object that will be populated
     @returns True
 */
 /**************************************************************************/
-bool Adafruit_ICM20X_Accelerometer::getEvent(sensors_event_t *event) {
+bool Adafruit_ICM20X_Magnetometer::getEvent(sensors_event_t *event) {
   _theICM20X->_read();
-  _theICM20X->fillAccelEvent(event, millis());
+  _theICM20X->fillMagEvent(event, millis());
 
   return true;
 }
