@@ -54,15 +54,13 @@ bool Adafruit_ICM20948::begin_I2C(uint8_t i2c_address, TwoWire *wire,
 
   _setBank(3);
 
-
   buffer[0] = ICM20948_I2C_MST_CTRL;
   buffer[1] = 0x17;
   if (!i2c_dev->write(buffer, 2)) {
     return false;
   }
 
-
-   _setBank(0);
+  _setBank(0);
 
   buffer[0] = ICM20X_USER_CTRL;
   buffer[1] = 0x20;
@@ -70,22 +68,21 @@ bool Adafruit_ICM20948::begin_I2C(uint8_t i2c_address, TwoWire *wire,
     return false;
   }
 
-uint8_t idl, idh;
-idl = _read_ext_reg(0x8C, 0x00);
-idh = _read_ext_reg(0x8C, 0x01);
-// Serial.println("REad idH: 0x");
-// Serial.println(idl, HEX);
-// Serial.println("REad idL: 0x");
-// Serial.println(idh, HEX);
+  uint8_t idl, idh;
+  idl = _read_ext_reg(0x8C, 0x00);
+  idh = _read_ext_reg(0x8C, 0x01);
+  // Serial.println("REad idH: 0x");
+  // Serial.println(idl, HEX);
+  // Serial.println("REad idL: 0x");
+  // Serial.println(idh, HEX);
 
-_setBank(3);
+  _setBank(3);
 
   buffer[0] = ICM20948_I2C_SLV4_ADDR;
   buffer[1] = 0x0C;
   if (!i2c_dev->write(buffer, 2)) {
     return false;
   }
-
 
   buffer[0] = ICM20948_I2C_SLV4_REG;
   buffer[1] = 0x31;
@@ -105,12 +102,11 @@ _setBank(3);
     return false;
   }
 
-
   _setBank(0);
   uint8_t addrbuffer[2] = {(uint8_t)ICM20948_I2C_MST_STATUS, (uint8_t)0};
   buffer[0] = 0;
   buffer[1] = 0;
-  while (buffer[0] != 0x40){
+  while (buffer[0] != 0x40) {
     i2c_dev->write_then_read(addrbuffer, 1, buffer, 1);
     delay(100);
   }
@@ -138,15 +134,12 @@ _setBank(3);
   return init_success;
 }
 
-bool Adafruit_ICM20948::_setupMag(void){
-
-
+bool Adafruit_ICM20948::_setupMag(void) {
 
   uint8_t buffer[2];
 
   // SETUP DATA RATE FOR SLAVE4
   _setBank(3);
-
 
   buffer[0] = ICM20948_I2C_SLV4_ADDR;
   buffer[1] = 0x0C;
@@ -175,14 +168,14 @@ bool Adafruit_ICM20948::_setupMag(void){
   uint8_t addrbuffer[2] = {(uint8_t)ICM20948_I2C_MST_STATUS, (uint8_t)0};
   buffer[0] = 0;
   buffer[1] = 0;
-  while (buffer[0] != 0x40){
+  while (buffer[0] != 0x40) {
 
     i2c_dev->write_then_read(addrbuffer, 1, buffer, 1);
     delay(100);
   }
 
   _setBank(3);
- 
+
   buffer[0] = ICM20948_I2C_SLV0_ADDR;
   buffer[1] = 0x8C;
   if (!i2c_dev->write(buffer, 2)) {
@@ -204,7 +197,6 @@ bool Adafruit_ICM20948::_setupMag(void){
   }
 
   return true;
-
 }
 uint8_t Adafruit_ICM20948::_read_ext_reg(uint8_t slv_addr, uint8_t reg_addr) {
 
@@ -235,12 +227,12 @@ uint8_t Adafruit_ICM20948::_read_ext_reg(uint8_t slv_addr, uint8_t reg_addr) {
   uint8_t addrbuffer[2] = {(uint8_t)ICM20948_I2C_MST_STATUS, (uint8_t)0};
   buffer[0] = 0;
   buffer[1] = 0;
-  while (buffer[0] != 0x40){
+  while (buffer[0] != 0x40) {
     i2c_dev->write_then_read(addrbuffer, 1, buffer, 1);
     delay(100);
   }
 
- _setBank(3);
+  _setBank(3);
   addrbuffer[0] = (uint8_t)ICM20948_I2C_SLV4_DI;
   buffer[0] = 0;
   buffer[1] = 0;
@@ -284,7 +276,6 @@ void Adafruit_ICM20948::_scale_values(void) {
   magX = rawMagX * ICM20948_UT_PER_LSB;
   magY = rawMagY * ICM20948_UT_PER_LSB;
   magZ = rawMagZ * ICM20948_UT_PER_LSB;
-
 }
 
 /**************************************************************************/

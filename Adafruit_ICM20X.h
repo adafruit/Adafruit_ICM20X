@@ -26,8 +26,8 @@
 
 // Bank 0
 #define ICM20X_WHOAMI 0x00           ///< Chip ID register
-#define ICM20X_USER_CTRL 0x03           ///< Chip ID register
-#define ICM20X_LP_CONFIG 0x05           ///< Chip ID register
+#define ICM20X_USER_CTRL 0x03        ///< Chip ID register
+#define ICM20X_LP_CONFIG 0x05        ///< Chip ID register
 #define ICM20X_REG_INT_PIN_CFG 0xF   ///< Interrupt config register
 #define ICM20X_REG_INT_ENABLE 0x10   ///< Interrupt enable register 0
 #define ICM20X_REG_INT_ENABLE_1 0x11 ///< Interrupt enable register 1
@@ -38,7 +38,7 @@
 
 // Bank 2
 #define ICM20X_GYRO_SMPLRT_DIV 0x00    ///< Gyroscope data rate divisor
-#define ICM20X_GYRO_CONFIG_1  0x01      ///< Gyro config for range setting
+#define ICM20X_GYRO_CONFIG_1 0x01      ///< Gyro config for range setting
 #define ICM20X_ACCEL_SMPLRT_DIV_1 0x10 ///< Accel data rate divisor MSByte
 #define ICM20X_ACCEL_SMPLRT_DIV_2 0x11 ///< Accel data rate divisor LSByte
 #define ICM20X_ACCEL_CONFIG_1 0x14     ///< Accel config for setting range
@@ -49,7 +49,6 @@
 /////////////////////////////////////////
 
 class Adafruit_ICM20X;
-
 
 /** Adafruit Unified Sensor interface for accelerometer component of ICM20X */
 class Adafruit_ICM20X_Accelerometer : public Adafruit_Sensor {
@@ -85,7 +84,8 @@ private:
 /** Adafruit Unified Sensor interface for magnetometer component of ICM20X */
 class Adafruit_ICM20X_Magnetometer : public Adafruit_Sensor {
 public:
-  /** @brief Create an Adafruit_Sensor compatible object for the magnetometer sensor
+  /** @brief Create an Adafruit_Sensor compatible object for the magnetometer
+     sensor
       @param parent A pointer to the ICM20X class */
   Adafruit_ICM20X_Magnetometer(Adafruit_ICM20X *parent) { _theICM20X = parent; }
   bool getEvent(sensors_event_t *);
@@ -119,15 +119,13 @@ public:
   Adafruit_ICM20X();
   ~Adafruit_ICM20X();
 
-  void init1(void);
-
   bool begin_SPI(uint8_t cs_pin, SPIClass *theSPI = &SPI,
                  int32_t sensor_id = 0);
   bool begin_SPI(int8_t cs_pin, int8_t sck_pin, int8_t miso_pin,
                  int8_t mosi_pin, int32_t sensor_id = 0);
 
-  bool getEvent(sensors_event_t *accel, sensors_event_t *gyro, sensors_event_t *mag,
-                sensors_event_t *temp);
+  bool getEvent(sensors_event_t *accel, sensors_event_t *gyro,
+                sensors_event_t *mag, sensors_event_t *temp);
 
   uint8_t getGyroRateDivisor(void);
   void setGyroRateDivisor(uint8_t new_gyro_divisor);
@@ -144,6 +142,7 @@ public:
   Adafruit_Sensor *getGyroSensor(void);
   Adafruit_Sensor *getMagnetometerSensor(void);
   Adafruit_Sensor *getTemperatureSensor(void);
+
 protected:
   float temperature, ///< Last reading's temperature (C)
       accX,          ///< Last reading's accelerometer X axis m/s^2
@@ -152,21 +151,23 @@ protected:
       gyroX,         ///< Last reading's gyro X axis in rad/s
       gyroY,         ///< Last reading's gyro Y axis in rad/s
       gyroZ,         ///< Last reading's gyro Z axis in rad/s
-      magX,         ///< Last reading's mag X axis in rad/s
-      magY,         ///< Last reading's mag Y axis in rad/s
-      magZ;         ///< Last reading's mag Z axis in rad/s
+      magX,          ///< Last reading's mag X axis in rad/s
+      magY,          ///< Last reading's mag Y axis in rad/s
+      magZ;          ///< Last reading's mag Z axis in rad/s
 
   Adafruit_I2CDevice *i2c_dev = NULL; ///< Pointer to I2C bus interface
   Adafruit_SPIDevice *spi_dev = NULL; ///< Pointer to SPI bus interface
 
-  Adafruit_ICM20X_Accelerometer *accel_sensor = NULL;///< Accelerometer data object
+  Adafruit_ICM20X_Accelerometer *accel_sensor =
+      NULL;                                 ///< Accelerometer data object
   Adafruit_ICM20X_Gyro *gyro_sensor = NULL; ///< Gyro data object
-  Adafruit_ICM20X_Magnetometer *mag_sensor = NULL; ///< Magnetometer sensor data object
+  Adafruit_ICM20X_Magnetometer *mag_sensor =
+      NULL;                                 ///< Magnetometer sensor data object
   Adafruit_ICM20X_Temp *temp_sensor = NULL; ///< Temp sensor data object
-  uint16_t _sensorid_accel, ///< ID number for accelerometer
-      _sensorid_gyro,       ///< ID number for gyro
-      _sensorid_mag,       ///< ID number for mag
-      _sensorid_temp;       ///< ID number for temperature
+  uint16_t _sensorid_accel,                 ///< ID number for accelerometer
+      _sensorid_gyro,                       ///< ID number for gyro
+      _sensorid_mag,                        ///< ID number for mag
+      _sensorid_temp;                       ///< ID number for temperature
 
   void _read(void);
   virtual void _scale_values(void);
@@ -181,9 +182,9 @@ protected:
       rawGyroX,    ///< temp variables
       rawGyroY,    ///< temp variables
       rawGyroZ,    ///< temp variables
-      rawMagX,    ///< temp variables
-      rawMagY,    ///< temp variables
-      rawMagZ;    ///< temp variables
+      rawMagX,     ///< temp variables
+      rawMagY,     ///< temp variables
+      rawMagZ;     ///< temp variables
 
   // virtual void _setBank(uint8_t bank_number);
   void _setBank(uint8_t bank_number);
@@ -195,13 +196,15 @@ protected:
   void writeGyroRange(uint8_t new_gyro_range);
 
 private:
+  void init1(void);
   friend class Adafruit_ICM20X_Accelerometer; ///< Gives access to private
                                               ///< members to Accelerometer
                                               ///< data object
   friend class Adafruit_ICM20X_Gyro; ///< Gives access to private members to
                                      ///< Gyro data object
-  friend class Adafruit_ICM20X_Magnetometer; ///< Gives access to private members to
-                                     ///< Magnetometer data object
+  friend class Adafruit_ICM20X_Magnetometer; ///< Gives access to private
+                                             ///< members to Magnetometer data
+                                             ///< object
 
   friend class Adafruit_ICM20X_Temp; ///< Gives access to private members to
                                      ///< Temp data object

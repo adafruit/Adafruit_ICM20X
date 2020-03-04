@@ -66,7 +66,8 @@ Adafruit_ICM20X::~Adafruit_ICM20X(void) {
  *            The Wire object to be used for I2C connections.
  *    @param  sensor_id
  *            An optional parameter to set the sensor ids to differentiate
- * similar sensors The passed value is assigned to the accelerometer, the gyro gets +1, the magnetometer +2, and the temperature sensor +3.
+ * similar sensors The passed value is assigned to the accelerometer, the gyro
+ * gets +1, the magnetometer +2, and the temperature sensor +3.
  *    @return True if initialization was successful, otherwise false.
  */
 bool Adafruit_ICM20X::begin_I2C(uint8_t i2c_address, TwoWire *wire,
@@ -80,7 +81,8 @@ bool Adafruit_ICM20X::begin_I2C(uint8_t i2c_address, TwoWire *wire,
  *    @param  theSPI The SPI object to be used for SPI connections.
  *    @param  sensor_id An optional parameter to set the sensor ids to
  * differentiate similar sensors The passed value is assigned to the
- * accelerometer, the gyro gets +1, the magnetometer +2, and the temperature sensor +3.
+ * accelerometer, the gyro gets +1, the magnetometer +2, and the temperature
+ * sensor +3.
  *    @return True if initialization was successful, otherwise false.
  */
 bool Adafruit_ICM20X::begin_SPI(uint8_t cs_pin, SPIClass *theSPI,
@@ -112,7 +114,8 @@ bool Adafruit_ICM20X::begin_SPI(uint8_t cs_pin, SPIClass *theSPI,
  *    @param  mosi_pin The arduino pin # connected to SPI MOSI
  *    @param  sensor_id An optional parameter to set the sensor ids to
  * differentiate similar sensors The passed value is assigned to the
- * accelerometer, the gyro gets +1, the magnetometer +2, and the temperature sensor +3.
+ * accelerometer, the gyro gets +1, the magnetometer +2, and the temperature
+ * sensor +3.
  *    @return True if initialization was successful, otherwise false.
  */
 bool Adafruit_ICM20X::begin_SPI(int8_t cs_pin, int8_t sck_pin, int8_t miso_pin,
@@ -190,7 +193,6 @@ bool Adafruit_ICM20X::_init(int32_t sensor_id) {
   Adafruit_BusIO_RegisterBits i2c_mst_cycle =
       Adafruit_BusIO_RegisterBits(&lp_config, 1, 6);
 
-
   Adafruit_BusIO_Register gyro_config_1 = Adafruit_BusIO_Register(
       i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_GYRO_CONFIG_1);
 
@@ -202,7 +204,7 @@ bool Adafruit_ICM20X::_init(int32_t sensor_id) {
   Adafruit_BusIO_RegisterBits accel_filter_bit =
       Adafruit_BusIO_RegisterBits(&accel_config_1, 1, 0);
 
-  sleep.write(false); // take out of default sleep state
+  sleep.write(false);    // take out of default sleep state
   clock_source.write(1); // AUTO SELECT BEST CLOCK
 
   i2c_mst_cycle.write(1);
@@ -225,7 +227,7 @@ bool Adafruit_ICM20X::_init(int32_t sensor_id) {
   return true;
 }
 
-void Adafruit_ICM20X::init1(void){
+void Adafruit_ICM20X::init1(void) {
 
   Adafruit_BusIO_Register gyro_config_1 = Adafruit_BusIO_Register(
       i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_GYRO_CONFIG_1);
@@ -236,20 +238,16 @@ void Adafruit_ICM20X::init1(void){
   Adafruit_BusIO_RegisterBits accel_filter_bit =
       Adafruit_BusIO_RegisterBits(&accel_config_1, 1, 0);
 
-
   Adafruit_BusIO_RegisterBits accel_filter_cnf =
       Adafruit_BusIO_RegisterBits(&accel_config_1, 3, 3);
 
-
   Adafruit_BusIO_RegisterBits gyro_filter_bit =
       Adafruit_BusIO_RegisterBits(&gyro_config_1, 1, 0);
-
 
   Adafruit_BusIO_RegisterBits gyro_filter_cnf =
       Adafruit_BusIO_RegisterBits(&gyro_config_1, 3, 3);
 
   _setBank(2);
-
 
   accel_filter_bit.write(1);
   gyro_filter_bit.write(1);
@@ -257,7 +255,6 @@ void Adafruit_ICM20X::init1(void){
   gyro_filter_cnf.write(7);
   accel_filter_bit.write(0);
   gyro_filter_bit.write(0);
-
 }
 /**************************************************************************/
 /*!
@@ -281,7 +278,8 @@ void Adafruit_ICM20X::init1(void){
     @return True on successful read
 */
 /**************************************************************************/
-bool Adafruit_ICM20X:: getEvent(sensors_event_t *accel, sensors_event_t *gyro, sensors_event_t *mag, sensors_event_t *temp) {
+bool Adafruit_ICM20X::getEvent(sensors_event_t *accel, sensors_event_t *gyro,
+                               sensors_event_t *mag, sensors_event_t *temp) {
   uint32_t t = millis();
   _read();
 
@@ -346,7 +344,7 @@ void Adafruit_ICM20X::_read(void) {
 
   _setBank(0);
 
-	const uint8_t numbytes = 14 + 9; //Read Accel, gyro, temp, and 9 bytes of mag
+  const uint8_t numbytes = 14 + 9; // Read Accel, gyro, temp, and 9 bytes of mag
 
   Adafruit_BusIO_Register data_reg = Adafruit_BusIO_Register(
       i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_ACCEL_XOUT_H, numbytes);
@@ -364,12 +362,13 @@ void Adafruit_ICM20X::_read(void) {
 
   temperature = buffer[12] << 8 | buffer[13];
 
-	//rawMagStat1 = buffer[14];
-	rawMagX = ((buffer[16] << 8) | (buffer[15] & 0xFF));//Mag data is read little endian
-	rawMagY = ((buffer[18] << 8) | (buffer[17] & 0xFF));
-	rawMagZ = ((buffer[20] << 8) | (buffer[19] & 0xFF));
+  // rawMagStat1 = buffer[14];
+  rawMagX = ((buffer[16] << 8) |
+             (buffer[15] & 0xFF)); // Mag data is read little endian
+  rawMagY = ((buffer[18] << 8) | (buffer[17] & 0xFF));
+  rawMagZ = ((buffer[20] << 8) | (buffer[19] & 0xFF));
 
-	//rawMagStat2 = buffer[22];
+  // rawMagStat2 = buffer[22];
 
   _scale_values();
   _setBank(0);
@@ -379,14 +378,6 @@ void Adafruit_ICM20X::_read(void) {
  *
  */
 void Adafruit_ICM20X::_scale_values(void) {}
-
-/*!
-    @brief  Gets an Adafruit Unified Sensor object for the temp sensor component
-    @return Adafruit_Sensor pointer to temperature sensor
- */
-Adafruit_Sensor *Adafruit_ICM20X::getTemperatureSensor(void) {
-  return temp_sensor;
-}
 
 /*!
     @brief  Gets an Adafruit Unified Sensor object for the accelerometer
@@ -403,6 +394,22 @@ Adafruit_Sensor *Adafruit_ICM20X::getAccelerometerSensor(void) {
  */
 Adafruit_Sensor *Adafruit_ICM20X::getGyroSensor(void) { return gyro_sensor; }
 
+/*!
+    @brief  Gets an Adafruit Unified Sensor object for the magnetometer sensor
+   component
+    @return Adafruit_Sensor pointer to magnetometer sensor
+ */
+Adafruit_Sensor *Adafruit_ICM20X::getMagnetometerSensor(void) {
+  return mag_sensor;
+}
+
+/*!
+    @brief  Gets an Adafruit Unified Sensor object for the temp sensor component
+    @return Adafruit_Sensor pointer to temperature sensor
+ */
+Adafruit_Sensor *Adafruit_ICM20X::getTemperatureSensor(void) {
+  return temp_sensor;
+}
 /**************************************************************************/
 /*!
     @brief Sets register bank.
