@@ -35,16 +35,13 @@ bool Adafruit_ICM20948::begin_I2C(uint8_t i2c_address, TwoWire *wire,
     Serial.println("I2C begin Failed");
     return false;
   }
-  if (! _setupMag()){
-    Serial.println("failed to setup mag");
-    return false;
-  } 
   bool init_success = _init(sensor_id);
   Serial.print("done with init: ");Serial.println(init_success);
   if (! _setupMag()){
     Serial.println("failed to setup mag");
     return false;
-  }
+  } 
+
   return init_success;
 }
 
