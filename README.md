@@ -2,8 +2,11 @@
 
 This is the Adafruit ICM20649 Wide-Range 6-DoF Accelerometer and Gyroscope Library for Arduino
 
-Tested and works great with the Adafruit ICM20649 Breakout Board 
-[<img src="assets/board.png?raw=true" width="500px">](https://www.adafruit.com/products/4464)
+Tested and works great with the following Adafruit ICM20X Family Breakout Boards:
+*Adafruit ICM-20649 Wide-Range 6-DoF Accelerometer and Gyroscope Breakout*:
+[<img src="assets/649.jpg?raw=true" width="500px">](https://www.adafruit.com/products/4464)
+*dafruit ICM-20948 9-DoF IMU Breakout*:
+[<img src="assets/948.png?raw=true" width="500px">](https://www.adafruit.com/products/4554)
 
 
 This chip uses I2C to communicate, 2 pins are required to interface
@@ -28,7 +31,7 @@ https://learn.adafruit.com/the-well-automated-arduino-library/doxygen
 
 https://learn.adafruit.com/the-well-automated-arduino-library/doxygen-tips
 
-Written by Bryan Siepert for Adafruit Industries.  
+Written by Bryan Siepert for Adafruit Industries.
 BSD license, check license.txt for more information
 All text above must be included in any redistribution
 
