@@ -222,6 +222,7 @@ bool Adafruit_ICM20X::_init(int32_t sensor_id) {
   temp_sensor = new Adafruit_ICM20X_Temp(this);
   accel_sensor = new Adafruit_ICM20X_Accelerometer(this);
   gyro_sensor = new Adafruit_ICM20X_Gyro(this);
+  mag_sensor = new Adafruit_ICM20X_Magnetometer(this);
   delay(20);
 
   return true;
