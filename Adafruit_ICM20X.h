@@ -4,8 +4,9 @@
  * 	I2C Driver for the Adafruit ICM20X 6-DoF Wide-Range Accelerometer and
  *Gyro library
  *
- * 	This is a library for the Adafruit ICM20X breakout:
- * 	https://www.adafruit.com/products/4464
+ * 	This is a library for the Adafruit ICM20X breakouts:
+ * 	https://www.adafruit.com/product/4464
+ * 	https://www.adafruit.com/product/4554
  *
  * 	Adafruit invests time and resources providing this open source code,
  *  please support Adafruit and open-source hardware by purchasing products from

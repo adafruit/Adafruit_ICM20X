@@ -5,7 +5,7 @@
  *Magnetometer library
  *
  * 	This is a library for the Adafruit ICM20948 breakout:
- * 	https://www.adafruit.com/products/4544
+ * 	https://www.adafruit.com/products/4554
  *
  * 	Adafruit invests time and resources providing this open source code,
  *  please support Adafruit and open-source hardware by purchasing products from
@@ -20,7 +20,7 @@
 
 #include "Adafruit_ICM20X.h"
 #define ICM20948_I2CADDR_DEFAULT 0x69 ///< ICM20948 default i2c address
-
+#define ICM20948_MAG_ID 0x09 ///< The chip ID for the magnetometer
 // Bank 0
 #define ICM20948_I2C_MST_STATUS                                                \
   0x17 ///< Records if I2C master bus data is finished
@@ -79,9 +79,12 @@ public:
   void setGyroRange(icm20948_gyro_range_t new_gyro_range);
 
 private:
-  uint8_t _read_ext_reg(uint8_t slv_addr, uint8_t reg_addr);
+  uint8_t _read_ext_reg(uint8_t slv_addr, uint8_t reg_addr, uint8_t num_tries=5);
+  bool _write_ext_reg(uint8_t slv_addr, uint8_t reg_addr, uint8_t value, uint8_t num_tries=5);
+
   bool _setupMag(void);
   void _scale_values(void);
+  void _resetI2CMaster(void);
 };
 
 #endif

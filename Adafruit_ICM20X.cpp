@@ -10,7 +10,7 @@
  *
  * 	This is a library for the Adafruit ICM20X breakouts:
  * 	https://www.adafruit.com/product/4464
- * 	https://www.adafruit.com/product/45XX
+ * 	https://www.adafruit.com/product/4554
  *
  * 	Adafruit invests time and resources providing this open source code,
  *  please support Adafruit and open-source hardware by purchasing products from
@@ -347,6 +347,7 @@ void Adafruit_ICM20X::_read(void) {
 
   _setBank(0);
 
+  // reading 9 bytes of mag data to fetch the register that tells the mag we've read all the data
   const uint8_t numbytes = 14 + 9; // Read Accel, gyro, temp, and 9 bytes of mag
 
   Adafruit_BusIO_Register data_reg = Adafruit_BusIO_Register(
@@ -365,13 +366,10 @@ void Adafruit_ICM20X::_read(void) {
 
   temperature = buffer[12] << 8 | buffer[13];
 
-  // rawMagStat1 = buffer[14];
   rawMagX = ((buffer[16] << 8) |
              (buffer[15] & 0xFF)); // Mag data is read little endian
   rawMagY = ((buffer[18] << 8) | (buffer[17] & 0xFF));
   rawMagZ = ((buffer[20] << 8) | (buffer[19] & 0xFF));
-
-  // rawMagStat2 = buffer[22];
 
   _scale_values();
   _setBank(0);
@@ -424,10 +422,7 @@ void Adafruit_ICM20X::_setBank(uint8_t bank_number) {
   Adafruit_BusIO_Register reg_bank_sel = Adafruit_BusIO_Register(
       i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_REG_BANK_SEL);
 
-  Adafruit_BusIO_RegisterBits bank =
-      Adafruit_BusIO_RegisterBits(&reg_bank_sel, 2, 4);
-
-  bank.write(bank_number);
+  reg_bank_sel.write((bank_number & 0b11) << 4);
 }
 
 /**************************************************************************/
@@ -730,9 +725,9 @@ void Adafruit_ICM20X_Magnetometer::getSensor(sensor_t *sensor) {
   sensor->sensor_id = _sensorID;
   sensor->type = SENSOR_TYPE_MAGNETIC_FIELD;
   sensor->min_delay = 0;
-  // sensor->min_value = -69.81; /* -4000 dps -> rad/s (radians per second) */
-  // sensor->max_value = +69.81;
-  // sensor->resolution = 2.665e-7; /* 65.5 LSB/DPS */
+  sensor->min_value = -4900;
+  sensor->max_value = 4900;
+  sensor->resolution = 0.6667;
 }
 
 /**************************************************************************/
