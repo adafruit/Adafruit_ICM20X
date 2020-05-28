@@ -27,8 +27,8 @@
 
 // Bank 0
 #define ICM20X_WHOAMI 0x00           ///< Chip ID register
-#define ICM20X_USER_CTRL 0x03        ///< Chip ID register
-#define ICM20X_LP_CONFIG 0x05        ///< Chip ID register
+#define ICM20X_USER_CTRL 0x03        ///< User Control Reg. Includes I2C Master
+#define ICM20X_LP_CONFIG 0x05        ///< Low Power config
 #define ICM20X_REG_INT_PIN_CFG 0xF   ///< Interrupt config register
 #define ICM20X_REG_INT_ENABLE 0x10   ///< Interrupt enable register 0
 #define ICM20X_REG_INT_ENABLE_1 0x11 ///< Interrupt enable register 1

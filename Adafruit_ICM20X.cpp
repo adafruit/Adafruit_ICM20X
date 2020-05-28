@@ -204,8 +204,9 @@ bool Adafruit_ICM20X::_init(int32_t sensor_id) {
   Adafruit_BusIO_RegisterBits accel_filter_bit =
       Adafruit_BusIO_RegisterBits(&accel_config_1, 1, 0);
 
-  sleep.write(false);    // take out of default sleep state
-  clock_source.write(1); // AUTO SELECT BEST CLOCK
+  sleep.write(false); // take out of default sleep state
+  // AUTO SELECT BEST CLOCK, required by DS to meet specs
+  clock_source.write(1);
 
   i2c_mst_cycle.write(1);
 
@@ -348,7 +349,8 @@ void Adafruit_ICM20X::_read(void) {
 
   _setBank(0);
 
-  // reading 9 bytes of mag data to fetch the register that tells the mag we've read all the data
+  // reading 9 bytes of mag data to fetch the register that tells the mag we've
+  // read all the data
   const uint8_t numbytes = 14 + 9; // Read Accel, gyro, temp, and 9 bytes of mag
 
   Adafruit_BusIO_Register data_reg = Adafruit_BusIO_Register(

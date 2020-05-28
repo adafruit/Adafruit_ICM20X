@@ -19,8 +19,14 @@
 #define _ADAFRUIT_ICM20948_H
 
 #include "Adafruit_ICM20X.h"
+
+#define I2C_MASTER_RESETS_BEFORE_FAIL                                          \
+  5 ///< The number of times to try resetting a stuck I2C master before giving
+    ///< up
+#define NUM_FINISHED_CHECKS                                                    \
+  100 ///< How many times to poll I2C_SLV4_DONE before giving up and resetting
 #define ICM20948_I2CADDR_DEFAULT 0x69 ///< ICM20948 default i2c address
-#define ICM20948_MAG_ID 0x09 ///< The chip ID for the magnetometer
+#define ICM20948_MAG_ID 0x09          ///< The chip ID for the magnetometer
 // Bank 0
 #define ICM20948_I2C_MST_STATUS                                                \
   0x17 ///< Records if I2C master bus data is finished
@@ -44,6 +50,18 @@
 #define ICM20948_I2C_SLV4_DI 0x17   ///< Sets I2C master bus slave 4 data in
 
 #define ICM20948_UT_PER_LSB 0.15 ///< mag data LSB value (fixed)
+
+#define AK09916_WIA2 0x01  ///< Magnetometer
+#define AK09916_ST1 0x10   ///< Magnetometer
+#define AK09916_HXL 0x11   ///< Magnetometer
+#define AK09916_HXH 0x12   ///< Magnetometer
+#define AK09916_HYL 0x13   ///< Magnetometer
+#define AK09916_HYH 0x14   ///< Magnetometer
+#define AK09916_HZL 0x15   ///< Magnetometer
+#define AK09916_HZH 0x16   ///< Magnetometer
+#define AK09916_ST2 0x18   ///< Magnetometer
+#define AK09916_CNTL2 0x31 ///< Magnetometer
+#define AK09916_CNTL3 0x32 ///< Magnetometer
 
 /** The accelerometer data range */
 typedef enum {
@@ -79,8 +97,13 @@ public:
   void setGyroRange(icm20948_gyro_range_t new_gyro_range);
 
 private:
-  uint8_t _read_ext_reg(uint8_t slv_addr, uint8_t reg_addr, uint8_t num_tries=5);
-  bool _write_ext_reg(uint8_t slv_addr, uint8_t reg_addr, uint8_t value, uint8_t num_tries=5);
+  uint8_t _read_ext_reg(uint8_t slv_addr, uint8_t reg_addr);
+  bool _write_ext_reg(uint8_t slv_addr, uint8_t reg_addr, uint8_t value);
+
+  uint8_t _read_mag_reg(uint8_t reg_addr);
+  bool _write_mag_reg(uint8_t reg_addr, uint8_t value);
+
+  uint8_t getMagId(void);
 
   bool _setupMag(void);
   void _scale_values(void);

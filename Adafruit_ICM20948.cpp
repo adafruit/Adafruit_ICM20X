@@ -44,12 +44,21 @@ bool Adafruit_ICM20948::begin_I2C(uint8_t i2c_address, TwoWire *wire,
   return init_success;
 }
 
+uint8_t Adafruit_ICM20948::getMagId(void) {
+  // verify the magnetometer id
+  return _read_ext_reg(0x8C, 0x01);
+}
 bool Adafruit_ICM20948::_setupMag(void) {
-
   uint8_t buffer[2];
+  // self._magnetometer_enable()
+  // self._bank = 0
+  // self._bypass_i2c_master = False
 
   setI2CBypass(false);
+  // self._bank = 3
+  // self._i2c_master_control = 0x17
 
+  // set I2C master frequency and turn off repeated starts
   _setBank(3);
   buffer[0] = ICM20948_I2C_MST_CTRL;
   // no repeated start, i2c master clock = 345.60kHz
@@ -57,40 +66,58 @@ bool Adafruit_ICM20948::_setupMag(void) {
   if (!i2c_dev->write(buffer, 2)) {
     return false;
   }
-
-  _setBank(0);
-  _resetI2CMaster();
-
+  // self._bank = 0
+  // self._i2c_master_enable = True
   // Enable I2C Master!
   buffer[0] = ICM20X_USER_CTRL;
   buffer[1] = 0x20;
   if (!i2c_dev->write(buffer, 2)) {
     return false;
   }
-  // verify the magnetometer id
-  if (_read_ext_reg(0x8C, 0x01) != ICM20948_MAG_ID){
-    Serial.println("Magnetometer ID does not match");
+
+  // self.magnetometer_data_rate = (
+  //     MagDataRate.RATE_100HZ  # pylint: disable=no-member
+  // )
+
+  // check mag connection by reading the chip ID
+  bool mag_setup_failed = true;
+  for (int i = 0; i < I2C_MASTER_RESETS_BEFORE_FAIL; i++) {
+    if (getMagId() != ICM20948_MAG_ID) {
+      Serial.println(
+          "\tFailed to read from magnetometer, resetting I2C master");
+      _resetI2CMaster();
+    } else {
+      Serial.println("\tSuccessful setup of magnetometer");
+      mag_setup_failed = false;
+      break;
+    }
+  }
+  if (mag_setup_failed) {
     return false;
   }
 
-  // Send a software reset to the magnetometer
-  if (!_write_ext_reg(0x0C, 0x32, 0x01)) {
-    Serial.print("Error writing to external register");
-    return false;
-  }
-  // check to see if it's finished
-  while (_read_ext_reg(0x0C, 0x32)){
-    delay(10);
-  }
+  // Error setting magnetometer data rate on external bus
+  // failed to setup mag
+  // Failed to find ICM20948 chip
 
-  Serial.println("setting mag data rate");
-  if (!_write_ext_reg(0x0C, 0x31, 0x08)) {
+  // set mag data rate
+  bool mag_dr_status = _write_mag_reg(0x31, 0x08);
+  if (!mag_dr_status) {
     Serial.println("Error setting magnetometer data rate on external bus");
     return false;
   }
+  // if not self._mag_configured:
+  //     return False
 
+  // self._setup_mag_readout()
+
+  // check to see if it's finished
+  while (_read_mag_reg(0x32)) {
+    delay(10);
+  }
+  /////// Set up Slave0 to proxy Mag readings
   _setBank(3);
-
+  // set up slave0 to proxy reads to mag
   buffer[0] = ICM20948_I2C_SLV0_ADDR;
   buffer[1] = 0x8C;
   if (!i2c_dev->write(buffer, 2)) {
@@ -104,7 +131,7 @@ bool Adafruit_ICM20948::_setupMag(void) {
   }
 
   buffer[0] = ICM20948_I2C_SLV0_CTRL;
-  buffer[1] = 0x89;
+  buffer[1] = 0x89; // enable, read 9 bytes
   if (!i2c_dev->write(buffer, 2)) {
     return false;
   }
@@ -112,22 +139,54 @@ bool Adafruit_ICM20948::_setupMag(void) {
   return true;
 }
 
-void Adafruit_ICM20948::_resetI2CMaster(void){
+//  // Send a software reset to the magnetometer
+//           if (!_write_mag_reg(0x32, 0x01)) {
+//             Serial.print("Error writing to external register");
+//             return false;
+//           }
 
-    Adafruit_BusIO_Register user_ctrl = Adafruit_BusIO_Register(
+void Adafruit_ICM20948::_resetI2CMaster(void) {
+
+  _setBank(0);
+  Adafruit_BusIO_Register user_ctrl = Adafruit_BusIO_Register(
       i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_USER_CTRL);
 
   Adafruit_BusIO_RegisterBits i2c_master_reset_bit =
       Adafruit_BusIO_RegisterBits(&user_ctrl, 1, 1);
 
   i2c_master_reset_bit.write(true);
-  while (i2c_master_reset_bit.read()){
+  while (i2c_master_reset_bit.read()) {
     delay(10);
   }
   delay(100);
-
 }
-uint8_t Adafruit_ICM20948::_read_ext_reg(uint8_t slv_addr, uint8_t reg_addr, uint8_t num_tries) {
+/**
+ * @brief
+ *
+ * @param slv_addr
+ * @param reg_addr
+ * @param num_finished_checks
+ * @return uint8_t
+ */
+uint8_t Adafruit_ICM20948::_read_mag_reg(uint8_t reg_addr) {
+  return _read_ext_reg(0x8C, reg_addr);
+}
+
+/**
+ * @brief
+ *
+ * @param slv_addr
+ * @param reg_addr
+ * @param value
+ * @param num_finished_checks
+ * @return true
+ * @return false
+ */
+bool Adafruit_ICM20948::_write_mag_reg(uint8_t reg_addr, uint8_t value) {
+  return _write_ext_reg(0x0C, reg_addr, value);
+}
+
+uint8_t Adafruit_ICM20948::_read_ext_reg(uint8_t slv_addr, uint8_t reg_addr) {
 
   slv_addr |= 0x80; // set high bit for read
 
@@ -150,7 +209,7 @@ uint8_t Adafruit_ICM20948::_read_ext_reg(uint8_t slv_addr, uint8_t reg_addr, uin
 
   // enable the read!
   buffer[0] = ICM20948_I2C_SLV4_CTRL;
-  buffer[1] = 0x81; // read one byte?
+  buffer[1] = 0x80;
   if (!i2c_dev->write(buffer, 2)) {
     return false;
   }
@@ -160,11 +219,10 @@ uint8_t Adafruit_ICM20948::_read_ext_reg(uint8_t slv_addr, uint8_t reg_addr, uin
   buffer[0] = 0;
   buffer[1] = 0;
   // wait until the operation is finished
-  while (buffer[0] != 0x40) {
+  while (buffer[0] != 0x40) { // this bit is slave4 finished!
     i2c_dev->write_then_read(addrbuffer, 1, buffer, 1);
-    delay(100);
     tries++;
-    if (tries >= num_tries){
+    if (tries >= NUM_FINISHED_CHECKS) {
       _resetI2CMaster();
       return false;
     }
@@ -178,33 +236,50 @@ uint8_t Adafruit_ICM20948::_read_ext_reg(uint8_t slv_addr, uint8_t reg_addr, uin
   return buffer[0];
 }
 
-bool Adafruit_ICM20948::_write_ext_reg(uint8_t slv_addr, uint8_t reg_addr, uint8_t value, uint8_t num_tries) {
-
+bool Adafruit_ICM20948::_write_ext_reg(uint8_t slv_addr, uint8_t reg_addr,
+                                       uint8_t value) {
   uint8_t buffer[2];
+
+  // Adafruit_BusIO_Register slv4_addr = Adafruit_BusIO_Register(
+  //   i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20948_I2C_SLV4_ADDR);
+
+  // Adafruit_BusIO_Register slv4_addr = Adafruit_BusIO_Register(
+  //   i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20948_I2C_SLV4_REG);
+
+  // Adafruit_BusIO_Register slv4_addr = Adafruit_BusIO_Register(
+  //   i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20948_I2C_SLV4_DO);
+
+  // Adafruit_BusIO_Register slv4_addr = Adafruit_BusIO_Register(
+  //   i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20948_I2C_SLV4_CTRL);
+
   _setBank(3);
   uint8_t tries = 0;
   // set the I2C address on the external bus
   buffer[0] = ICM20948_I2C_SLV4_ADDR;
   buffer[1] = slv_addr;
   if (!i2c_dev->write(buffer, 2)) {
+    Serial.println("bad addr set");
     return false;
   }
   // specify which register we're writing to
   buffer[0] = ICM20948_I2C_SLV4_REG;
   buffer[1] = reg_addr;
   if (!i2c_dev->write(buffer, 2)) {
+    Serial.println("bad reg set");
     return false;
   }
   // set the data to write
   buffer[0] = ICM20948_I2C_SLV4_DO;
   buffer[1] = value;
   if (!i2c_dev->write(buffer, 2)) {
+    Serial.println("bad DO set");
     return false;
   }
   // start writing
   buffer[0] = ICM20948_I2C_SLV4_CTRL;
   buffer[1] = 0x80;
   if (!i2c_dev->write(buffer, 2)) {
+    Serial.println("bad CTRL set");
     return false;
   }
 
@@ -215,10 +290,9 @@ bool Adafruit_ICM20948::_write_ext_reg(uint8_t slv_addr, uint8_t reg_addr, uint8
   // wait until the operation is finished
   while (buffer[0] != 0x40) {
     i2c_dev->write_then_read(addrbuffer, 1, buffer, 1);
-    delay(100);
     tries++;
-    if (tries >= num_tries){
-      _resetI2CMaster();
+    if (tries >= NUM_FINISHED_CHECKS) {
+      Serial.println("failed to get i2c master finished signal");
       return false;
     }
   }
