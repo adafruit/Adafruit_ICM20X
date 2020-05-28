@@ -13,6 +13,18 @@ var searchData=
   ['adafruit_5ficm20x_2eh',['Adafruit_ICM20X.h',['../_adafruit___i_c_m20_x_8h.html',1,'']]],
   ['adafruit_5ficm20x_5faccelerometer',['Adafruit_ICM20X_Accelerometer',['../class_adafruit___i_c_m20_x___accelerometer.html',1,'Adafruit_ICM20X_Accelerometer'],['../class_adafruit___i_c_m20_x.html#a2017b07c8f08d7d8beb6917cfa8100fb',1,'Adafruit_ICM20X::Adafruit_ICM20X_Accelerometer()'],['../class_adafruit___i_c_m20_x___accelerometer.html#ace3e82c10b3ed60b0fce8beef354c89d',1,'Adafruit_ICM20X_Accelerometer::Adafruit_ICM20X_Accelerometer()']]],
   ['adafruit_5ficm20x_5fgyro',['Adafruit_ICM20X_Gyro',['../class_adafruit___i_c_m20_x___gyro.html',1,'Adafruit_ICM20X_Gyro'],['../class_adafruit___i_c_m20_x.html#a6d77bbf4bc663e897a6252c416738fb1',1,'Adafruit_ICM20X::Adafruit_ICM20X_Gyro()'],['../class_adafruit___i_c_m20_x___gyro.html#a8679eac1509ba4fb8a45e364c29d403d',1,'Adafruit_ICM20X_Gyro::Adafruit_ICM20X_Gyro()']]],
+  ['adafruit_5ficm20x_5fmagnetometer',['Adafruit_ICM20X_Magnetometer',['../class_adafruit___i_c_m20_x___magnetometer.html',1,'Adafruit_ICM20X_Magnetometer'],['../class_adafruit___i_c_m20_x.html#a7fc5fbca4ab96ab49d79921a2a6d1f25',1,'Adafruit_ICM20X::Adafruit_ICM20X_Magnetometer()'],['../class_adafruit___i_c_m20_x___magnetometer.html#aafd9f99c65f60bfc014ce66f11e2fde1',1,'Adafruit_ICM20X_Magnetometer::Adafruit_ICM20X_Magnetometer()']]],
   ['adafruit_5ficm20x_5ftemp',['Adafruit_ICM20X_Temp',['../class_adafruit___i_c_m20_x___temp.html',1,'Adafruit_ICM20X_Temp'],['../class_adafruit___i_c_m20_x.html#a8200775046b854344ec7152e958a03e3',1,'Adafruit_ICM20X::Adafruit_ICM20X_Temp()'],['../class_adafruit___i_c_m20_x___temp.html#a9edc4371df4503348a274e14634da9aa',1,'Adafruit_ICM20X_Temp::Adafruit_ICM20X_Temp()']]],
-  ['adafruit_20icm20x_206_2ddof_20wide_2drange_20accelerometer_20and_20gyro_20library',['Adafruit ICM20X 6-DoF Wide-Range Accelerometer and Gyro library',['../index.html',1,'']]]
+  ['ak09916_5fcntl2',['AK09916_CNTL2',['../_adafruit___i_c_m20948_8h.html#aa523000feb252cc32d4f55cb53141823',1,'Adafruit_ICM20948.h']]],
+  ['ak09916_5fcntl3',['AK09916_CNTL3',['../_adafruit___i_c_m20948_8h.html#a4a9c5724302517baef6582eb148671bd',1,'Adafruit_ICM20948.h']]],
+  ['ak09916_5fhxh',['AK09916_HXH',['../_adafruit___i_c_m20948_8h.html#ab681d85485b15618b19fd5bf18daf71c',1,'Adafruit_ICM20948.h']]],
+  ['ak09916_5fhxl',['AK09916_HXL',['../_adafruit___i_c_m20948_8h.html#a6b1fe460fe91fece6e7f0e3ba359e456',1,'Adafruit_ICM20948.h']]],
+  ['ak09916_5fhyh',['AK09916_HYH',['../_adafruit___i_c_m20948_8h.html#a093cae440b69f99905b3472fe39d090b',1,'Adafruit_ICM20948.h']]],
+  ['ak09916_5fhyl',['AK09916_HYL',['../_adafruit___i_c_m20948_8h.html#ac28eab3729143eb14ea676d24492a4f8',1,'Adafruit_ICM20948.h']]],
+  ['ak09916_5fhzh',['AK09916_HZH',['../_adafruit___i_c_m20948_8h.html#ae1cd16756ce76f11d4dd6fa65723486e',1,'Adafruit_ICM20948.h']]],
+  ['ak09916_5fhzl',['AK09916_HZL',['../_adafruit___i_c_m20948_8h.html#a2ee012cafa30cd323522fc8e3e6cbb6c',1,'Adafruit_ICM20948.h']]],
+  ['ak09916_5fst1',['AK09916_ST1',['../_adafruit___i_c_m20948_8h.html#add010c2e5cb83bf0131ded5fe96e9e67',1,'Adafruit_ICM20948.h']]],
+  ['ak09916_5fst2',['AK09916_ST2',['../_adafruit___i_c_m20948_8h.html#a05eea1f8a28216458d7a87ba064b4538',1,'Adafruit_ICM20948.h']]],
+  ['ak09916_5fwia2',['AK09916_WIA2',['../_adafruit___i_c_m20948_8h.html#a88d7447ba83e611b16b5684188c1e792',1,'Adafruit_ICM20948.h']]],
+  ['adafruit_20icm20x_20family_20motion_20sensor_20library',['Adafruit ICM20X family motion sensor library',['../index.html',1,'']]]
 ];

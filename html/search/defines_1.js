@@ -1,14 +1,9 @@
 var searchData=
 [
-  ['i2c_5fdev',['i2c_dev',['../class_adafruit___i_c_m20_x.html#a75d3ff94c97588d53d3bd57c09cc1b23',1,'Adafruit_ICM20X']]],
   ['i2c_5fmaster_5fresets_5fbefore_5ffail',['I2C_MASTER_RESETS_BEFORE_FAIL',['../_adafruit___i_c_m20948_8h.html#a5e0e153f483eb068ed456f0c7c909461',1,'Adafruit_ICM20948.h']]],
-  ['icm20649_5faccel_5frange_5ft',['icm20649_accel_range_t',['../_adafruit___i_c_m20649_8h.html#a93d991eeadd579f5afb2e9f96a677d5e',1,'Adafruit_ICM20649.h']]],
   ['icm20649_5fchip_5fid',['ICM20649_CHIP_ID',['../_adafruit___i_c_m20_x_8h.html#a653126f1287e5f38b4c281ef3bca60b7',1,'Adafruit_ICM20X.h']]],
-  ['icm20649_5fgyro_5frange_5ft',['icm20649_gyro_range_t',['../_adafruit___i_c_m20649_8h.html#a2dea2164611112a806884f8400ccb6bb',1,'Adafruit_ICM20649.h']]],
   ['icm20649_5fi2caddr_5fdefault',['ICM20649_I2CADDR_DEFAULT',['../_adafruit___i_c_m20649_8h.html#a21f91f8a0612e6c08a5bbd10cc8f15e2',1,'Adafruit_ICM20649.h']]],
-  ['icm20948_5faccel_5frange_5ft',['icm20948_accel_range_t',['../_adafruit___i_c_m20948_8h.html#a29c708254befd297b23c847fa9399e10',1,'Adafruit_ICM20948.h']]],
   ['icm20948_5fchip_5fid',['ICM20948_CHIP_ID',['../_adafruit___i_c_m20_x_8h.html#a7fbff378c5e926ec6391a30de0ba9ce8',1,'Adafruit_ICM20X.h']]],
-  ['icm20948_5fgyro_5frange_5ft',['icm20948_gyro_range_t',['../_adafruit___i_c_m20948_8h.html#aa50e555b2145906685efe39c3d1e38f5',1,'Adafruit_ICM20948.h']]],
   ['icm20948_5fi2c_5fmst_5fctrl',['ICM20948_I2C_MST_CTRL',['../_adafruit___i_c_m20948_8h.html#a91f0a47b267b2b36d7647902c4ef5a46',1,'Adafruit_ICM20948.h']]],
   ['icm20948_5fi2c_5fmst_5fdelay_5fctrl',['ICM20948_I2C_MST_DELAY_CTRL',['../_adafruit___i_c_m20948_8h.html#ab3a37a2667faa3ffc8296615838bee8c',1,'Adafruit_ICM20948.h']]],
   ['icm20948_5fi2c_5fmst_5fodr_5fconfig',['ICM20948_I2C_MST_ODR_CONFIG',['../_adafruit___i_c_m20948_8h.html#a1062a89b30c1767828252e4f20c7ef53',1,'Adafruit_ICM20948.h']]],
