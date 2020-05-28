@@ -67,6 +67,18 @@ uint8_t Adafruit_ICM20948::getMagId(void) {
   // verify the magnetometer id
   return _read_ext_reg(0x8C, 0x01);
 }
+
+bool Adafruit_ICM20948::_configureI2CMaster(void) {
+
+  uint8_t buffer[2];
+  _setBank(3);
+  buffer[0] = ICM20948_I2C_MST_CTRL;
+  // no repeated start, i2c master clock = 345.60kHz
+  buffer[1] = 0x17;
+  if (!i2c_dev->write(buffer, 2)) {
+    return false;
+  }
+}
 bool Adafruit_ICM20948::_setupMag(void) {
   uint8_t buffer[2];
   // self._magnetometer_enable()
@@ -78,26 +90,12 @@ bool Adafruit_ICM20948::_setupMag(void) {
   // self._i2c_master_control = 0x17
 
   // set I2C master frequency and turn off repeated starts
-  _setBank(3);
-  buffer[0] = ICM20948_I2C_MST_CTRL;
-  // no repeated start, i2c master clock = 345.60kHz
-  buffer[1] = 0x17;
-  if (!i2c_dev->write(buffer, 2)) {
-    return false;
-  }
-  // self._bank = 0
-  _setBank(0);
-  // self._i2c_master_enable = True
-  // Enable I2C Master!
-  buffer[0] = ICM20X_USER_CTRL;
-  buffer[1] = 0x20;
-  if (!i2c_dev->write(buffer, 2)) {
-    return false;
-  }
 
-  // self.magnetometer_data_rate = (
-  //     MagDataRate.RATE_100HZ  # pylint: disable=no-member
-  // )
+  _configureI2CMaster();
+
+  // self._bank = 0
+
+  enableI2CMaster(true);
 
   if (_mag_setup_failed()) {
     return false;

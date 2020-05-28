@@ -642,6 +642,23 @@ void Adafruit_ICM20X::setI2CBypass(bool bypass_i2c) {
 
   i2c_bypass_enable.write(bypass_i2c);
 }
+
+/**
+ * @brief Enable or disable the I2C mastercontroller
+ *
+ * @param enable_i2c_master true: enable false: disable
+ *
+ * @return true: success false: error
+ */
+bool Adafruit_ICM20X::enableI2CMaster(bool enable_i2c_master) {
+  _setBank(0);
+  Adafruit_BusIO_Register user_ctrl_reg = Adafruit_BusIO_Register(
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_USER_CTRL);
+
+  Adafruit_BusIO_RegisterBits i2c_master_enable_bit =
+      Adafruit_BusIO_RegisterBits(&user_ctrl_reg, 1, 5);
+  return i2c_master_enable_bit.write(enable_i2c_master);
+}
 /**************************************************************************/
 /*!
     @brief  Gets the sensor_t data for the ICM20X's accelerometer

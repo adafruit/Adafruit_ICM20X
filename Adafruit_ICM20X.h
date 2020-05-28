@@ -134,6 +134,8 @@ public:
   void reset(void);
   void setInt1ActiveLow(bool active_low);
   void setInt2ActiveLow(bool active_low);
+  bool enableI2CMaster(bool enable_i2c_master);
+
   void setI2CBypass(bool bypass_i2c);
 
   Adafruit_Sensor *getAccelerometerSensor(void);
