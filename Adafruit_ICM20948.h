@@ -104,6 +104,7 @@ private:
   bool _write_mag_reg(uint8_t reg_addr, uint8_t value);
 
   uint8_t getMagId(void);
+  bool _mag_setup_failed(void);
 
   bool _setupMag(void);
   void _scale_values(void);

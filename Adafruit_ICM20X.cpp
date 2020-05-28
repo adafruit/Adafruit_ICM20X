@@ -155,6 +155,7 @@ void Adafruit_ICM20X::reset(void) {
   while (reset_bit.read()) {
     delay(10);
   };
+  delay(50);
 }
 
 /*!  @brief Initilizes the sensor

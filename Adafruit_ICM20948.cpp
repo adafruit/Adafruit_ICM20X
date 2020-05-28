@@ -44,6 +44,25 @@ bool Adafruit_ICM20948::begin_I2C(uint8_t i2c_address, TwoWire *wire,
   return init_success;
 }
 
+bool Adafruit_ICM20948::_mag_setup_failed(void) {
+  // check mag connection by reading the magnetometer chip ID
+  bool mag_setup_failed = true;
+  for (int i = 0; i < I2C_MASTER_RESETS_BEFORE_FAIL; i++) {
+    if (getMagId() != ICM20948_MAG_ID) {
+      Serial.println(
+          "\tFailed to read from magnetometer, resetting I2C master");
+      _resetI2CMaster();
+    } else {
+      Serial.println("\tSuccessful setup of magnetometer");
+      mag_setup_failed = false;
+      break;
+    }
+  }
+  if (mag_setup_failed) {
+    return false;
+  }
+}
+
 uint8_t Adafruit_ICM20948::getMagId(void) {
   // verify the magnetometer id
   return _read_ext_reg(0x8C, 0x01);
@@ -67,6 +86,7 @@ bool Adafruit_ICM20948::_setupMag(void) {
     return false;
   }
   // self._bank = 0
+  _setBank(0);
   // self._i2c_master_enable = True
   // Enable I2C Master!
   buffer[0] = ICM20X_USER_CTRL;
@@ -79,23 +99,9 @@ bool Adafruit_ICM20948::_setupMag(void) {
   //     MagDataRate.RATE_100HZ  # pylint: disable=no-member
   // )
 
-  // check mag connection by reading the chip ID
-  bool mag_setup_failed = true;
-  for (int i = 0; i < I2C_MASTER_RESETS_BEFORE_FAIL; i++) {
-    if (getMagId() != ICM20948_MAG_ID) {
-      Serial.println(
-          "\tFailed to read from magnetometer, resetting I2C master");
-      _resetI2CMaster();
-    } else {
-      Serial.println("\tSuccessful setup of magnetometer");
-      mag_setup_failed = false;
-      break;
-    }
-  }
-  if (mag_setup_failed) {
+  if (_mag_setup_failed()) {
     return false;
   }
-
   // Error setting magnetometer data rate on external bus
   // failed to setup mag
   // Failed to find ICM20948 chip
