@@ -20,34 +20,8 @@
 
 #include "Adafruit_ICM20X.h"
 
-#define I2C_MASTER_RESETS_BEFORE_FAIL                                          \
-  5 ///< The number of times to try resetting a stuck I2C master before giving
-    ///< up
-#define NUM_FINISHED_CHECKS                                                    \
-  100 ///< How many times to poll I2C_SLV4_DONE before giving up and resetting
 #define ICM20948_I2CADDR_DEFAULT 0x69 ///< ICM20948 default i2c address
 #define ICM20948_MAG_ID 0x09          ///< The chip ID for the magnetometer
-// Bank 0
-#define ICM20948_I2C_MST_STATUS                                                \
-  0x17 ///< Records if I2C master bus data is finished
-// Bank 3
-#define ICM20948_I2C_MST_ODR_CONFIG 0x0 ///< Sets ODR for I2C master bus
-#define ICM20948_I2C_MST_CTRL 0x1       ///< I2C master bus config
-#define ICM20948_I2C_MST_DELAY_CTRL 0x2 ///< I2C master bus config
-#define ICM20948_I2C_SLV0_ADDR                                                 \
-  0x3 ///< Sets I2C address for I2C master bus slave 0
-#define ICM20948_I2C_SLV0_REG                                                  \
-  0x4 ///< Sets register address for I2C master bus slave 0
-#define ICM20948_I2C_SLV0_CTRL 0x5 ///< Controls for I2C master bus slave 0
-#define ICM20948_I2C_SLV0_DO 0x6   ///< Sets I2C master bus slave 0 data out
-
-#define ICM20948_I2C_SLV4_ADDR                                                 \
-  0x13 ///< Sets I2C address for I2C master bus slave 4
-#define ICM20948_I2C_SLV4_REG                                                  \
-  0x14 ///< Sets register address for I2C master bus slave 4
-#define ICM20948_I2C_SLV4_CTRL 0x15 ///< Controls for I2C master bus slave 4
-#define ICM20948_I2C_SLV4_DO 0x16   ///< Sets I2C master bus slave 4 data out
-#define ICM20948_I2C_SLV4_DI 0x17   ///< Sets I2C master bus slave 4 data in
 
 #define ICM20948_UT_PER_LSB 0.15 ///< mag data LSB value (fixed)
 
@@ -97,19 +71,14 @@ public:
   void setGyroRange(icm20948_gyro_range_t new_gyro_range);
 
 private:
-  uint8_t _read_ext_reg(uint8_t slv_addr, uint8_t reg_addr);
-  bool _write_ext_reg(uint8_t slv_addr, uint8_t reg_addr, uint8_t value);
-
   uint8_t _read_mag_reg(uint8_t reg_addr);
   bool _write_mag_reg(uint8_t reg_addr, uint8_t value);
 
   uint8_t getMagId(void);
-  bool _configureI2CMaster(void);
   bool _mag_setup_failed(void);
 
   bool _setupMag(void);
   void _scale_values(void);
-  void _resetI2CMaster(void);
 };
 
 #endif
