@@ -686,55 +686,7 @@ bool Adafruit_ICM20X::_configureI2CMaster(void) {
 uint8_t Adafruit_ICM20X::readExternalRegister(uint8_t slv_addr,
                                               uint8_t reg_addr) {
 
-  slv_addr |= 0x80; // set high bit for read
-
-  uint8_t tries = 0;
-  _setBank(3);
-  Adafruit_BusIO_Register slv4_addr_reg = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_I2C_SLV4_ADDR);
-
-  Adafruit_BusIO_Register slv4_reg_reg = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_I2C_SLV4_REG);
-
-  Adafruit_BusIO_Register slv4_di_reg = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_I2C_SLV4_DI);
-
-  Adafruit_BusIO_Register slv4_ctrl_reg = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_I2C_SLV4_CTRL);
-
-  Adafruit_BusIO_Register i2c_master_status_reg = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_I2C_MST_STATUS);
-
-  Adafruit_BusIO_RegisterBits slave_finished_bit =
-      Adafruit_BusIO_RegisterBits(&i2c_master_status_reg, 1, 6);
-
-  // set the destination I2C address on the auxillary I2C bus
-  if (!slv4_addr_reg.write(slv_addr)) {
-    return false;
-  }
-  // specify which register we're reading
-  if (!slv4_reg_reg.write(reg_addr)) {
-    return false;
-  }
-
-  // start the read!
-  if (!slv4_ctrl_reg.write(0x80)) {
-    return false;
-  }
-
-  _setBank(0);
-
-  // wait until the operation is finished
-  while (slave_finished_bit.read() != true) {
-    tries++;
-    if (tries >= NUM_FINISHED_CHECKS) {
-      Serial.println("failed to get i2c master finished signal");
-      return false;
-    }
-  }
-
-  _setBank(3);
-  return slv4_di_reg.read();
+  return auxillaryRegisterTransaction(true, slv_addr, reg_addr);
 }
 /**
  * @brief Write a single byte to a given register address for an I2C slave
@@ -749,15 +701,35 @@ uint8_t Adafruit_ICM20X::readExternalRegister(uint8_t slv_addr,
 bool Adafruit_ICM20X::writeExternalRegister(uint8_t slv_addr, uint8_t reg_addr,
                                             uint8_t value) {
 
+  return (bool)auxillaryRegisterTransaction(false, slv_addr, reg_addr, value);
+}
+
+/*********  READ/WRITE TO AUX I2C BUS *****************/
+/**
+ * @brief Write a single byte to a given register address for an I2C slave
+ * device on the auxiliary I2C bus
+ *
+ * @param slv_addr the 7-bit I2C address of the slave device
+ * @param reg_addr the register address to write to
+ * @param value the value to write
+ * @return true
+ * @return false
+ */
+uint8_t Adafruit_ICM20X::auxillaryRegisterTransaction(bool read,
+                                                      uint8_t slv_addr,
+                                                      uint8_t reg_addr,
+                                                      uint8_t value) {
+
   _setBank(3);
+
+  Adafruit_BusIO_Register *slv4_di_reg;
+
+  Adafruit_BusIO_Register *slv4_do_reg;
   Adafruit_BusIO_Register slv4_addr_reg = Adafruit_BusIO_Register(
       i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_I2C_SLV4_ADDR);
 
   Adafruit_BusIO_Register slv4_reg_reg = Adafruit_BusIO_Register(
       i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_I2C_SLV4_REG);
-
-  Adafruit_BusIO_Register slv4_do_reg = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_I2C_SLV4_DO);
 
   Adafruit_BusIO_Register slv4_ctrl_reg = Adafruit_BusIO_Register(
       i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_I2C_SLV4_CTRL);
@@ -768,33 +740,47 @@ bool Adafruit_ICM20X::writeExternalRegister(uint8_t slv_addr, uint8_t reg_addr,
   Adafruit_BusIO_RegisterBits slave_finished_bit =
       Adafruit_BusIO_RegisterBits(&i2c_master_status_reg, 1, 6);
 
-  uint8_t tries = 0;
+  if (read) {
+    slv_addr |= 0x80; // set high bit for read, presumably for multi-byte reads
+
+    slv4_di_reg = new Adafruit_BusIO_Register(
+        i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_I2C_SLV4_DI);
+  } else {
+
+    slv4_do_reg = new Adafruit_BusIO_Register(
+        i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_I2C_SLV4_DO);
+
+    if (!slv4_do_reg->write(value)) {
+      return (uint8_t) false;
+    }
+  }
 
   if (!slv4_addr_reg.write(slv_addr)) {
-    return false;
+    return (uint8_t) false;
   }
   if (!slv4_reg_reg.write(reg_addr)) {
-    return false;
+    return (uint8_t) false;
   }
-  if (!slv4_do_reg.write(value)) {
-    return false;
-  }
+
   if (!slv4_ctrl_reg.write(0x80)) {
-    return false;
+    return (uint8_t) false;
   }
 
   // refactor out to share
   _setBank(0);
-
+  uint8_t tries = 0;
   // wait until the operation is finished
   while (slave_finished_bit.read() != true) {
     tries++;
     if (tries >= NUM_FINISHED_CHECKS) {
-      Serial.println("failed to get i2c master finished signal");
-      return false;
+      return (uint8_t) false;
     }
   }
-  return true;
+  if (read) {
+    _setBank(3);
+    return slv4_di_reg->read();
+  }
+  return (uint8_t) true;
 }
 
 /**

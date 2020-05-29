@@ -248,6 +248,8 @@ private:
   void fillGyroEvent(sensors_event_t *gyro, uint32_t timestamp);
   void fillTempEvent(sensors_event_t *temp, uint32_t timestamp);
   void fillMagEvent(sensors_event_t *mag, uint32_t timestamp);
+  uint8_t auxillaryRegisterTransaction(bool read, uint8_t slv_addr,
+                                       uint8_t reg_addr, uint8_t value = -1);
 };
 
 #endif
