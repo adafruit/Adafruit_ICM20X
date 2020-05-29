@@ -84,7 +84,6 @@ void setup(void) {
   Serial.println(gyro_divisor);
   Serial.print("Gyro data rate (Hz) is approximately: ");
   Serial.println(gyro_rate);
-  Serial.println();
 
   // icm.setMagDataRate(AK09916_MAG_DATARATE_10_HZ);
   Serial.print("Magnetometer data rate set to: ");
@@ -108,6 +107,8 @@ void setup(void) {
     Serial.println("100 Hz");
     break;
   }
+  Serial.println();
+
 }
 
 void loop() {
@@ -167,11 +168,10 @@ void loop() {
   //
   //  Serial.print(",");
   //  Serial.print(mag.magnetic.x);
-  //  Serial.print(","); Serial.print(mag.magnetic.x);
-  //  Serial.print(","); Serial.print(mag.magnetic.xz);
+  //  Serial.print(","); Serial.print(mag.magnetic.y);
+  //  Serial.print(","); Serial.print(mag.magnetic.z);
 
   //  Serial.println();
   //
   //  delayMicroseconds(measurement_delay_us);
 }
-

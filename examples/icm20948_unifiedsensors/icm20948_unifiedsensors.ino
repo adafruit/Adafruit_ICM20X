@@ -96,6 +96,12 @@ void loop() {
   Serial.print(gyro.gyro.x);
   Serial.print(","); Serial.print(gyro.gyro.y);
   Serial.print(","); Serial.print(gyro.gyro.z);
+
+  Serial.print(",");
+  Serial.print(mag.magnetic.x);
+  Serial.print(","); Serial.print(mag.magnetic.y);
+  Serial.print(","); Serial.print(mag.magnetic.z);
+
   Serial.println();
   delay(10);
   */

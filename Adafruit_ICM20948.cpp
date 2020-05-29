@@ -32,7 +32,8 @@ bool Adafruit_ICM20948::begin_I2C(uint8_t i2c_address, TwoWire *wire,
   i2c_dev = new Adafruit_I2CDevice(i2c_address, wire);
 
   if (!i2c_dev->begin()) {
-    Serial.println("I2C begin Failed");
+    Serial.print("I2C begin Failed to find sensor at 0x");
+    Serial.println(i2c_address, HEX);
     return false;
   }
   bool init_success = _init(sensor_id);
@@ -44,8 +45,8 @@ bool Adafruit_ICM20948::begin_I2C(uint8_t i2c_address, TwoWire *wire,
   return init_success;
 }
 
-// A million thanks to the SparkFun folks for their library that I pillaged to write this method!
-// See their Arduino library here:
+// A million thanks to the SparkFun folks for their library that I pillaged to
+// write this method! See their Arduino library here:
 // https://github.com/sparkfun/SparkFun_ICM-20948_ArduinoLibrary
 bool Adafruit_ICM20948::auxI2CBusSetupFailed(void) {
   // check aux I2C bus connection by reading the magnetometer chip ID
@@ -121,7 +122,6 @@ bool Adafruit_ICM20948::setupMag(void) {
 uint8_t Adafruit_ICM20948::readMagRegister(uint8_t mag_reg_addr) {
   return readExternalRegister(0x8C, mag_reg_addr);
 }
-
 
 bool Adafruit_ICM20948::writeMagRegister(uint8_t mag_reg_addr, uint8_t value) {
   return writeExternalRegister(0x0C, mag_reg_addr, value);
@@ -205,4 +205,37 @@ icm20948_gyro_range_t Adafruit_ICM20948::getGyroRange(void) {
 */
 void Adafruit_ICM20948::setGyroRange(icm20948_gyro_range_t new_gyro_range) {
   writeGyroRange((uint8_t)new_gyro_range);
+}
+
+/**
+ * @brief Get the current magnetometer measurement rate
+ *
+ * @return ak09916_data_rate_t the current rate
+ */
+ak09916_data_rate_t Adafruit_ICM20948::getMagDataRate(void) {
+
+  uint8_t raw_mag_rate = readMagRegister(AK09916_CNTL2);
+  return (ak09916_data_rate_t)(raw_mag_rate);
+}
+/**
+ * @brief Set the magnetometer measurement rate
+ *
+ * @param rate The rate to set.
+ *
+ * @return true: success false: failure
+ */
+bool Adafruit_ICM20948::setMagDataRate(ak09916_data_rate_t rate) {
+  /*
+   * Following the datasheet, the sensor will be set to
+   * AK09916_MAG_DATARATE_SHUTDOWN followed by a 100ms delay, followed by
+   * setting the new data rate.
+   *
+   * See page 9 of https://www.y-ic.es/datasheet/78/SMDSW.020-2OZ.pdf
+   */
+
+  // don't need to read/mask because there's nothing else in the register and
+  // it's right justified
+  bool success = writeMagRegister(AK09916_CNTL2, AK09916_MAG_DATARATE_SHUTDOWN);
+  delay(1);
+  return writeMagRegister(AK09916_CNTL2, rate) && success;
 }
