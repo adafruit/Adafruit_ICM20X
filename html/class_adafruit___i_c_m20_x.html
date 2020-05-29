@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Adafruit ICM20649 Sensor Library: Adafruit_ICM20X Class Reference</title>
+<title>Adafruit ICM20X Sensor Library: Adafruit_ICM20X Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Adafruit ICM20649 Sensor Library
+   <div id="projectname">Adafruit ICM20X Sensor Library
    </div>
   </td>
  </tr>
@@ -144,10 +144,10 @@ Protected Member Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___i_c_m20_x.html#a62b8e6100b487799ee2d5e5df8d7492d">_read</a> (void)</td></tr>
 <tr class="memdesc:a62b8e6100b487799ee2d5e5df8d7492d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the measurement data for all sensors simultaneously. <br /></td></tr>
 <tr class="separator:a62b8e6100b487799ee2d5e5df8d7492d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a998a6ae2ac4efe2412b2c67fb2f30935"><td class="memItemLeft" align="right" valign="top"><a id="a998a6ae2ac4efe2412b2c67fb2f30935"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___i_c_m20_x.html#a998a6ae2ac4efe2412b2c67fb2f30935">_scale_values</a> (void)</td></tr>
-<tr class="memdesc:a998a6ae2ac4efe2412b2c67fb2f30935"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scales the raw variables based on the current measurement range. <br /></td></tr>
-<tr class="separator:a998a6ae2ac4efe2412b2c67fb2f30935"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf6aa08039fc9eb0b774ab36eadd874b"><td class="memItemLeft" align="right" valign="top"><a id="aaf6aa08039fc9eb0b774ab36eadd874b"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___i_c_m20_x.html#aaf6aa08039fc9eb0b774ab36eadd874b">scaleValues</a> (void)</td></tr>
+<tr class="memdesc:aaf6aa08039fc9eb0b774ab36eadd874b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scales the raw variables based on the current measurement range. <br /></td></tr>
+<tr class="separator:aaf6aa08039fc9eb0b774ab36eadd874b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a584543a9d380a9cb1cf3568e0cddbb61"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___i_c_m20_x.html#a584543a9d380a9cb1cf3568e0cddbb61">begin_I2C</a> (uint8_t i2c_add, TwoWire *wire, int32_t sensor_id)</td></tr>
 <tr class="memdesc:a584543a9d380a9cb1cf3568e0cddbb61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets up the hardware and initializes I2C.  <a href="#a584543a9d380a9cb1cf3568e0cddbb61">More...</a><br /></td></tr>
 <tr class="separator:a584543a9d380a9cb1cf3568e0cddbb61"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -175,9 +175,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memitem:af8fdf8e74ce97441c1ef2181c520ba3b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___i_c_m20_x.html#af8fdf8e74ce97441c1ef2181c520ba3b">writeExternalRegister</a> (uint8_t slv_addr, uint8_t reg_addr, uint8_t value)</td></tr>
 <tr class="memdesc:af8fdf8e74ce97441c1ef2181c520ba3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write a single byte to a given register address for an I2C slave device on the auxiliary I2C bus.  <a href="#af8fdf8e74ce97441c1ef2181c520ba3b">More...</a><br /></td></tr>
 <tr class="separator:af8fdf8e74ce97441c1ef2181c520ba3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad970268c97f14cd2f678f23c8c539b48"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___i_c_m20_x.html#ad970268c97f14cd2f678f23c8c539b48">_configureI2CMaster</a> (void)</td></tr>
-<tr class="memdesc:ad970268c97f14cd2f678f23c8c539b48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the I2C clock rate for the auxillary I2C bus to 345.60kHz and disable repeated start.  <a href="#ad970268c97f14cd2f678f23c8c539b48">More...</a><br /></td></tr>
-<tr class="separator:ad970268c97f14cd2f678f23c8c539b48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac156ae34429739a580db5ceca7ee2129"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___i_c_m20_x.html#ac156ae34429739a580db5ceca7ee2129">configureI2CMaster</a> (void)</td></tr>
+<tr class="memdesc:ac156ae34429739a580db5ceca7ee2129"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the I2C clock rate for the auxillary I2C bus to 345.60kHz and disable repeated start.  <a href="#ac156ae34429739a580db5ceca7ee2129">More...</a><br /></td></tr>
+<tr class="separator:ac156ae34429739a580db5ceca7ee2129"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa93c8ac6daa1a27cd08daef662ef9684"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___i_c_m20_x.html#aa93c8ac6daa1a27cd08daef662ef9684">enableI2CMaster</a> (bool enable_i2c_master)</td></tr>
 <tr class="memdesc:aa93c8ac6daa1a27cd08daef662ef9684"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable or disable the I2C mastercontroller.  <a href="#aa93c8ac6daa1a27cd08daef662ef9684">More...</a><br /></td></tr>
 <tr class="separator:aa93c8ac6daa1a27cd08daef662ef9684"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1061,8 +1061,8 @@ false </dd></dl>
 
 </div>
 </div>
-<a id="ad970268c97f14cd2f678f23c8c539b48"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad970268c97f14cd2f678f23c8c539b48">&#9670;&nbsp;</a></span>_configureI2CMaster()</h2>
+<a id="ac156ae34429739a580db5ceca7ee2129"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac156ae34429739a580db5ceca7ee2129">&#9670;&nbsp;</a></span>configureI2CMaster()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1071,7 +1071,7 @@ false </dd></dl>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool Adafruit_ICM20X::_configureI2CMaster </td>
+          <td class="memname">bool Adafruit_ICM20X::configureI2CMaster </td>
           <td>(</td>
           <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>

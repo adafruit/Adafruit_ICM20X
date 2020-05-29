@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Adafruit ICM20649 Sensor Library: Adafruit_ICM20X.h File Reference</title>
+<title>Adafruit ICM20X Sensor Library: Adafruit_ICM20X.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Adafruit ICM20649 Sensor Library
+   <div id="projectname">Adafruit ICM20X Sensor Library
    </div>
   </td>
  </tr>
@@ -96,118 +96,118 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#ac14a90b5a4b8373e05ed83a8464b98e4">NUM_FINISHED_CHECKS</a>&#160;&#160;&#160;100</td></tr>
 <tr class="memdesc:ac14a90b5a4b8373e05ed83a8464b98e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many times to poll I2C_SLV4_DONE before giving up and resetting. <br /></td></tr>
 <tr class="separator:ac14a90b5a4b8373e05ed83a8464b98e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad5010a35706bfd49faefbe058630cb67"><td class="memItemLeft" align="right" valign="top"><a id="ad5010a35706bfd49faefbe058630cb67"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#ad5010a35706bfd49faefbe058630cb67">ICM20X_WHOAMI</a>&#160;&#160;&#160;0x00</td></tr>
-<tr class="memdesc:ad5010a35706bfd49faefbe058630cb67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Chip ID register. <br /></td></tr>
-<tr class="separator:ad5010a35706bfd49faefbe058630cb67"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad78c9b026ad577ed075f237713566eae"><td class="memItemLeft" align="right" valign="top"><a id="ad78c9b026ad577ed075f237713566eae"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#ad78c9b026ad577ed075f237713566eae">ICM20X_USER_CTRL</a>&#160;&#160;&#160;0x03</td></tr>
-<tr class="memdesc:ad78c9b026ad577ed075f237713566eae"><td class="mdescLeft">&#160;</td><td class="mdescRight">User Control Reg. Includes I2C Master. <br /></td></tr>
-<tr class="separator:ad78c9b026ad577ed075f237713566eae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a203c629f0d28928911b9741f38fe09a6"><td class="memItemLeft" align="right" valign="top"><a id="a203c629f0d28928911b9741f38fe09a6"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#a203c629f0d28928911b9741f38fe09a6">ICM20X_LP_CONFIG</a>&#160;&#160;&#160;0x05</td></tr>
-<tr class="memdesc:a203c629f0d28928911b9741f38fe09a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Low Power config. <br /></td></tr>
-<tr class="separator:a203c629f0d28928911b9741f38fe09a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19b2bb0e7cd5e3058cffbc54b5757a2f"><td class="memItemLeft" align="right" valign="top"><a id="a19b2bb0e7cd5e3058cffbc54b5757a2f"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#a19b2bb0e7cd5e3058cffbc54b5757a2f">ICM20X_REG_INT_PIN_CFG</a>&#160;&#160;&#160;0xF</td></tr>
-<tr class="memdesc:a19b2bb0e7cd5e3058cffbc54b5757a2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt config register. <br /></td></tr>
-<tr class="separator:a19b2bb0e7cd5e3058cffbc54b5757a2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8dccb34340567f99c94a986bab4a9908"><td class="memItemLeft" align="right" valign="top"><a id="a8dccb34340567f99c94a986bab4a9908"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#a8dccb34340567f99c94a986bab4a9908">ICM20X_REG_INT_ENABLE</a>&#160;&#160;&#160;0x10</td></tr>
-<tr class="memdesc:a8dccb34340567f99c94a986bab4a9908"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt enable register 0. <br /></td></tr>
-<tr class="separator:a8dccb34340567f99c94a986bab4a9908"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a704ccf8f0af63cf06af7fa76b20db579"><td class="memItemLeft" align="right" valign="top"><a id="a704ccf8f0af63cf06af7fa76b20db579"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#a704ccf8f0af63cf06af7fa76b20db579">ICM20X_REG_INT_ENABLE_1</a>&#160;&#160;&#160;0x11</td></tr>
-<tr class="memdesc:a704ccf8f0af63cf06af7fa76b20db579"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt enable register 1. <br /></td></tr>
-<tr class="separator:a704ccf8f0af63cf06af7fa76b20db579"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a89f417c9a3b13cd919e98beff63d8e6e"><td class="memItemLeft" align="right" valign="top"><a id="a89f417c9a3b13cd919e98beff63d8e6e"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#a89f417c9a3b13cd919e98beff63d8e6e">ICM20X_I2C_MST_STATUS</a>&#160;&#160;&#160;0x17</td></tr>
-<tr class="memdesc:a89f417c9a3b13cd919e98beff63d8e6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Records if I2C master bus data is finished. <br /></td></tr>
-<tr class="separator:a89f417c9a3b13cd919e98beff63d8e6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca355efed8a04f5d77b15e9f4980993f"><td class="memItemLeft" align="right" valign="top"><a id="aca355efed8a04f5d77b15e9f4980993f"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#aca355efed8a04f5d77b15e9f4980993f">ICM20X_REG_BANK_SEL</a>&#160;&#160;&#160;0x7F</td></tr>
-<tr class="memdesc:aca355efed8a04f5d77b15e9f4980993f"><td class="mdescLeft">&#160;</td><td class="mdescRight">register bank selection register <br /></td></tr>
-<tr class="separator:aca355efed8a04f5d77b15e9f4980993f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a53ac3f51ee72dc244aedf0566bab4bef"><td class="memItemLeft" align="right" valign="top"><a id="a53ac3f51ee72dc244aedf0566bab4bef"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#a53ac3f51ee72dc244aedf0566bab4bef">ICM20X_PWR_MGMT_1</a>&#160;&#160;&#160;0x06</td></tr>
-<tr class="memdesc:a53ac3f51ee72dc244aedf0566bab4bef"><td class="mdescLeft">&#160;</td><td class="mdescRight">primary power management register <br /></td></tr>
-<tr class="separator:a53ac3f51ee72dc244aedf0566bab4bef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae6cb983f0606508a126d3369d820f9e6"><td class="memItemLeft" align="right" valign="top"><a id="ae6cb983f0606508a126d3369d820f9e6"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#ae6cb983f0606508a126d3369d820f9e6">ICM20X_ACCEL_XOUT_H</a>&#160;&#160;&#160;0x2D</td></tr>
-<tr class="memdesc:ae6cb983f0606508a126d3369d820f9e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">first byte of accel data <br /></td></tr>
-<tr class="separator:ae6cb983f0606508a126d3369d820f9e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa48eefac7c509e361eac446fb99431e5"><td class="memItemLeft" align="right" valign="top"><a id="aa48eefac7c509e361eac446fb99431e5"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#aa48eefac7c509e361eac446fb99431e5">ICM20X_GYRO_XOUT_H</a>&#160;&#160;&#160;0x33</td></tr>
-<tr class="memdesc:aa48eefac7c509e361eac446fb99431e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">first byte of accel data <br /></td></tr>
-<tr class="separator:aa48eefac7c509e361eac446fb99431e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab880ae1c46dc35e7aae36be6131a0548"><td class="memItemLeft" align="right" valign="top"><a id="ab880ae1c46dc35e7aae36be6131a0548"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#ab880ae1c46dc35e7aae36be6131a0548">ICM20X_GYRO_SMPLRT_DIV</a>&#160;&#160;&#160;0x00</td></tr>
-<tr class="memdesc:ab880ae1c46dc35e7aae36be6131a0548"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gyroscope data rate divisor. <br /></td></tr>
-<tr class="separator:ab880ae1c46dc35e7aae36be6131a0548"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a71ba42b778b8fdaf4f5cdafe834e74c5"><td class="memItemLeft" align="right" valign="top"><a id="a71ba42b778b8fdaf4f5cdafe834e74c5"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#a71ba42b778b8fdaf4f5cdafe834e74c5">ICM20X_GYRO_CONFIG_1</a>&#160;&#160;&#160;0x01</td></tr>
-<tr class="memdesc:a71ba42b778b8fdaf4f5cdafe834e74c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gyro config for range setting. <br /></td></tr>
-<tr class="separator:a71ba42b778b8fdaf4f5cdafe834e74c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc1202a714281d78b7ca42b6f8c46bd4"><td class="memItemLeft" align="right" valign="top"><a id="afc1202a714281d78b7ca42b6f8c46bd4"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#afc1202a714281d78b7ca42b6f8c46bd4">ICM20X_ACCEL_SMPLRT_DIV_1</a>&#160;&#160;&#160;0x10</td></tr>
-<tr class="memdesc:afc1202a714281d78b7ca42b6f8c46bd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accel data rate divisor MSByte. <br /></td></tr>
-<tr class="separator:afc1202a714281d78b7ca42b6f8c46bd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7fa9360421e984dd03c1d1496655661"><td class="memItemLeft" align="right" valign="top"><a id="aa7fa9360421e984dd03c1d1496655661"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#aa7fa9360421e984dd03c1d1496655661">ICM20X_ACCEL_SMPLRT_DIV_2</a>&#160;&#160;&#160;0x11</td></tr>
-<tr class="memdesc:aa7fa9360421e984dd03c1d1496655661"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accel data rate divisor LSByte. <br /></td></tr>
-<tr class="separator:aa7fa9360421e984dd03c1d1496655661"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a479fa1059d323f9bd0249bc7b06ab375"><td class="memItemLeft" align="right" valign="top"><a id="a479fa1059d323f9bd0249bc7b06ab375"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#a479fa1059d323f9bd0249bc7b06ab375">ICM20X_ACCEL_CONFIG_1</a>&#160;&#160;&#160;0x14</td></tr>
-<tr class="memdesc:a479fa1059d323f9bd0249bc7b06ab375"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accel config for setting range. <br /></td></tr>
-<tr class="separator:a479fa1059d323f9bd0249bc7b06ab375"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ed5153bdd24b03a620e112f4904af63"><td class="memItemLeft" align="right" valign="top"><a id="a8ed5153bdd24b03a620e112f4904af63"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#a8ed5153bdd24b03a620e112f4904af63">ICM20X_I2C_MST_ODR_CONFIG</a>&#160;&#160;&#160;0x0</td></tr>
-<tr class="memdesc:a8ed5153bdd24b03a620e112f4904af63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets ODR for I2C master bus. <br /></td></tr>
-<tr class="separator:a8ed5153bdd24b03a620e112f4904af63"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a93a0b164825794445600738b0c6d7f05"><td class="memItemLeft" align="right" valign="top"><a id="a93a0b164825794445600738b0c6d7f05"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#a93a0b164825794445600738b0c6d7f05">ICM20X_I2C_MST_CTRL</a>&#160;&#160;&#160;0x1</td></tr>
-<tr class="memdesc:a93a0b164825794445600738b0c6d7f05"><td class="mdescLeft">&#160;</td><td class="mdescRight">I2C master bus config. <br /></td></tr>
-<tr class="separator:a93a0b164825794445600738b0c6d7f05"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3053165f39f0ff7c7664b66a0429a4ae"><td class="memItemLeft" align="right" valign="top"><a id="a3053165f39f0ff7c7664b66a0429a4ae"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#a3053165f39f0ff7c7664b66a0429a4ae">ICM20X_I2C_MST_DELAY_CTRL</a>&#160;&#160;&#160;0x2</td></tr>
-<tr class="memdesc:a3053165f39f0ff7c7664b66a0429a4ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">I2C master bus config. <br /></td></tr>
-<tr class="separator:a3053165f39f0ff7c7664b66a0429a4ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a64c0ee025d4e74f152a2dcd035bbe8f3"><td class="memItemLeft" align="right" valign="top"><a id="a64c0ee025d4e74f152a2dcd035bbe8f3"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#a64c0ee025d4e74f152a2dcd035bbe8f3">ICM20X_I2C_SLV0_ADDR</a>&#160;&#160;&#160;0x3</td></tr>
-<tr class="memdesc:a64c0ee025d4e74f152a2dcd035bbe8f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets I2C address for I2C master bus slave 0. <br /></td></tr>
-<tr class="separator:a64c0ee025d4e74f152a2dcd035bbe8f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b5432c5f7237768aa4b5075b57150ea"><td class="memItemLeft" align="right" valign="top"><a id="a4b5432c5f7237768aa4b5075b57150ea"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#a4b5432c5f7237768aa4b5075b57150ea">ICM20X_I2C_SLV0_REG</a>&#160;&#160;&#160;0x4</td></tr>
-<tr class="memdesc:a4b5432c5f7237768aa4b5075b57150ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets register address for I2C master bus slave 0. <br /></td></tr>
-<tr class="separator:a4b5432c5f7237768aa4b5075b57150ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8dbcf30dd4f9508a9167a4ec47febd27"><td class="memItemLeft" align="right" valign="top"><a id="a8dbcf30dd4f9508a9167a4ec47febd27"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#a8dbcf30dd4f9508a9167a4ec47febd27">ICM20X_I2C_SLV0_CTRL</a>&#160;&#160;&#160;0x5</td></tr>
-<tr class="memdesc:a8dbcf30dd4f9508a9167a4ec47febd27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Controls for I2C master bus slave 0. <br /></td></tr>
-<tr class="separator:a8dbcf30dd4f9508a9167a4ec47febd27"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae85f96ad774bd1cbf1f72b3ff9a87cac"><td class="memItemLeft" align="right" valign="top"><a id="ae85f96ad774bd1cbf1f72b3ff9a87cac"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#ae85f96ad774bd1cbf1f72b3ff9a87cac">ICM20X_I2C_SLV0_DO</a>&#160;&#160;&#160;0x6</td></tr>
-<tr class="memdesc:ae85f96ad774bd1cbf1f72b3ff9a87cac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets I2C master bus slave 0 data out. <br /></td></tr>
-<tr class="separator:ae85f96ad774bd1cbf1f72b3ff9a87cac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32a7f3c21c0578774e523e56096758aa"><td class="memItemLeft" align="right" valign="top"><a id="a32a7f3c21c0578774e523e56096758aa"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#a32a7f3c21c0578774e523e56096758aa">ICM20X_I2C_SLV4_ADDR</a>&#160;&#160;&#160;0x13</td></tr>
-<tr class="memdesc:a32a7f3c21c0578774e523e56096758aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets I2C address for I2C master bus slave 4. <br /></td></tr>
-<tr class="separator:a32a7f3c21c0578774e523e56096758aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f030813065b15172e45805eed8c2615"><td class="memItemLeft" align="right" valign="top"><a id="a8f030813065b15172e45805eed8c2615"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#a8f030813065b15172e45805eed8c2615">ICM20X_I2C_SLV4_REG</a>&#160;&#160;&#160;0x14</td></tr>
-<tr class="memdesc:a8f030813065b15172e45805eed8c2615"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets register address for I2C master bus slave 4. <br /></td></tr>
-<tr class="separator:a8f030813065b15172e45805eed8c2615"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a99aa057eb2cd7e844084f5957ac0902e"><td class="memItemLeft" align="right" valign="top"><a id="a99aa057eb2cd7e844084f5957ac0902e"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#a99aa057eb2cd7e844084f5957ac0902e">ICM20X_I2C_SLV4_CTRL</a>&#160;&#160;&#160;0x15</td></tr>
-<tr class="memdesc:a99aa057eb2cd7e844084f5957ac0902e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Controls for I2C master bus slave 4. <br /></td></tr>
-<tr class="separator:a99aa057eb2cd7e844084f5957ac0902e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad1acca0b2e0c5fa3a0b2f71bf1035806"><td class="memItemLeft" align="right" valign="top"><a id="ad1acca0b2e0c5fa3a0b2f71bf1035806"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#ad1acca0b2e0c5fa3a0b2f71bf1035806">ICM20X_I2C_SLV4_DO</a>&#160;&#160;&#160;0x16</td></tr>
-<tr class="memdesc:ad1acca0b2e0c5fa3a0b2f71bf1035806"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets I2C master bus slave 4 data out. <br /></td></tr>
-<tr class="separator:ad1acca0b2e0c5fa3a0b2f71bf1035806"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab3156cc2cc7f123084bcb5d9a0ac9311"><td class="memItemLeft" align="right" valign="top"><a id="ab3156cc2cc7f123084bcb5d9a0ac9311"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#ab3156cc2cc7f123084bcb5d9a0ac9311">ICM20X_I2C_SLV4_DI</a>&#160;&#160;&#160;0x17</td></tr>
-<tr class="memdesc:ab3156cc2cc7f123084bcb5d9a0ac9311"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets I2C master bus slave 4 data in. <br /></td></tr>
-<tr class="separator:ab3156cc2cc7f123084bcb5d9a0ac9311"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5176e273d765b589bba7edf5043fed9"><td class="memItemLeft" align="right" valign="top"><a id="ac5176e273d765b589bba7edf5043fed9"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#ac5176e273d765b589bba7edf5043fed9">ICM20X_B0_WHOAMI</a>&#160;&#160;&#160;0x00</td></tr>
+<tr class="memdesc:ac5176e273d765b589bba7edf5043fed9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Chip ID register. <br /></td></tr>
+<tr class="separator:ac5176e273d765b589bba7edf5043fed9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03a302a7a813e3667f95093dfa7b9397"><td class="memItemLeft" align="right" valign="top"><a id="a03a302a7a813e3667f95093dfa7b9397"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#a03a302a7a813e3667f95093dfa7b9397">ICM20X_B0_USER_CTRL</a>&#160;&#160;&#160;0x03</td></tr>
+<tr class="memdesc:a03a302a7a813e3667f95093dfa7b9397"><td class="mdescLeft">&#160;</td><td class="mdescRight">User Control Reg. Includes I2C Master. <br /></td></tr>
+<tr class="separator:a03a302a7a813e3667f95093dfa7b9397"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7ff5dc1b5efb031b6442c3b1e2e959c"><td class="memItemLeft" align="right" valign="top"><a id="af7ff5dc1b5efb031b6442c3b1e2e959c"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#af7ff5dc1b5efb031b6442c3b1e2e959c">ICM20X_B0_LP_CONFIG</a>&#160;&#160;&#160;0x05</td></tr>
+<tr class="memdesc:af7ff5dc1b5efb031b6442c3b1e2e959c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Low Power config. <br /></td></tr>
+<tr class="separator:af7ff5dc1b5efb031b6442c3b1e2e959c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e8201a775824502a411d3a467203da7"><td class="memItemLeft" align="right" valign="top"><a id="a0e8201a775824502a411d3a467203da7"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#a0e8201a775824502a411d3a467203da7">ICM20X_B0_REG_INT_PIN_CFG</a>&#160;&#160;&#160;0xF</td></tr>
+<tr class="memdesc:a0e8201a775824502a411d3a467203da7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt config register. <br /></td></tr>
+<tr class="separator:a0e8201a775824502a411d3a467203da7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa78cc440050a635fcc083f02274cffdf"><td class="memItemLeft" align="right" valign="top"><a id="aa78cc440050a635fcc083f02274cffdf"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#aa78cc440050a635fcc083f02274cffdf">ICM20X_B0_REG_INT_ENABLE</a>&#160;&#160;&#160;0x10</td></tr>
+<tr class="memdesc:aa78cc440050a635fcc083f02274cffdf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt enable register 0. <br /></td></tr>
+<tr class="separator:aa78cc440050a635fcc083f02274cffdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3e038e941e019fd11c4e24feb5fa7aa"><td class="memItemLeft" align="right" valign="top"><a id="af3e038e941e019fd11c4e24feb5fa7aa"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#af3e038e941e019fd11c4e24feb5fa7aa">ICM20X_B0_REG_INT_ENABLE_1</a>&#160;&#160;&#160;0x11</td></tr>
+<tr class="memdesc:af3e038e941e019fd11c4e24feb5fa7aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt enable register 1. <br /></td></tr>
+<tr class="separator:af3e038e941e019fd11c4e24feb5fa7aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04b15e0dc7e92a23ec0a4f49d0130baa"><td class="memItemLeft" align="right" valign="top"><a id="a04b15e0dc7e92a23ec0a4f49d0130baa"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#a04b15e0dc7e92a23ec0a4f49d0130baa">ICM20X_B0_I2C_MST_STATUS</a>&#160;&#160;&#160;0x17</td></tr>
+<tr class="memdesc:a04b15e0dc7e92a23ec0a4f49d0130baa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Records if I2C master bus data is finished. <br /></td></tr>
+<tr class="separator:a04b15e0dc7e92a23ec0a4f49d0130baa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3021ff6c174c89a4ac25f18aa9d67c1f"><td class="memItemLeft" align="right" valign="top"><a id="a3021ff6c174c89a4ac25f18aa9d67c1f"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#a3021ff6c174c89a4ac25f18aa9d67c1f">ICM20X_B0_REG_BANK_SEL</a>&#160;&#160;&#160;0x7F</td></tr>
+<tr class="memdesc:a3021ff6c174c89a4ac25f18aa9d67c1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">register bank selection register <br /></td></tr>
+<tr class="separator:a3021ff6c174c89a4ac25f18aa9d67c1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae41cf5c6d0fb527e88bf3fb760eadabd"><td class="memItemLeft" align="right" valign="top"><a id="ae41cf5c6d0fb527e88bf3fb760eadabd"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#ae41cf5c6d0fb527e88bf3fb760eadabd">ICM20X_B0_PWR_MGMT_1</a>&#160;&#160;&#160;0x06</td></tr>
+<tr class="memdesc:ae41cf5c6d0fb527e88bf3fb760eadabd"><td class="mdescLeft">&#160;</td><td class="mdescRight">primary power management register <br /></td></tr>
+<tr class="separator:ae41cf5c6d0fb527e88bf3fb760eadabd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40bf360619b8018df3546f66b44b99c3"><td class="memItemLeft" align="right" valign="top"><a id="a40bf360619b8018df3546f66b44b99c3"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#a40bf360619b8018df3546f66b44b99c3">ICM20X_B0_ACCEL_XOUT_H</a>&#160;&#160;&#160;0x2D</td></tr>
+<tr class="memdesc:a40bf360619b8018df3546f66b44b99c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">first byte of accel data <br /></td></tr>
+<tr class="separator:a40bf360619b8018df3546f66b44b99c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad91876e70af1afc63e0a7e0af898d76e"><td class="memItemLeft" align="right" valign="top"><a id="ad91876e70af1afc63e0a7e0af898d76e"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#ad91876e70af1afc63e0a7e0af898d76e">ICM20X_B0_GYRO_XOUT_H</a>&#160;&#160;&#160;0x33</td></tr>
+<tr class="memdesc:ad91876e70af1afc63e0a7e0af898d76e"><td class="mdescLeft">&#160;</td><td class="mdescRight">first byte of accel data <br /></td></tr>
+<tr class="separator:ad91876e70af1afc63e0a7e0af898d76e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c8f149f4acfc405fe3ac0141e4b9971"><td class="memItemLeft" align="right" valign="top"><a id="a5c8f149f4acfc405fe3ac0141e4b9971"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#a5c8f149f4acfc405fe3ac0141e4b9971">ICM20X_B2_GYRO_SMPLRT_DIV</a>&#160;&#160;&#160;0x00</td></tr>
+<tr class="memdesc:a5c8f149f4acfc405fe3ac0141e4b9971"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gyroscope data rate divisor. <br /></td></tr>
+<tr class="separator:a5c8f149f4acfc405fe3ac0141e4b9971"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ef8338da3c2438a5eec9286f3cc5f93"><td class="memItemLeft" align="right" valign="top"><a id="a1ef8338da3c2438a5eec9286f3cc5f93"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#a1ef8338da3c2438a5eec9286f3cc5f93">ICM20X_B2_GYRO_CONFIG_1</a>&#160;&#160;&#160;0x01</td></tr>
+<tr class="memdesc:a1ef8338da3c2438a5eec9286f3cc5f93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gyro config for range setting. <br /></td></tr>
+<tr class="separator:a1ef8338da3c2438a5eec9286f3cc5f93"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a144a6543ec6338f93b1423f91f8ad98e"><td class="memItemLeft" align="right" valign="top"><a id="a144a6543ec6338f93b1423f91f8ad98e"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#a144a6543ec6338f93b1423f91f8ad98e">ICM20X_B2_ACCEL_SMPLRT_DIV_1</a>&#160;&#160;&#160;0x10</td></tr>
+<tr class="memdesc:a144a6543ec6338f93b1423f91f8ad98e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accel data rate divisor MSByte. <br /></td></tr>
+<tr class="separator:a144a6543ec6338f93b1423f91f8ad98e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f92a645ea3fd4dd227e96656182d874"><td class="memItemLeft" align="right" valign="top"><a id="a7f92a645ea3fd4dd227e96656182d874"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#a7f92a645ea3fd4dd227e96656182d874">ICM20X_B2_ACCEL_SMPLRT_DIV_2</a>&#160;&#160;&#160;0x11</td></tr>
+<tr class="memdesc:a7f92a645ea3fd4dd227e96656182d874"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accel data rate divisor LSByte. <br /></td></tr>
+<tr class="separator:a7f92a645ea3fd4dd227e96656182d874"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e44fd5dce68fe3e623fb1f99e570610"><td class="memItemLeft" align="right" valign="top"><a id="a9e44fd5dce68fe3e623fb1f99e570610"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#a9e44fd5dce68fe3e623fb1f99e570610">ICM20X_B2_ACCEL_CONFIG_1</a>&#160;&#160;&#160;0x14</td></tr>
+<tr class="memdesc:a9e44fd5dce68fe3e623fb1f99e570610"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accel config for setting range. <br /></td></tr>
+<tr class="separator:a9e44fd5dce68fe3e623fb1f99e570610"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a723d5d7d1c5dda552f210cc1167f9836"><td class="memItemLeft" align="right" valign="top"><a id="a723d5d7d1c5dda552f210cc1167f9836"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#a723d5d7d1c5dda552f210cc1167f9836">ICM20X_B3_I2C_MST_ODR_CONFIG</a>&#160;&#160;&#160;0x0</td></tr>
+<tr class="memdesc:a723d5d7d1c5dda552f210cc1167f9836"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets ODR for I2C master bus. <br /></td></tr>
+<tr class="separator:a723d5d7d1c5dda552f210cc1167f9836"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9ff5cb907dc948fcb30ed233b07a5fa"><td class="memItemLeft" align="right" valign="top"><a id="ac9ff5cb907dc948fcb30ed233b07a5fa"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#ac9ff5cb907dc948fcb30ed233b07a5fa">ICM20X_B3_I2C_MST_CTRL</a>&#160;&#160;&#160;0x1</td></tr>
+<tr class="memdesc:ac9ff5cb907dc948fcb30ed233b07a5fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">I2C master bus config. <br /></td></tr>
+<tr class="separator:ac9ff5cb907dc948fcb30ed233b07a5fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89d1aff60044f5389d55c4f0b8dd0c53"><td class="memItemLeft" align="right" valign="top"><a id="a89d1aff60044f5389d55c4f0b8dd0c53"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#a89d1aff60044f5389d55c4f0b8dd0c53">ICM20X_B3_I2C_MST_DELAY_CTRL</a>&#160;&#160;&#160;0x2</td></tr>
+<tr class="memdesc:a89d1aff60044f5389d55c4f0b8dd0c53"><td class="mdescLeft">&#160;</td><td class="mdescRight">I2C master bus config. <br /></td></tr>
+<tr class="separator:a89d1aff60044f5389d55c4f0b8dd0c53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab67726d7519f8fc09fa3ede6e8576dec"><td class="memItemLeft" align="right" valign="top"><a id="ab67726d7519f8fc09fa3ede6e8576dec"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#ab67726d7519f8fc09fa3ede6e8576dec">ICM20X_B3_I2C_SLV0_ADDR</a>&#160;&#160;&#160;0x3</td></tr>
+<tr class="memdesc:ab67726d7519f8fc09fa3ede6e8576dec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets I2C address for I2C master bus slave 0. <br /></td></tr>
+<tr class="separator:ab67726d7519f8fc09fa3ede6e8576dec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13d28e168f6681ff42ba1953efb650c4"><td class="memItemLeft" align="right" valign="top"><a id="a13d28e168f6681ff42ba1953efb650c4"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#a13d28e168f6681ff42ba1953efb650c4">ICM20X_B3_I2C_SLV0_REG</a>&#160;&#160;&#160;0x4</td></tr>
+<tr class="memdesc:a13d28e168f6681ff42ba1953efb650c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets register address for I2C master bus slave 0. <br /></td></tr>
+<tr class="separator:a13d28e168f6681ff42ba1953efb650c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0135be6f9474c56ec39c8a3cbc443b9"><td class="memItemLeft" align="right" valign="top"><a id="ad0135be6f9474c56ec39c8a3cbc443b9"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#ad0135be6f9474c56ec39c8a3cbc443b9">ICM20X_B3_I2C_SLV0_CTRL</a>&#160;&#160;&#160;0x5</td></tr>
+<tr class="memdesc:ad0135be6f9474c56ec39c8a3cbc443b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Controls for I2C master bus slave 0. <br /></td></tr>
+<tr class="separator:ad0135be6f9474c56ec39c8a3cbc443b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad164a5c09071eea2d6ac9747835b395c"><td class="memItemLeft" align="right" valign="top"><a id="ad164a5c09071eea2d6ac9747835b395c"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#ad164a5c09071eea2d6ac9747835b395c">ICM20X_B3_I2C_SLV0_DO</a>&#160;&#160;&#160;0x6</td></tr>
+<tr class="memdesc:ad164a5c09071eea2d6ac9747835b395c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets I2C master bus slave 0 data out. <br /></td></tr>
+<tr class="separator:ad164a5c09071eea2d6ac9747835b395c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b99d730da21ee46631cf93526cec842"><td class="memItemLeft" align="right" valign="top"><a id="a4b99d730da21ee46631cf93526cec842"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#a4b99d730da21ee46631cf93526cec842">ICM20X_B3_I2C_SLV4_ADDR</a>&#160;&#160;&#160;0x13</td></tr>
+<tr class="memdesc:a4b99d730da21ee46631cf93526cec842"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets I2C address for I2C master bus slave 4. <br /></td></tr>
+<tr class="separator:a4b99d730da21ee46631cf93526cec842"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c17a7c4b62c72a89010776bde65b230"><td class="memItemLeft" align="right" valign="top"><a id="a4c17a7c4b62c72a89010776bde65b230"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#a4c17a7c4b62c72a89010776bde65b230">ICM20X_B3_I2C_SLV4_REG</a>&#160;&#160;&#160;0x14</td></tr>
+<tr class="memdesc:a4c17a7c4b62c72a89010776bde65b230"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets register address for I2C master bus slave 4. <br /></td></tr>
+<tr class="separator:a4c17a7c4b62c72a89010776bde65b230"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67b104f54a4999319fb7e3c4f7f52803"><td class="memItemLeft" align="right" valign="top"><a id="a67b104f54a4999319fb7e3c4f7f52803"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#a67b104f54a4999319fb7e3c4f7f52803">ICM20X_B3_I2C_SLV4_CTRL</a>&#160;&#160;&#160;0x15</td></tr>
+<tr class="memdesc:a67b104f54a4999319fb7e3c4f7f52803"><td class="mdescLeft">&#160;</td><td class="mdescRight">Controls for I2C master bus slave 4. <br /></td></tr>
+<tr class="separator:a67b104f54a4999319fb7e3c4f7f52803"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3439fba54eab90ee8adfdaef60191e3"><td class="memItemLeft" align="right" valign="top"><a id="aa3439fba54eab90ee8adfdaef60191e3"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#aa3439fba54eab90ee8adfdaef60191e3">ICM20X_B3_I2C_SLV4_DO</a>&#160;&#160;&#160;0x16</td></tr>
+<tr class="memdesc:aa3439fba54eab90ee8adfdaef60191e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets I2C master bus slave 4 data out. <br /></td></tr>
+<tr class="separator:aa3439fba54eab90ee8adfdaef60191e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88edd463a206ac723af8d102b3493bfa"><td class="memItemLeft" align="right" valign="top"><a id="a88edd463a206ac723af8d102b3493bfa"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#a88edd463a206ac723af8d102b3493bfa">ICM20X_B3_I2C_SLV4_DI</a>&#160;&#160;&#160;0x17</td></tr>
+<tr class="memdesc:a88edd463a206ac723af8d102b3493bfa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets I2C master bus slave 4 data in. <br /></td></tr>
+<tr class="separator:a88edd463a206ac723af8d102b3493bfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7fbff378c5e926ec6391a30de0ba9ce8"><td class="memItemLeft" align="right" valign="top"><a id="a7fbff378c5e926ec6391a30de0ba9ce8"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#a7fbff378c5e926ec6391a30de0ba9ce8">ICM20948_CHIP_ID</a>&#160;&#160;&#160;0xEA</td></tr>
 <tr class="memdesc:a7fbff378c5e926ec6391a30de0ba9ce8"><td class="mdescLeft">&#160;</td><td class="mdescRight">ICM20948 default device id from WHOAMI. <br /></td></tr>

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Adafruit ICM20649 Sensor Library: Adafruit_ICM20948 Class Reference</title>
+<title>Adafruit ICM20X Sensor Library: Adafruit_ICM20948 Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Adafruit ICM20649 Sensor Library
+   <div id="projectname">Adafruit ICM20X Sensor Library
    </div>
   </td>
  </tr>
@@ -101,6 +101,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a32d7a93a9c31a802f9b27fb65fcd57b0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___i_c_m20948.html#a32d7a93a9c31a802f9b27fb65fcd57b0">setGyroRange</a> (<a class="el" href="_adafruit___i_c_m20948_8h.html#aa50e555b2145906685efe39c3d1e38f5">icm20948_gyro_range_t</a> new_gyro_range)</td></tr>
 <tr class="memdesc:a32d7a93a9c31a802f9b27fb65fcd57b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the gyro's measurement range.  <a href="#a32d7a93a9c31a802f9b27fb65fcd57b0">More...</a><br /></td></tr>
 <tr class="separator:a32d7a93a9c31a802f9b27fb65fcd57b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03cc807005d5648ebd447a34b16c6812"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_adafruit___i_c_m20948_8h.html#ab17f602c791ad482cee49bf8c2250788">ak09916_data_rate_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___i_c_m20948.html#a03cc807005d5648ebd447a34b16c6812">getMagDataRate</a> (void)</td></tr>
+<tr class="memdesc:a03cc807005d5648ebd447a34b16c6812"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current magnetometer measurement rate.  <a href="#a03cc807005d5648ebd447a34b16c6812">More...</a><br /></td></tr>
+<tr class="separator:a03cc807005d5648ebd447a34b16c6812"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d0c4559382d2a760c63470919f63c89"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___i_c_m20948.html#a0d0c4559382d2a760c63470919f63c89">setMagDataRate</a> (<a class="el" href="_adafruit___i_c_m20948_8h.html#ab17f602c791ad482cee49bf8c2250788">ak09916_data_rate_t</a> rate)</td></tr>
+<tr class="memdesc:a0d0c4559382d2a760c63470919f63c89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the magnetometer measurement rate.  <a href="#a0d0c4559382d2a760c63470919f63c89">More...</a><br /></td></tr>
+<tr class="separator:a0d0c4559382d2a760c63470919f63c89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_adafruit___i_c_m20_x"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_adafruit___i_c_m20_x')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_adafruit___i_c_m20_x.html">Adafruit_ICM20X</a></td></tr>
 <tr class="memitem:ad10aa12a5bd5391be935cdc2bfeed5fb inherit pub_methods_class_adafruit___i_c_m20_x"><td class="memItemLeft" align="right" valign="top"><a id="ad10aa12a5bd5391be935cdc2bfeed5fb"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___i_c_m20_x.html#ad10aa12a5bd5391be935cdc2bfeed5fb">Adafruit_ICM20X</a> ()</td></tr>
@@ -185,9 +191,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:af8fdf8e74ce97441c1ef2181c520ba3b inherit pro_methods_class_adafruit___i_c_m20_x"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___i_c_m20_x.html#af8fdf8e74ce97441c1ef2181c520ba3b">writeExternalRegister</a> (uint8_t slv_addr, uint8_t reg_addr, uint8_t value)</td></tr>
 <tr class="memdesc:af8fdf8e74ce97441c1ef2181c520ba3b inherit pro_methods_class_adafruit___i_c_m20_x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write a single byte to a given register address for an I2C slave device on the auxiliary I2C bus.  <a href="class_adafruit___i_c_m20_x.html#af8fdf8e74ce97441c1ef2181c520ba3b">More...</a><br /></td></tr>
 <tr class="separator:af8fdf8e74ce97441c1ef2181c520ba3b inherit pro_methods_class_adafruit___i_c_m20_x"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad970268c97f14cd2f678f23c8c539b48 inherit pro_methods_class_adafruit___i_c_m20_x"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___i_c_m20_x.html#ad970268c97f14cd2f678f23c8c539b48">_configureI2CMaster</a> (void)</td></tr>
-<tr class="memdesc:ad970268c97f14cd2f678f23c8c539b48 inherit pro_methods_class_adafruit___i_c_m20_x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the I2C clock rate for the auxillary I2C bus to 345.60kHz and disable repeated start.  <a href="class_adafruit___i_c_m20_x.html#ad970268c97f14cd2f678f23c8c539b48">More...</a><br /></td></tr>
-<tr class="separator:ad970268c97f14cd2f678f23c8c539b48 inherit pro_methods_class_adafruit___i_c_m20_x"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac156ae34429739a580db5ceca7ee2129 inherit pro_methods_class_adafruit___i_c_m20_x"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___i_c_m20_x.html#ac156ae34429739a580db5ceca7ee2129">configureI2CMaster</a> (void)</td></tr>
+<tr class="memdesc:ac156ae34429739a580db5ceca7ee2129 inherit pro_methods_class_adafruit___i_c_m20_x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the I2C clock rate for the auxillary I2C bus to 345.60kHz and disable repeated start.  <a href="class_adafruit___i_c_m20_x.html#ac156ae34429739a580db5ceca7ee2129">More...</a><br /></td></tr>
+<tr class="separator:ac156ae34429739a580db5ceca7ee2129 inherit pro_methods_class_adafruit___i_c_m20_x"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa93c8ac6daa1a27cd08daef662ef9684 inherit pro_methods_class_adafruit___i_c_m20_x"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___i_c_m20_x.html#aa93c8ac6daa1a27cd08daef662ef9684">enableI2CMaster</a> (bool enable_i2c_master)</td></tr>
 <tr class="memdesc:aa93c8ac6daa1a27cd08daef662ef9684 inherit pro_methods_class_adafruit___i_c_m20_x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable or disable the I2C mastercontroller.  <a href="class_adafruit___i_c_m20_x.html#aa93c8ac6daa1a27cd08daef662ef9684">More...</a><br /></td></tr>
 <tr class="separator:aa93c8ac6daa1a27cd08daef662ef9684 inherit pro_methods_class_adafruit___i_c_m20_x"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -467,6 +473,54 @@ int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a03cc807005d5648ebd447a34b16c6812"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a03cc807005d5648ebd447a34b16c6812">&#9670;&nbsp;</a></span>getMagDataRate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="_adafruit___i_c_m20948_8h.html#ab17f602c791ad482cee49bf8c2250788">ak09916_data_rate_t</a> Adafruit_ICM20948::getMagDataRate </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the current magnetometer measurement rate. </p>
+<dl class="section return"><dt>Returns</dt><dd>ak09916_data_rate_t the current rate </dd></dl>
+
+</div>
+</div>
+<a id="a0d0c4559382d2a760c63470919f63c89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d0c4559382d2a760c63470919f63c89">&#9670;&nbsp;</a></span>setMagDataRate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Adafruit_ICM20948::setMagDataRate </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="_adafruit___i_c_m20948_8h.html#ab17f602c791ad482cee49bf8c2250788">ak09916_data_rate_t</a>&#160;</td>
+          <td class="paramname"><em>rate</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the magnetometer measurement rate. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rate</td><td>The rate to set.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true: success false: failure </dd></dl>
 
 </div>
 </div>
