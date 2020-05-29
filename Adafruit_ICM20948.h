@@ -53,6 +53,19 @@ typedef enum {
   ICM20948_GYRO_RANGE_2000_DPS,
 } icm20948_gyro_range_t;
 
+/**
+ * @brief Data rates/modes for the embedded AsahiKASEI AK09916 3-axis magnetometer
+ *
+ */
+typedef enum {
+  AK09916_MAG_DATARATE_SHUTDOWN = 0x0, ///< Stops measurement updates
+  AK09916_MAG_DATARATE_SINGLE = 0x1, ///< Takes a single measurement then switches to AK09916_MAG_DATARATE_SHUTDOWN
+  AK09916_MAG_DATARATE_10_HZ = 0x2, ///< updates at 10Hz
+  AK09916_MAG_DATARATE_20_HZ = 0x4, ///< updates at 20Hz
+  AK09916_MAG_DATARATE_50_HZ = 0x6, ///< updates at 50Hz
+  AK09916_MAG_DATARATE_100_HZ = 0x8, ///< updates at 100Hz
+} ak09916_data_rate_t;
+
 /*!
  *    @brief  Class that stores state and functions for interacting with
  *            the ST ICM2948 9-DoF Accelerometer, gyro, and magnetometer
@@ -70,15 +83,18 @@ public:
   icm20948_gyro_range_t getGyroRange(void);
   void setGyroRange(icm20948_gyro_range_t new_gyro_range);
 
+  ak09916_data_rate_t getMagDataRate(void);
+  bool setMagDataRate(ak09916_data_rate_t rate);
+
 private:
-  uint8_t _read_mag_reg(uint8_t reg_addr);
-  bool _write_mag_reg(uint8_t reg_addr, uint8_t value);
+  uint8_t readMagRegister(uint8_t reg_addr);
+  bool writeMagRegister(uint8_t reg_addr, uint8_t value);
 
   uint8_t getMagId(void);
-  bool _mag_setup_failed(void);
+  bool auxI2CBusSetupFailed(void);
 
-  bool _setupMag(void);
-  void _scale_values(void);
+  bool setupMag(void);
+  void scaleValues(void);
 };
 
 #endif

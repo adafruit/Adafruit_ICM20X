@@ -144,7 +144,7 @@ void Adafruit_ICM20X::reset(void) {
   _setBank(0);
 
   Adafruit_BusIO_Register pwr_mgmt1 = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_PWR_MGMT_1, 1);
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B0_PWR_MGMT_1, 1);
 
   Adafruit_BusIO_RegisterBits reset_bit =
       Adafruit_BusIO_RegisterBits(&pwr_mgmt1, 1, 7);
@@ -164,7 +164,7 @@ void Adafruit_ICM20X::reset(void) {
  */
 bool Adafruit_ICM20X::_init(int32_t sensor_id) {
   Adafruit_BusIO_Register chip_id = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_WHOAMI);
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B0_WHOAMI);
 
   _setBank(0);
   uint8_t chip_id_ = chip_id.read();
@@ -181,9 +181,9 @@ bool Adafruit_ICM20X::_init(int32_t sensor_id) {
   reset();
 
   Adafruit_BusIO_Register pwr_mgmt_1 = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_PWR_MGMT_1);
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B0_PWR_MGMT_1);
   Adafruit_BusIO_Register lp_config = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_LP_CONFIG);
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B0_LP_CONFIG);
 
   Adafruit_BusIO_RegisterBits sleep =
       Adafruit_BusIO_RegisterBits(&pwr_mgmt_1, 1, 6);
@@ -195,10 +195,10 @@ bool Adafruit_ICM20X::_init(int32_t sensor_id) {
       Adafruit_BusIO_RegisterBits(&lp_config, 1, 6);
 
   Adafruit_BusIO_Register gyro_config_1 = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_GYRO_CONFIG_1);
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B2_GYRO_CONFIG_1);
 
   Adafruit_BusIO_Register accel_config_1 = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_ACCEL_CONFIG_1);
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B2_ACCEL_CONFIG_1);
 
   Adafruit_BusIO_RegisterBits gyro_filter_bit =
       Adafruit_BusIO_RegisterBits(&gyro_config_1, 1, 0);
@@ -233,10 +233,10 @@ bool Adafruit_ICM20X::_init(int32_t sensor_id) {
 void Adafruit_ICM20X::init1(void) {
 
   Adafruit_BusIO_Register gyro_config_1 = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_GYRO_CONFIG_1);
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B2_GYRO_CONFIG_1);
 
   Adafruit_BusIO_Register accel_config_1 = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_ACCEL_CONFIG_1);
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B2_ACCEL_CONFIG_1);
 
   Adafruit_BusIO_RegisterBits accel_filter_bit =
       Adafruit_BusIO_RegisterBits(&accel_config_1, 1, 0);
@@ -355,7 +355,7 @@ void Adafruit_ICM20X::_read(void) {
   const uint8_t numbytes = 14 + 9; // Read Accel, gyro, temp, and 9 bytes of mag
 
   Adafruit_BusIO_Register data_reg = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_ACCEL_XOUT_H, numbytes);
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B0_ACCEL_XOUT_H, numbytes);
 
   uint8_t buffer[numbytes];
   data_reg.read(buffer, numbytes);
@@ -375,14 +375,14 @@ void Adafruit_ICM20X::_read(void) {
   rawMagY = ((buffer[18] << 8) | (buffer[17] & 0xFF));
   rawMagZ = ((buffer[20] << 8) | (buffer[19] & 0xFF));
 
-  _scale_values();
+  scaleValues();
   _setBank(0);
 }
 /**
  * @brief Scales the raw variables based on the current measurement range
  *
  */
-void Adafruit_ICM20X::_scale_values(void) {}
+void Adafruit_ICM20X::scaleValues(void) {}
 
 /*!
     @brief  Gets an Adafruit Unified Sensor object for the accelerometer
@@ -424,7 +424,7 @@ Adafruit_Sensor *Adafruit_ICM20X::getTemperatureSensor(void) {
 void Adafruit_ICM20X::_setBank(uint8_t bank_number) {
 
   Adafruit_BusIO_Register reg_bank_sel = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_REG_BANK_SEL);
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B0_REG_BANK_SEL);
 
   reg_bank_sel.write((bank_number & 0b11) << 4);
 }
@@ -438,7 +438,7 @@ uint8_t Adafruit_ICM20X::readAccelRange(void) {
   _setBank(2);
 
   Adafruit_BusIO_Register accel_config_1 = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_ACCEL_CONFIG_1);
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B2_ACCEL_CONFIG_1);
 
   Adafruit_BusIO_RegisterBits accel_range =
       Adafruit_BusIO_RegisterBits(&accel_config_1, 2, 1);
@@ -460,7 +460,7 @@ void Adafruit_ICM20X::writeAccelRange(uint8_t new_accel_range) {
   _setBank(2);
 
   Adafruit_BusIO_Register accel_config_1 = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_ACCEL_CONFIG_1);
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B2_ACCEL_CONFIG_1);
 
   Adafruit_BusIO_RegisterBits accel_range =
       Adafruit_BusIO_RegisterBits(&accel_config_1, 2, 1);
@@ -478,7 +478,7 @@ uint8_t Adafruit_ICM20X::readGyroRange(void) {
   _setBank(2);
 
   Adafruit_BusIO_Register gyro_config_1 = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_GYRO_CONFIG_1);
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B2_GYRO_CONFIG_1);
 
   Adafruit_BusIO_RegisterBits gyro_range =
       Adafruit_BusIO_RegisterBits(&gyro_config_1, 2, 1);
@@ -500,7 +500,7 @@ void Adafruit_ICM20X::writeGyroRange(uint8_t new_gyro_range) {
   _setBank(2);
 
   Adafruit_BusIO_Register gyro_config_1 = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_GYRO_CONFIG_1);
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B2_GYRO_CONFIG_1);
 
   Adafruit_BusIO_RegisterBits gyro_range =
       Adafruit_BusIO_RegisterBits(&gyro_config_1, 2, 1);
@@ -519,7 +519,7 @@ uint16_t Adafruit_ICM20X::getAccelRateDivisor(void) {
 
   Adafruit_BusIO_Register accel_rate_divisor =
       Adafruit_BusIO_Register(i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD,
-                              ICM20X_ACCEL_SMPLRT_DIV_1, 2, MSBFIRST);
+                              ICM20X_B2_ACCEL_SMPLRT_DIV_1, 2, MSBFIRST);
 
   uint16_t divisor_val = accel_rate_divisor.read();
 
@@ -540,7 +540,7 @@ void Adafruit_ICM20X::setAccelRateDivisor(uint16_t new_accel_divisor) {
 
   Adafruit_BusIO_Register accel_rate_divisor =
       Adafruit_BusIO_Register(i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD,
-                              ICM20X_ACCEL_SMPLRT_DIV_1, 2, MSBFIRST);
+                              ICM20X_B2_ACCEL_SMPLRT_DIV_1, 2, MSBFIRST);
 
   accel_rate_divisor.write(new_accel_divisor);
   _setBank(0);
@@ -555,7 +555,7 @@ uint8_t Adafruit_ICM20X::getGyroRateDivisor(void) {
   _setBank(2);
 
   Adafruit_BusIO_Register gyro_rate_divisor = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_GYRO_SMPLRT_DIV, 1);
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B2_GYRO_SMPLRT_DIV, 1);
 
   uint8_t divisor_val = gyro_rate_divisor.read();
 
@@ -574,7 +574,7 @@ void Adafruit_ICM20X::setGyroRateDivisor(uint8_t new_gyro_divisor) {
   _setBank(2);
 
   Adafruit_BusIO_Register gyro_rate_divisor = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_GYRO_SMPLRT_DIV, 1);
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B2_GYRO_SMPLRT_DIV, 1);
 
   gyro_rate_divisor.write(new_gyro_divisor);
   _setBank(0);
@@ -590,7 +590,7 @@ void Adafruit_ICM20X::setInt1ActiveLow(bool active_low) {
   _setBank(0);
 
   Adafruit_BusIO_Register int_pin_cfg = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_REG_INT_PIN_CFG);
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B0_REG_INT_PIN_CFG);
 
   Adafruit_BusIO_RegisterBits int1_polarity =
       Adafruit_BusIO_RegisterBits(&int_pin_cfg, 1, 7);
@@ -612,7 +612,7 @@ void Adafruit_ICM20X::setInt2ActiveLow(bool active_low) {
   _setBank(0);
 
   Adafruit_BusIO_Register int_enable_1 = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_REG_INT_ENABLE_1);
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B0_REG_INT_ENABLE_1);
 
   Adafruit_BusIO_RegisterBits int2_polarity =
       Adafruit_BusIO_RegisterBits(&int_enable_1, 1, 7);
@@ -635,7 +635,7 @@ void Adafruit_ICM20X::setI2CBypass(bool bypass_i2c) {
   _setBank(0);
 
   Adafruit_BusIO_Register int_enable_1 = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_REG_INT_PIN_CFG);
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B0_REG_INT_PIN_CFG);
 
   Adafruit_BusIO_RegisterBits i2c_bypass_enable =
       Adafruit_BusIO_RegisterBits(&int_enable_1, 1, 1);
@@ -653,7 +653,7 @@ void Adafruit_ICM20X::setI2CBypass(bool bypass_i2c) {
 bool Adafruit_ICM20X::enableI2CMaster(bool enable_i2c_master) {
   _setBank(0);
   Adafruit_BusIO_Register user_ctrl_reg = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_USER_CTRL);
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B0_USER_CTRL);
 
   Adafruit_BusIO_RegisterBits i2c_master_enable_bit =
       Adafruit_BusIO_RegisterBits(&user_ctrl_reg, 1, 5);
@@ -667,11 +667,11 @@ bool Adafruit_ICM20X::enableI2CMaster(bool enable_i2c_master) {
  *
  * @return true: success false: failure
  */
-bool Adafruit_ICM20X::_configureI2CMaster(void) {
+bool Adafruit_ICM20X::configureI2CMaster(void) {
 
   _setBank(3);
   Adafruit_BusIO_Register i2c_master_ctrl_reg = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_I2C_MST_CTRL);
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B3_I2C_MST_CTRL);
 
   i2c_master_ctrl_reg.write(0x17);
 }
@@ -726,16 +726,16 @@ uint8_t Adafruit_ICM20X::auxillaryRegisterTransaction(bool read,
 
   Adafruit_BusIO_Register *slv4_do_reg;
   Adafruit_BusIO_Register slv4_addr_reg = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_I2C_SLV4_ADDR);
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B3_I2C_SLV4_ADDR);
 
   Adafruit_BusIO_Register slv4_reg_reg = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_I2C_SLV4_REG);
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B3_I2C_SLV4_REG);
 
   Adafruit_BusIO_Register slv4_ctrl_reg = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_I2C_SLV4_CTRL);
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B3_I2C_SLV4_CTRL);
 
   Adafruit_BusIO_Register i2c_master_status_reg = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_I2C_MST_STATUS);
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B0_I2C_MST_STATUS);
 
   Adafruit_BusIO_RegisterBits slave_finished_bit =
       Adafruit_BusIO_RegisterBits(&i2c_master_status_reg, 1, 6);
@@ -744,11 +744,11 @@ uint8_t Adafruit_ICM20X::auxillaryRegisterTransaction(bool read,
     slv_addr |= 0x80; // set high bit for read, presumably for multi-byte reads
 
     slv4_di_reg = new Adafruit_BusIO_Register(
-        i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_I2C_SLV4_DI);
+        i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B3_I2C_SLV4_DI);
   } else {
 
     slv4_do_reg = new Adafruit_BusIO_Register(
-        i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_I2C_SLV4_DO);
+        i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B3_I2C_SLV4_DO);
 
     if (!slv4_do_reg->write(value)) {
       return (uint8_t) false;
@@ -791,7 +791,7 @@ void Adafruit_ICM20X::resetI2CMaster(void) {
 
   _setBank(0);
   Adafruit_BusIO_Register user_ctrl = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_USER_CTRL);
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B0_USER_CTRL);
 
   Adafruit_BusIO_RegisterBits i2c_master_reset_bit =
       Adafruit_BusIO_RegisterBits(&user_ctrl, 1, 1);

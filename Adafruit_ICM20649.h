@@ -56,7 +56,7 @@ public:
   void setGyroRange(icm20649_gyro_range_t new_gyro_range);
 
 private:
-  void _scale_values(void);
+  void scaleValues(void);
 };
 
 #endif
