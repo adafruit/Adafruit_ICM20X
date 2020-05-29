@@ -136,7 +136,7 @@ bool Adafruit_ICM20X::begin_SPI(int8_t cs_pin, int8_t sck_pin, int8_t miso_pin,
   return _init(sensor_id);
 }
 
-/**
+/*!
  * @brief Reset the internal registers and restores the default settings
  *
  */
@@ -213,13 +213,15 @@ bool Adafruit_ICM20X::_init(int32_t sensor_id) {
 
   init1();
 
-  // writeGyroRange(3);
-  // writeAccelRange(3);
-  // // 1100Hz/(1+10) = 100Hz
-  // setGyroRateDivisor(10);
+  // 3 will be the largest range for either sensor
+  writeGyroRange(3);
+  writeAccelRange(3);
 
-  // // # 1125Hz/(1+20) = 53.57Hz
-  // setAccelRateDivisor(20);
+  // 1100Hz/(1+10) = 100Hz
+  setGyroRateDivisor(10);
+
+  // # 1125Hz/(1+20) = 53.57Hz
+  setAccelRateDivisor(20);
 
   temp_sensor = new Adafruit_ICM20X_Temp(this);
   accel_sensor = new Adafruit_ICM20X_Accelerometer(this);
@@ -378,7 +380,7 @@ void Adafruit_ICM20X::_read(void) {
   scaleValues();
   _setBank(0);
 }
-/**
+/*!
  * @brief Scales the raw variables based on the current measurement range
  *
  */
@@ -579,7 +581,77 @@ void Adafruit_ICM20X::setGyroRateDivisor(uint8_t new_gyro_divisor) {
   gyro_rate_divisor.write(new_gyro_divisor);
   _setBank(0);
 }
-/**
+
+/**************************************************************************/
+/*!
+ * @brief Enable or disable the accelerometer's Digital Low Pass Filter
+ *
+ * @param enable true: enable false: disable
+ * @param cutoff_freq Signals changing at a rate higher than the given cutoff
+ * frequency will be filtered out
+ * @return true: success false: failure
+ */
+bool Adafruit_ICM20X::enableAccelDLPF(bool enable,
+                                      icm20x_accel_cutoff_t cutoff_freq) {
+  _setBank(2);
+  Adafruit_BusIO_Register accel_config1 = Adafruit_BusIO_Register(
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B2_ACCEL_CONFIG_1);
+
+  Adafruit_BusIO_RegisterBits dlpf_enable =
+      Adafruit_BusIO_RegisterBits(&accel_config1, 1, 0);
+  if (!dlpf_enable.write(enable)) {
+    return false;
+  }
+
+  if (!enable) {
+    return true;
+  }
+
+  Adafruit_BusIO_RegisterBits dlpf_config =
+      Adafruit_BusIO_RegisterBits(&accel_config1, 3, 3);
+
+  if (!dlpf_config.write(cutoff_freq)) {
+    return false;
+  }
+  return true;
+}
+
+/**************************************************************************/
+/*!
+ * @brief Enable or disable the gyro's Digital Low Pass Filter
+ *
+ * @param enable true: enable false: disable
+ * @param cutoff_freq Signals changing at a rate higher than the given cutoff
+ * frequency will be filtered out
+ * @return true: success false: failure
+ */
+bool Adafruit_ICM20X::enableGyrolDLPF(bool enable,
+                                      icm20x_gyro_cutoff_t cutoff_freq) {
+  _setBank(2);
+  Adafruit_BusIO_Register gyro_config1 = Adafruit_BusIO_Register(
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B2_ACCEL_CONFIG_1);
+
+  Adafruit_BusIO_RegisterBits dlpf_enable =
+      Adafruit_BusIO_RegisterBits(&gyro_config1, 1, 0);
+  if (!dlpf_enable.write(enable)) {
+    return false;
+  }
+
+  if (!enable) {
+    return true;
+  }
+
+  Adafruit_BusIO_RegisterBits dlpf_config =
+      Adafruit_BusIO_RegisterBits(&gyro_config1, 3, 3);
+
+  if (!dlpf_config.write(cutoff_freq)) {
+    return false;
+  }
+  return true;
+}
+
+/**************************************************************************/
+/*!
  * @brief Sets the polarity of the int1 pin
  *
  * @param active_low Set to true to make INT1 active low, false to make it
@@ -601,7 +673,7 @@ void Adafruit_ICM20X::setInt1ActiveLow(bool active_low) {
   int1_open_drain.write(true);
   int1_polarity.write(active_low);
 }
-/**
+/*!
  * @brief Sets the polarity of the INT2 pin
  *
  * @param active_low Set to true to make INT1 active low, false to make it
@@ -624,7 +696,8 @@ void Adafruit_ICM20X::setInt2ActiveLow(bool active_low) {
   int2_polarity.write(active_low);
 }
 
-/**
+/**************************************************************************/
+/*!
  * @brief Sets the bypass status of the I2C master bus support.
  *
  * @param bypass_i2c Set to true to bypass the internal I2C master circuitry,
@@ -643,7 +716,8 @@ void Adafruit_ICM20X::setI2CBypass(bool bypass_i2c) {
   i2c_bypass_enable.write(bypass_i2c);
 }
 
-/**
+/**************************************************************************/
+/*!
  * @brief Enable or disable the I2C mastercontroller
  *
  * @param enable_i2c_master true: enable false: disable
@@ -661,7 +735,8 @@ bool Adafruit_ICM20X::enableI2CMaster(bool enable_i2c_master) {
 }
 
 // TODO: add params
-/**
+/**************************************************************************/
+/*!
  * @brief Set the I2C clock rate for the auxillary I2C bus to 345.60kHz and
  * disable repeated start
  *
@@ -675,7 +750,9 @@ bool Adafruit_ICM20X::configureI2CMaster(void) {
 
   i2c_master_ctrl_reg.write(0x17);
 }
-/**
+
+/**************************************************************************/
+/*!
  * @brief Read a single byte from a given register address for an I2C slave
  * device on the auxiliary I2C bus
  *
@@ -688,7 +765,9 @@ uint8_t Adafruit_ICM20X::readExternalRegister(uint8_t slv_addr,
 
   return auxillaryRegisterTransaction(true, slv_addr, reg_addr);
 }
-/**
+
+/**************************************************************************/
+/*!
  * @brief Write a single byte to a given register address for an I2C slave
  * device on the auxiliary I2C bus
  *
@@ -704,8 +783,8 @@ bool Adafruit_ICM20X::writeExternalRegister(uint8_t slv_addr, uint8_t reg_addr,
   return (bool)auxillaryRegisterTransaction(false, slv_addr, reg_addr, value);
 }
 
-/*********  READ/WRITE TO AUX I2C BUS *****************/
-/**
+/**************************************************************************/
+/*!
  * @brief Write a single byte to a given register address for an I2C slave
  * device on the auxiliary I2C bus
  *
@@ -766,7 +845,6 @@ uint8_t Adafruit_ICM20X::auxillaryRegisterTransaction(bool read,
     return (uint8_t) false;
   }
 
-  // refactor out to share
   _setBank(0);
   uint8_t tries = 0;
   // wait until the operation is finished
@@ -783,7 +861,8 @@ uint8_t Adafruit_ICM20X::auxillaryRegisterTransaction(bool read,
   return (uint8_t) true;
 }
 
-/**
+/**************************************************************************/
+/*!
  * @brief Reset the I2C master
  *
  */

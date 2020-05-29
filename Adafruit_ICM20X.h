@@ -75,7 +75,29 @@
 #define ICM20948_CHIP_ID 0xEA ///< ICM20948 default device id from WHOAMI
 #define ICM20649_CHIP_ID 0xE1 ///< ICM20649 default device id from WHOAMI
 
-/////////////////////////////////////////
+/** Options for `enableAccelDLPF` */
+typedef enum {
+  ICM20X_ACCEL_FREQ_246_0_HZ = 0x1,
+  ICM20X_ACCEL_FREQ_111_4_HZ = 0x2,
+  ICM20X_ACCEL_FREQ_50_4_HZ = 0x3,
+  ICM20X_ACCEL_FREQ_23_9_HZ = 0x4,
+  ICM20X_ACCEL_FREQ_11_5_HZ = 0x5,
+  ICM20X_ACCEL_FREQ_5_7_HZ = 0x6,
+  ICM20X_ACCEL_FREQ_473_HZ = 0x7,
+} icm20x_accel_cutoff_t;
+
+/** Options for `enableGyroDLPF` */
+typedef enum {
+  ICM20X_GYRO_FREQ_196_6_HZ = 0x0,
+  ICM20X_GYRO_FREQ_151_8_HZ = 0x1,
+  ICM20X_GYRO_FREQ_119_5_HZ = 0x2,
+  ICM20X_GYRO_FREQ_51_2_HZ = 0x3,
+  ICM20X_GYRO_FREQ_23_9_HZ = 0x4,
+  ICM20X_GYRO_FREQ_11_6_HZ = 0x5,
+  ICM20X_GYRO_FREQ_5_7_HZ = 0x6,
+  ICM20X_GYRO_FREQ_361_4_HZ = 0x7,
+
+} icm20x_gyro_cutoff_t;
 
 class Adafruit_ICM20X;
 
@@ -159,8 +181,12 @@ public:
   uint16_t getAccelRateDivisor(void);
   void setAccelRateDivisor(uint16_t new_accel_divisor);
 
+  bool enableAccelDLPF(bool enable, icm20x_accel_cutoff_t cutoff_freq);
+  bool enableGyrolDLPF(bool enable, icm20x_gyro_cutoff_t cutoff_freq);
+
   void reset(void);
 
+  // TODO: bool-ify
   void setInt1ActiveLow(bool active_low);
   void setInt2ActiveLow(bool active_low);
 
