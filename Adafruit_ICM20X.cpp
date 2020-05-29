@@ -741,7 +741,7 @@ uint8_t Adafruit_ICM20X::auxillaryRegisterTransaction(bool read,
       Adafruit_BusIO_RegisterBits(&i2c_master_status_reg, 1, 6);
 
   if (read) {
-    slv_addr |= 0x80; // set high bit for read. QWOT?!
+    slv_addr |= 0x80; // set high bit for read, presumably for multi-byte reads
 
     slv4_di_reg = new Adafruit_BusIO_Register(
         i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_I2C_SLV4_DI);
@@ -773,7 +773,6 @@ uint8_t Adafruit_ICM20X::auxillaryRegisterTransaction(bool read,
   while (slave_finished_bit.read() != true) {
     tries++;
     if (tries >= NUM_FINISHED_CHECKS) {
-      Serial.println("failed to get i2c master finished signal");
       return (uint8_t) false;
     }
   }
@@ -783,8 +782,6 @@ uint8_t Adafruit_ICM20X::auxillaryRegisterTransaction(bool read,
   }
   return (uint8_t) true;
 }
-
-/*********************** END R/W TO AUX I2C  *******************************/
 
 /**
  * @brief Reset the I2C master
