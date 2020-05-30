@@ -60,7 +60,8 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#define-members">Macros</a>  </div>
+<a href="#define-members">Macros</a> &#124;
+<a href="#enum-members">Enumerations</a>  </div>
   <div class="headertitle">
 <div class="title">Adafruit_ICM20X.h File Reference</div>  </div>
 </div><!--header-->
@@ -216,6 +217,34 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#a653126f1287e5f38b4c281ef3bca60b7">ICM20649_CHIP_ID</a>&#160;&#160;&#160;0xE1</td></tr>
 <tr class="memdesc:a653126f1287e5f38b4c281ef3bca60b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">ICM20649 default device id from WHOAMI. <br /></td></tr>
 <tr class="separator:a653126f1287e5f38b4c281ef3bca60b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:abe70000e68e2c0e96dcb487debded478"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#abe70000e68e2c0e96dcb487debded478">icm20x_accel_cutoff_t</a> { <br />
+&#160;&#160;<b>ICM20X_ACCEL_FREQ_246_0_HZ</b> = 0x1, 
+<b>ICM20X_ACCEL_FREQ_111_4_HZ</b> = 0x2, 
+<b>ICM20X_ACCEL_FREQ_50_4_HZ</b> = 0x3, 
+<b>ICM20X_ACCEL_FREQ_23_9_HZ</b> = 0x4, 
+<br />
+&#160;&#160;<b>ICM20X_ACCEL_FREQ_11_5_HZ</b> = 0x5, 
+<b>ICM20X_ACCEL_FREQ_5_7_HZ</b> = 0x6, 
+<b>ICM20X_ACCEL_FREQ_473_HZ</b> = 0x7
+<br />
+ }</td></tr>
+<tr class="separator:abe70000e68e2c0e96dcb487debded478"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4e8d6c90935e4cf645f08f002e0af09"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___i_c_m20_x_8h.html#ad4e8d6c90935e4cf645f08f002e0af09">icm20x_gyro_cutoff_t</a> { <br />
+&#160;&#160;<b>ICM20X_GYRO_FREQ_196_6_HZ</b> = 0x0, 
+<b>ICM20X_GYRO_FREQ_151_8_HZ</b> = 0x1, 
+<b>ICM20X_GYRO_FREQ_119_5_HZ</b> = 0x2, 
+<b>ICM20X_GYRO_FREQ_51_2_HZ</b> = 0x3, 
+<br />
+&#160;&#160;<b>ICM20X_GYRO_FREQ_23_9_HZ</b> = 0x4, 
+<b>ICM20X_GYRO_FREQ_11_6_HZ</b> = 0x5, 
+<b>ICM20X_GYRO_FREQ_5_7_HZ</b> = 0x6, 
+<b>ICM20X_GYRO_FREQ_361_4_HZ</b> = 0x7
+<br />
+ }</td></tr>
+<tr class="separator:ad4e8d6c90935e4cf645f08f002e0af09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>I2C Driver for the Adafruit ICM20X 6-DoF Wide-Range Accelerometer and Gyro library </p><pre class="fragment">This is a library for the Adafruit ICM20X breakouts:
@@ -239,6 +268,37 @@ Adafruit invests time and resources providing this open source code,
 
 <p>up </p>
 <p>The number of times to try resetting a stuck I2C master before giving </p>
+
+</div>
+</div>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="abe70000e68e2c0e96dcb487debded478"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe70000e68e2c0e96dcb487debded478">&#9670;&nbsp;</a></span>icm20x_accel_cutoff_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="_adafruit___i_c_m20_x_8h.html#abe70000e68e2c0e96dcb487debded478">icm20x_accel_cutoff_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Options for <code>enableAccelDLPF</code> </p>
+
+</div>
+</div>
+<a id="ad4e8d6c90935e4cf645f08f002e0af09"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4e8d6c90935e4cf645f08f002e0af09">&#9670;&nbsp;</a></span>icm20x_gyro_cutoff_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="_adafruit___i_c_m20_x_8h.html#ad4e8d6c90935e4cf645f08f002e0af09">icm20x_gyro_cutoff_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Options for <code>enableGyroDLPF</code> </p>
 
 </div>
 </div>

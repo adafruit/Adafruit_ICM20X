@@ -12,6 +12,7 @@ var searchData=
   ['icm20948_5fi2caddr_5fdefault',['ICM20948_I2CADDR_DEFAULT',['../_adafruit___i_c_m20948_8h.html#a60dfd046339510845148a3285dd0ca91',1,'Adafruit_ICM20948.h']]],
   ['icm20948_5fmag_5fid',['ICM20948_MAG_ID',['../_adafruit___i_c_m20948_8h.html#a4f938bd51d494d53e10d2a18e360544d',1,'Adafruit_ICM20948.h']]],
   ['icm20948_5fut_5fper_5flsb',['ICM20948_UT_PER_LSB',['../_adafruit___i_c_m20948_8h.html#a5892bf708f4e25b92b8493e936e589cb',1,'Adafruit_ICM20948.h']]],
+  ['icm20x_5faccel_5fcutoff_5ft',['icm20x_accel_cutoff_t',['../_adafruit___i_c_m20_x_8h.html#abe70000e68e2c0e96dcb487debded478',1,'Adafruit_ICM20X.h']]],
   ['icm20x_5fb0_5faccel_5fxout_5fh',['ICM20X_B0_ACCEL_XOUT_H',['../_adafruit___i_c_m20_x_8h.html#a40bf360619b8018df3546f66b44b99c3',1,'Adafruit_ICM20X.h']]],
   ['icm20x_5fb0_5fgyro_5fxout_5fh',['ICM20X_B0_GYRO_XOUT_H',['../_adafruit___i_c_m20_x_8h.html#ad91876e70af1afc63e0a7e0af898d76e',1,'Adafruit_ICM20X.h']]],
   ['icm20x_5fb0_5fi2c_5fmst_5fstatus',['ICM20X_B0_I2C_MST_STATUS',['../_adafruit___i_c_m20_x_8h.html#a04b15e0dc7e92a23ec0a4f49d0130baa',1,'Adafruit_ICM20X.h']]],
@@ -39,5 +40,6 @@ var searchData=
   ['icm20x_5fb3_5fi2c_5fslv4_5fctrl',['ICM20X_B3_I2C_SLV4_CTRL',['../_adafruit___i_c_m20_x_8h.html#a67b104f54a4999319fb7e3c4f7f52803',1,'Adafruit_ICM20X.h']]],
   ['icm20x_5fb3_5fi2c_5fslv4_5fdi',['ICM20X_B3_I2C_SLV4_DI',['../_adafruit___i_c_m20_x_8h.html#a88edd463a206ac723af8d102b3493bfa',1,'Adafruit_ICM20X.h']]],
   ['icm20x_5fb3_5fi2c_5fslv4_5fdo',['ICM20X_B3_I2C_SLV4_DO',['../_adafruit___i_c_m20_x_8h.html#aa3439fba54eab90ee8adfdaef60191e3',1,'Adafruit_ICM20X.h']]],
-  ['icm20x_5fb3_5fi2c_5fslv4_5freg',['ICM20X_B3_I2C_SLV4_REG',['../_adafruit___i_c_m20_x_8h.html#a4c17a7c4b62c72a89010776bde65b230',1,'Adafruit_ICM20X.h']]]
+  ['icm20x_5fb3_5fi2c_5fslv4_5freg',['ICM20X_B3_I2C_SLV4_REG',['../_adafruit___i_c_m20_x_8h.html#a4c17a7c4b62c72a89010776bde65b230',1,'Adafruit_ICM20X.h']]],
+  ['icm20x_5fgyro_5fcutoff_5ft',['icm20x_gyro_cutoff_t',['../_adafruit___i_c_m20_x_8h.html#ad4e8d6c90935e4cf645f08f002e0af09',1,'Adafruit_ICM20X.h']]]
 ];
