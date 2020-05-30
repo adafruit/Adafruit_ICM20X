@@ -182,36 +182,10 @@ bool Adafruit_ICM20X::_init(int32_t sensor_id) {
 
   Adafruit_BusIO_Register pwr_mgmt_1 = Adafruit_BusIO_Register(
       i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B0_PWR_MGMT_1);
-  Adafruit_BusIO_Register lp_config = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B0_LP_CONFIG);
 
   Adafruit_BusIO_RegisterBits sleep =
       Adafruit_BusIO_RegisterBits(&pwr_mgmt_1, 1, 6);
-
-  Adafruit_BusIO_RegisterBits clock_source =
-      Adafruit_BusIO_RegisterBits(&pwr_mgmt_1, 3, 0);
-
-  Adafruit_BusIO_RegisterBits i2c_mst_cycle =
-      Adafruit_BusIO_RegisterBits(&lp_config, 1, 6);
-
-  Adafruit_BusIO_Register gyro_config_1 = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B2_GYRO_CONFIG_1);
-
-  Adafruit_BusIO_Register accel_config_1 = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B2_ACCEL_CONFIG_1);
-
-  Adafruit_BusIO_RegisterBits gyro_filter_bit =
-      Adafruit_BusIO_RegisterBits(&gyro_config_1, 1, 0);
-  Adafruit_BusIO_RegisterBits accel_filter_bit =
-      Adafruit_BusIO_RegisterBits(&accel_config_1, 1, 0);
-
   sleep.write(false); // take out of default sleep state
-  // AUTO SELECT BEST CLOCK, required by DS to meet specs
-  clock_source.write(1);
-
-  i2c_mst_cycle.write(1);
-
-  init1();
 
   // 3 will be the largest range for either sensor
   writeGyroRange(3);
@@ -232,35 +206,6 @@ bool Adafruit_ICM20X::_init(int32_t sensor_id) {
   return true;
 }
 
-void Adafruit_ICM20X::init1(void) {
-
-  Adafruit_BusIO_Register gyro_config_1 = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B2_GYRO_CONFIG_1);
-
-  Adafruit_BusIO_Register accel_config_1 = Adafruit_BusIO_Register(
-      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B2_ACCEL_CONFIG_1);
-
-  Adafruit_BusIO_RegisterBits accel_filter_bit =
-      Adafruit_BusIO_RegisterBits(&accel_config_1, 1, 0);
-
-  Adafruit_BusIO_RegisterBits accel_filter_cnf =
-      Adafruit_BusIO_RegisterBits(&accel_config_1, 3, 3);
-
-  Adafruit_BusIO_RegisterBits gyro_filter_bit =
-      Adafruit_BusIO_RegisterBits(&gyro_config_1, 1, 0);
-
-  Adafruit_BusIO_RegisterBits gyro_filter_cnf =
-      Adafruit_BusIO_RegisterBits(&gyro_config_1, 3, 3);
-
-  _setBank(2);
-
-  accel_filter_bit.write(1);
-  gyro_filter_bit.write(1);
-  accel_filter_cnf.write(7);
-  gyro_filter_cnf.write(7);
-  accel_filter_bit.write(0);
-  gyro_filter_bit.write(0);
-}
 /**************************************************************************/
 /*!
     @brief  Gets the most recent sensor event, Adafruit Unified Sensor format

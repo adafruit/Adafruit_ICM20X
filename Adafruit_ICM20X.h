@@ -257,7 +257,6 @@ protected:
   void setI2CBypass(bool bypass_i2c);
 
 private:
-  void init1(void);
   friend class Adafruit_ICM20X_Accelerometer; ///< Gives access to private
                                               ///< members to Accelerometer
                                               ///< data object
