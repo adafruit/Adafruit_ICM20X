@@ -198,6 +198,13 @@ public:
   bool getEvent(sensors_event_t *accel, sensors_event_t *gyro,
                 sensors_event_t *temp, sensors_event_t *mag = NULL);
 
+  uint8_t readExternalRegister(uint8_t slv_addr, uint8_t reg_addr);
+  bool writeExternalRegister(uint8_t slv_addr, uint8_t reg_addr, uint8_t value);
+  bool configureI2CMaster(void);
+  bool enableI2CMaster(bool enable_i2c_master);
+  void resetI2CMaster(void);
+  void setI2CBypass(bool bypass_i2c);
+
 protected:
   float temperature, ///< Last reading's temperature (C)
       accX,          ///< Last reading's accelerometer X axis m/s^2
@@ -248,13 +255,6 @@ protected:
 
   uint8_t readGyroRange(void);
   void writeGyroRange(uint8_t new_gyro_range);
-
-  uint8_t readExternalRegister(uint8_t slv_addr, uint8_t reg_addr);
-  bool writeExternalRegister(uint8_t slv_addr, uint8_t reg_addr, uint8_t value);
-  bool configureI2CMaster(void);
-  bool enableI2CMaster(bool enable_i2c_master);
-  void resetI2CMaster(void);
-  void setI2CBypass(bool bypass_i2c);
 
 private:
   friend class Adafruit_ICM20X_Accelerometer; ///< Gives access to private

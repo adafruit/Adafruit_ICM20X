@@ -32,8 +32,7 @@ bool Adafruit_ICM20948::begin_I2C(uint8_t i2c_address, TwoWire *wire,
   i2c_dev = new Adafruit_I2CDevice(i2c_address, wire);
 
   if (!i2c_dev->begin()) {
-    Serial.print("I2C begin Failed to find sensor at 0x");
-    Serial.println(i2c_address, HEX);
+    Serial.println("I2C begin Failed");
     return false;
   }
   bool init_success = _init(sensor_id);
