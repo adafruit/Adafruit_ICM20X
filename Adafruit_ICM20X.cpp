@@ -3,23 +3,26 @@
  *  @file Adafruit_ICM20X.cpp
  *
  *  @mainpage Adafruit ICM20X family motion sensor library
+ *  @see Adafruit_ICM20649, Adafruit_ICM20948
  *
  *  @section intro_sec Introduction
  *
  * 	I2C Driver for the Adafruit ICM20X Family of motion sensors
  *
  * 	This is a library for the Adafruit ICM20X breakouts:
- * 	https://www.adafruit.com/product/4464
- * 	https://www.adafruit.com/product/4554
+ * 	* https://www.adafruit.com/product/4464
+ *
+ * 	* https://www.adafruit.com/product/4554
  *
  * 	Adafruit invests time and resources providing this open source code,
  *  please support Adafruit and open-source hardware by purchasing products from
  * 	Adafruit!
  *
  *  @section dependencies Dependencies
- *  This library depends on the Adafruit BusIO library
+ * * [Adafruit BusIO](https://github.com/adafruit/Adafruit_BusIO)
  *
- *  This library depends on the Adafruit Unified Sensor library
+ * * [Adafruit Unified Sensor
+ * Driver](https://github.com/adafruit/Adafruit_Sensor)
  *
  *  @section author Author
  *
@@ -31,7 +34,8 @@
  *
  * 	@section  HISTORY
  *
- *     v1.0 - First release
+ *    See [the repository's  release page for the release
+ * history](https://github.com/adafruit/Adafruit_ICM20X/releases)
  */
 
 #include "Arduino.h"

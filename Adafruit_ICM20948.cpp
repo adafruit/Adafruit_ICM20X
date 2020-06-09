@@ -1,4 +1,5 @@
-
+/*!   @file Adafruit_ICM20948.cpp
+ */
 #include "Arduino.h"
 #include <Wire.h>
 
