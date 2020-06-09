@@ -98,6 +98,8 @@ private:
 
   bool setupMag(void);
   void scaleValues(void);
+  icm20948_accel_range_t current_accel_range;
+  icm20948_gyro_range_t current_gyro_range;
 };
 
 #endif
