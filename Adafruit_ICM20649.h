@@ -57,6 +57,8 @@ public:
 
 private:
   void scaleValues(void);
+  icm20649_accel_range_t current_accel_range;
+  icm20649_gyro_range_t current_gyro_range;
 };
 
 #endif
