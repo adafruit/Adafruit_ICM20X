@@ -37,17 +37,14 @@ bool Adafruit_ICM20649::begin_I2C(uint8_t i2c_address, TwoWire *wire,
     return false;
   }
 
-
-
-
-
   return _init(sensor_id);
 }
 
 void Adafruit_ICM20649::scaleValues(void) {
 
   icm20649_gyro_range_t gyro_range = (icm20649_gyro_range_t)current_gyro_range;
-  icm20649_accel_range_t accel_range = (icm20649_accel_range_t)current_accel_range;
+  icm20649_accel_range_t accel_range =
+      (icm20649_accel_range_t)current_accel_range;
   float accel_scale = 1.0;
   float gyro_scale = 1.0;
 
