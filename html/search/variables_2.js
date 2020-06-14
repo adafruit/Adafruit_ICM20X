@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['gyro_5fsensor',['gyro_sensor',['../class_adafruit___i_c_m20_x.html#af0d9bdaf16732fb28479966c69502eb7',1,'Adafruit_ICM20X']]],
-  ['gyrox',['gyroX',['../class_adafruit___i_c_m20_x.html#acf6d9f9195f4680d38f62751de753978',1,'Adafruit_ICM20X']]],
-  ['gyroy',['gyroY',['../class_adafruit___i_c_m20_x.html#aeb07f4c0776192bba39d260f2b9d0cb5',1,'Adafruit_ICM20X']]],
-  ['gyroz',['gyroZ',['../class_adafruit___i_c_m20_x.html#a0a1503d014b3ed61ad69789eabdbf282',1,'Adafruit_ICM20X']]]
+  ['current_5faccel_5frange',['current_accel_range',['../class_adafruit___i_c_m20_x.html#a4c8c57a2cb8a3bee7dfebb9f1a10fa66',1,'Adafruit_ICM20X']]],
+  ['current_5fgyro_5frange',['current_gyro_range',['../class_adafruit___i_c_m20_x.html#ab37074e4b1485cfa0cb77fe5fb35b6d2',1,'Adafruit_ICM20X']]]
 ];
