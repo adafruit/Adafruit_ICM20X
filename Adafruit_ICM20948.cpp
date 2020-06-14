@@ -129,8 +129,9 @@ bool Adafruit_ICM20948::writeMagRegister(uint8_t mag_reg_addr, uint8_t value) {
 
 void Adafruit_ICM20948::scaleValues(void) {
 
-  icm20948_gyro_range_t gyro_range = current_gyro_range;
-  icm20948_accel_range_t accel_range = current_accel_range;
+  icm20948_gyro_range_t gyro_range = (icm20948_gyro_range_t)current_gyro_range;
+  icm20948_accel_range_t accel_range = (icm20948_accel_range_t)current_accel_range;
+
   float accel_scale = 1.0;
   float gyro_scale = 1.0;
 
@@ -184,7 +185,6 @@ icm20948_accel_range_t Adafruit_ICM20948::getAccelRange(void) {
 */
 void Adafruit_ICM20948::setAccelRange(icm20948_accel_range_t new_accel_range) {
   writeAccelRange((uint8_t)new_accel_range);
-  current_accel_range = new_accel_range;
 }
 
 /**************************************************************************/
@@ -206,7 +206,6 @@ icm20948_gyro_range_t Adafruit_ICM20948::getGyroRange(void) {
 */
 void Adafruit_ICM20948::setGyroRange(icm20948_gyro_range_t new_gyro_range) {
   writeGyroRange((uint8_t)new_gyro_range);
-  current_gyro_range = new_gyro_range;
 }
 
 /**

@@ -247,6 +247,8 @@ protected:
       rawMagY,     ///< temp variables
       rawMagZ;     ///< temp variables
 
+  uint8_t current_accel_range;
+  uint8_t current_gyro_range;
   // virtual void _setBank(uint8_t bank_number);
   void _setBank(uint8_t bank_number);
 

@@ -172,7 +172,7 @@ bool Adafruit_ICM20X::_init(int32_t sensor_id) {
 
   _setBank(0);
   uint8_t chip_id_ = chip_id.read();
-
+  // This returns true when using a 649 lib with a 948
   if ((chip_id_ != ICM20649_CHIP_ID) && (chip_id_ != ICM20948_CHIP_ID)) {
     return false;
   }
@@ -417,6 +417,8 @@ void Adafruit_ICM20X::writeAccelRange(uint8_t new_accel_range) {
       Adafruit_BusIO_RegisterBits(&accel_config_1, 2, 1);
 
   accel_range.write(new_accel_range);
+  current_accel_range = new_accel_range;
+
   _setBank(0);
 }
 
@@ -457,6 +459,7 @@ void Adafruit_ICM20X::writeGyroRange(uint8_t new_gyro_range) {
       Adafruit_BusIO_RegisterBits(&gyro_config_1, 2, 1);
 
   gyro_range.write(new_gyro_range);
+  current_gyro_range = new_gyro_range;
   _setBank(0);
 }
 
