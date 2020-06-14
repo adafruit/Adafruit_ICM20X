@@ -247,8 +247,8 @@ protected:
       rawMagY,     ///< temp variables
       rawMagZ;     ///< temp variables
 
-  uint8_t current_accel_range;
-  uint8_t current_gyro_range;
+  uint8_t current_accel_range; ///< accelerometer range cache
+  uint8_t current_gyro_range;  ///< gyro range cache
   // virtual void _setBank(uint8_t bank_number);
   void _setBank(uint8_t bank_number);
 
