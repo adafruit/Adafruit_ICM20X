@@ -1,6 +1,6 @@
 # Adafruit ICM20X [![Build Status](https://github.com/adafruit/Adafruit_ICM20X/workflows/Arduino%20Library%20CI/badge.svg)](https://github.com/adafruit/Adafruit_ICM20X/actions)[![Documentation](https://github.com/adafruit/ci-arduino/blob/master/assets/doxygen_badge.svg)](http://adafruit.github.io/Adafruit_ICM20X/html/index.html)
 
-This is the Adafruit ICM20X Arduino Library for use with the ST ICM20649 and ICM20948 motion sensors.
+This is the Adafruit ICM20X Arduino Library for use with the TDK Invensense ICM20649 and ICM20948 motion sensors.
 
 
 ### Tested and works great with the following Adafruit ICM20X Family Breakout Boards:
