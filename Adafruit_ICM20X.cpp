@@ -700,7 +700,7 @@ bool Adafruit_ICM20X::configureI2CMaster(void) {
   Adafruit_BusIO_Register i2c_master_ctrl_reg = Adafruit_BusIO_Register(
       i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, ICM20X_B3_I2C_MST_CTRL);
 
-  i2c_master_ctrl_reg.write(0x17);
+  return i2c_master_ctrl_reg.write(0x17);
 }
 
 /**************************************************************************/
