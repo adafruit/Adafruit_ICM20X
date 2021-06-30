@@ -76,6 +76,9 @@ Adafruit_ICM20X::~Adafruit_ICM20X(void) {
  */
 bool Adafruit_ICM20X::begin_I2C(uint8_t i2c_address, TwoWire *wire,
                                 int32_t sensor_id) {
+  (void)i2c_address;
+  (void)wire;
+  (void)sensor_id;
   return false;
 }
 

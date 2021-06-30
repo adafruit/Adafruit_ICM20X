@@ -45,7 +45,7 @@ typedef enum {
 class Adafruit_ICM20649 : public Adafruit_ICM20X {
 public:
   Adafruit_ICM20649();
-  ~Adafruit_ICM20649(){};
+  virtual ~Adafruit_ICM20649(){};
   bool begin_I2C(uint8_t i2c_addr = ICM20649_I2CADDR_DEFAULT,
                  TwoWire *wire = &Wire, int32_t sensor_id = 0);
 
