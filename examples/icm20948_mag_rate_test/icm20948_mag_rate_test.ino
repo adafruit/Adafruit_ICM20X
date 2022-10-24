@@ -9,7 +9,7 @@ It will measure and print MEASUREMENTS_PER_RATE times again before starting over
 
 The effect of changing the magnetometer's data rate is
 the most apparent when using the Serial Plotter. You should see the "resolution"
-of the graphed measurements change as the sensor switches data rates
+of the graphed measurements change as the sensor switches data rates */
 /**************************************************/
 #include <Adafruit_ICM20948.h>
 #include <Adafruit_ICM20X.h>

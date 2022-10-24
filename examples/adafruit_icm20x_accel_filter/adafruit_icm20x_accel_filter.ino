@@ -6,7 +6,7 @@ for an ICM20X accelerometer's Digital Low Pass Filter
 A cutoff frequency is set in `setup()` and you should experiment with changing
 it and observing the effect on the signal.
 The effect of changing the accelerometer's cutoff frequency is
-the most apparent when using the Serial Plotter.
+the most apparent when using the Serial Plotter. */
 /**************************************************/
 
 #include <Adafruit_Sensor.h>
